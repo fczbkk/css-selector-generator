@@ -6,7 +6,11 @@ describe 'CSS Selector Generator', ->
     <ul>
       <li></li>
       <li></li>
-      <li></li>
+      <li>
+        <a href='linkOne' class='linkOne'></a>
+        <a href='linkTwo' class='linkTwo'></a>
+        <a href='linkThree' class='linkThree'></a>
+      </li>
     </ul>
     <ul>
       <li class='itemOne first'>
@@ -75,7 +79,7 @@ describe 'CSS Selector Generator', ->
   it 'should get ID selector for an element', ->
     elm = root.querySelector '#linkZero'
     expect(x.getIdSelector elm).toBe '#linkZero'
-    expect(x.getIdSelector root).toBe ''
+    expect(x.getIdSelector root).toBe null
 
   it 'should get class selectors for an element', ->
     elm = root.querySelector '#linkZero'
@@ -98,7 +102,23 @@ describe 'CSS Selector Generator', ->
     elm = root.querySelector '#linkZero'
     result = x.getNthChildSelector elm
     expect(result).toBe ':nth-child(7)'
-    expect(x.getNthChildSelector root).toBe ''
+    expect(x.getNthChildSelector root).toBe null
+  
+  it 'should get list of variants of CSS selectors', ->
+    elm = root.querySelector '#linkZero'
+    result = x.getSelectorVariants elm
+    expect(result).toEqual ['#linkZero']
+
+    elm = root.querySelector '.itemTwo a:nth-child(6)'
+    result = x.getSelectorVariants elm
+    expect(result).toContain '.classOne.classTwo.classThree'
+    expect(result).toContain 'a.classOne.classTwo.classThree'
+    expect(result).toContain 'a:nth-child(6)'
+  
+  it 'should get optimised selector', ->
+    elm = root.querySelector '.itemOne a:nth-child(1)'
+    result = x.getOptimisedSelector elm
+    expect(result).toBe '.itemOne.first .linkOne'
   
   it 'should test, if selector returns only expected element', ->
     elm = root.querySelector '#linkZero'

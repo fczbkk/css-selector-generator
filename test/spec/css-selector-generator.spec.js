@@ -3,7 +3,7 @@
     var root, x;
     x = new CssSelectorGenerator();
     root = document.createElement('div');
-    root.innerHTML = "    <ul>      <li></li>      <li></li>      <li></li>    </ul>    <ul>      <li class='itemOne first'>        <a href='linkOne' class='linkOne'></a>        <a href='linkTwo' class='linkTwo'></a>        <a href='linkThree' class='linkThree'></a>      </li>      <li class='itemTwo'>        <a href='linkOne'></a>        <a href='linkTwo'></a>        <a href='linkThree'></a>        <a></a>        <a          href='linkOne'          class='classOne classTwo classThree'        ></a>        <a          href='linkTwo'          target='someTarget2'          rel='someRel'          class='classOne classTwo classThree'        ></a>        <a          href='linkThree'          target='someTarget'          rel='someRel'          class='classOne classTwo classThree'          id='linkZero'        ></a>      </li>      <li class='itemThree last'>        <a          href='linkOne'          id='linkOne'          class='classOne classTwo classThree'        ></a>        <a href='linkTwo' id='linkTwo'></a>        <a href='linkThree' id='linkThree'></a>      </li>    <ul>  ";
+    root.innerHTML = "    <ul>      <li></li>      <li></li>      <li>        <a href='linkOne' class='linkOne'></a>        <a href='linkTwo' class='linkTwo'></a>        <a href='linkThree' class='linkThree'></a>      </li>    </ul>    <ul>      <li class='itemOne first'>        <a href='linkOne' class='linkOne'></a>        <a href='linkTwo' class='linkTwo'></a>        <a href='linkThree' class='linkThree'></a>      </li>      <li class='itemTwo'>        <a href='linkOne'></a>        <a href='linkTwo'></a>        <a href='linkThree'></a>        <a></a>        <a          href='linkOne'          class='classOne classTwo classThree'        ></a>        <a          href='linkTwo'          target='someTarget2'          rel='someRel'          class='classOne classTwo classThree'        ></a>        <a          href='linkThree'          target='someTarget'          rel='someRel'          class='classOne classTwo classThree'          id='linkZero'        ></a>      </li>      <li class='itemThree last'>        <a          href='linkOne'          id='linkOne'          class='classOne classTwo classThree'        ></a>        <a href='linkTwo' id='linkTwo'></a>        <a href='linkThree' id='linkThree'></a>      </li>    <ul>  ";
     it('should exist', function() {
       return expect(CssSelectorGenerator).toBeDefined();
     });
@@ -35,7 +35,7 @@
       var elm;
       elm = root.querySelector('#linkZero');
       expect(x.getIdSelector(elm)).toBe('#linkZero');
-      return expect(x.getIdSelector(root)).toBe('');
+      return expect(x.getIdSelector(root)).toBe(null);
     });
     it('should get class selectors for an element', function() {
       var elm, expectation, result;
@@ -61,7 +61,24 @@
       elm = root.querySelector('#linkZero');
       result = x.getNthChildSelector(elm);
       expect(result).toBe(':nth-child(7)');
-      return expect(x.getNthChildSelector(root)).toBe('');
+      return expect(x.getNthChildSelector(root)).toBe(null);
+    });
+    it('should get list of variants of CSS selectors', function() {
+      var elm, result;
+      elm = root.querySelector('#linkZero');
+      result = x.getSelectorVariants(elm);
+      expect(result).toEqual(['#linkZero']);
+      elm = root.querySelector('.itemTwo a:nth-child(6)');
+      result = x.getSelectorVariants(elm);
+      expect(result).toContain('.classOne.classTwo.classThree');
+      expect(result).toContain('a.classOne.classTwo.classThree');
+      return expect(result).toContain('a:nth-child(6)');
+    });
+    it('should get optimised selector', function() {
+      var elm, result;
+      elm = root.querySelector('.itemOne a:nth-child(1)');
+      result = x.getOptimisedSelector(elm);
+      return expect(result).toBe('.itemOne.first .linkOne');
     });
     it('should test, if selector returns only expected element', function() {
       var elm, selector;

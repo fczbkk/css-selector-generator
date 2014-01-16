@@ -31,7 +31,7 @@
       if (id != null) {
         return "#" + id;
       } else {
-        return '';
+        return null;
       }
     };
 
@@ -80,17 +80,84 @@
           }
         }
       }
-      return '';
+      return null;
     };
 
     CssSelectorGenerator.prototype.testSelector = function(element, selector, root) {
       var result;
-      result = root.querySelectorAll(selector);
-      return result.length === 1 && result[0] === element;
+      if ((selector != null) && selector !== '') {
+        result = root.querySelectorAll(selector);
+        return result.length === 1 && result[0] === element;
+      }
+      return false;
+    };
+
+    CssSelectorGenerator.prototype.getAllSelectors = function(element) {
+      return {
+        t: this.getTagSelector(element),
+        i: this.getIdSelector(element),
+        c: this.getClassSelectors(element),
+        a: this.getAttributeSelectors(element),
+        n: this.getNthChildSelector(element)
+      };
+    };
+
+    CssSelectorGenerator.prototype.getSelectorVariants = function(element) {
+      var s, variants;
+      variants = [];
+      s = this.getAllSelectors(element);
+      if (s.i != null) {
+        variants.push(s.i);
+      } else {
+        variants.push('');
+        variants.push(s.c.join(''));
+        variants.push(s.t + s.c.join(''));
+        variants.push(s.t + s.n);
+      }
+      return variants;
+    };
+
+    CssSelectorGenerator.prototype.getOptimisedSelector = function(element) {
+      var elm, elm_variant, elm_variants, new_variant, old_variant, old_variants, parents, root, selector, variants, _i, _j, _k, _l, _len, _len1, _len2, _len3;
+      parents = this.getParents(element);
+      root = parents[parents.length - 1];
+      if (root.parentNode != null) {
+        root = root.parentNode;
+      }
+      variants = null;
+      for (_i = 0, _len = parents.length; _i < _len; _i++) {
+        elm = parents[_i];
+        if (elm !== root) {
+          elm_variants = this.getSelectorVariants(elm);
+          if (variants != null) {
+            old_variants = variants.slice();
+            for (_j = 0, _len1 = elm_variants.length; _j < _len1; _j++) {
+              elm_variant = elm_variants[_j];
+              for (_k = 0, _len2 = old_variants.length; _k < _len2; _k++) {
+                old_variant = old_variants[_k];
+                new_variant = "" + elm_variant + " " + old_variant;
+                new_variant = new_variant.replace(/(^\s*)|(\s*$)/g, '');
+                if (variants.indexOf(new_variant === -1)) {
+                  variants.push(new_variant);
+                }
+              }
+            }
+          } else {
+            variants = elm_variants;
+          }
+        }
+      }
+      for (_l = 0, _len3 = variants.length; _l < _len3; _l++) {
+        selector = variants[_l];
+        if (this.testSelector(element, selector, root)) {
+          return selector;
+        }
+      }
+      return null;
     };
 
     CssSelectorGenerator.prototype.getSelector = function(element) {
-      var elm, parents, root, selectors, _i, _len;
+      var elm, parents, root, s, selectors, _i, _len;
       parents = this.getParents(element);
       root = parents[parents.length - 1];
       if (root.parentNode != null) {
@@ -100,7 +167,8 @@
       for (_i = 0, _len = parents.length; _i < _len; _i++) {
         elm = parents[_i];
         if (elm !== root) {
-          selectors.unshift('' + (this.getTagSelector(elm)) + (this.getIdSelector(elm)) + (this.getClassSelectors(elm)).join('') + (this.getAttributeSelectors(elm)).join('') + (this.getNthChildSelector(elm)));
+          s = this.getAllSelectors(elm);
+          selectors.unshift('' + s.t + (s.i != null ? s.i : '') + s.c.join('') + s.a.join('') + s.n);
         }
       }
       return selectors.join(' ');
