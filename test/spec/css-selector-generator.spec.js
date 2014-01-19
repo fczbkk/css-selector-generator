@@ -74,12 +74,6 @@
       expect(result).toContain('a.classOne.classTwo.classThree');
       return expect(result).toContain('a:nth-child(6)');
     });
-    it('should get optimised selector', function() {
-      var elm, result;
-      elm = root.querySelector('.itemOne a:nth-child(1)');
-      result = x.getOptimisedSelector(elm);
-      return expect(result).toBe('.itemOne.first .linkOne');
-    });
     it('should test, if selector returns only expected element', function() {
       var elm, selector;
       elm = root.querySelector('#linkZero');
@@ -94,7 +88,39 @@
       selector = 'a[target=someTarget][rel=someRel]';
       return expect(x.testSelector(elm, selector, root)).toBe(true);
     });
-    return it('should construct unique selector for given element', function() {
+    it('should sanitize the selector', function() {
+      expect(x.sanitizeVariant('aaa bbb')).toBe('aaa bbb');
+      expect(x.sanitizeVariant(' aaa bbb   ')).toBe('aaa bbb');
+      return expect(x.sanitizeVariant('aaa  bbb')).toBe('aaa bbb');
+    });
+    it('should get list of variant combinations', function() {
+      var list1, list2;
+      list1 = ['aaa', 'bbb', 'ccc'];
+      list2 = ['xxx', 'yyy', 'zzz'];
+      expect(x.getVariantCombinations(null, null)).toEqual([]);
+      expect(x.getVariantCombinations(list1, null)).toEqual(list1);
+      expect(x.getVariantCombinations(null, list1)).toEqual(list1);
+      return expect(x.getVariantCombinations(list1, list2)).toEqual(['aaa xxx', 'aaa yyy', 'aaa zzz', 'bbb xxx', 'bbb yyy', 'bbb zzz', 'ccc xxx', 'ccc yyy', 'ccc zzz']);
+    });
+    it('should sanitize variants list', function() {
+      var list;
+      list = ['aaa', ' aaa', 'aaa ', 'aaa'];
+      return expect(x.sanitizeVariantsList(list)).toEqual(['aaa']);
+    });
+    it('should get the root object for the element', function() {
+      var elm;
+      elm = document.createElement('div');
+      expect(x.getRoot(elm)).toBe(elm);
+      document.body.appendChild(elm);
+      return expect(x.getRoot(elm)).toBe(document);
+    });
+    it('should get optimised selector', function() {
+      var elm, result;
+      elm = root.querySelector('.itemOne a:nth-child(1)');
+      result = x.getSelector(elm);
+      return expect(result).toBe('.itemOne.first .linkOne');
+    });
+    return it('should construct unique selector for any given element', function() {
       var elm, links, selector, _i, _len, _results;
       links = root.querySelectorAll('ul')[1].querySelectorAll('li')[1].querySelectorAll('a');
       _results = [];

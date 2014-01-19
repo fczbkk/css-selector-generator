@@ -115,11 +115,6 @@ describe 'CSS Selector Generator', ->
     expect(result).toContain 'a.classOne.classTwo.classThree'
     expect(result).toContain 'a:nth-child(6)'
   
-  it 'should get optimised selector', ->
-    elm = root.querySelector '.itemOne a:nth-child(1)'
-    result = x.getOptimisedSelector elm
-    expect(result).toBe '.itemOne.first .linkOne'
-  
   it 'should test, if selector returns only expected element', ->
     elm = root.querySelector '#linkZero'
     
@@ -143,7 +138,51 @@ describe 'CSS Selector Generator', ->
     selector = 'a[target=someTarget][rel=someRel]'
     expect(x.testSelector elm, selector, root).toBe true
   
-  it 'should construct unique selector for given element', ->
+  it 'should sanitize the selector', ->
+    # don't modify if no modification is needed
+    expect(x.sanitizeVariant 'aaa bbb').toBe 'aaa bbb'
+    # trim whitespace
+    expect(x.sanitizeVariant ' aaa bbb   ').toBe 'aaa bbb'
+    # replace multiple spaces with single space
+    expect(x.sanitizeVariant 'aaa  bbb').toBe 'aaa bbb'
+  
+  it 'should get list of variant combinations', ->
+    list1 = ['aaa', 'bbb', 'ccc']
+    list2 = ['xxx', 'yyy', 'zzz']
+    
+    # Both lists are empty
+    expect(x.getVariantCombinations null, null).toEqual []
+    
+    # One list is empty
+    expect(x.getVariantCombinations list1, null).toEqual list1
+    expect(x.getVariantCombinations null, list1).toEqual list1
+    
+    # Boths lists have items
+    expect(x.getVariantCombinations list1, list2).toEqual [
+      'aaa xxx', 'aaa yyy', 'aaa zzz'
+      'bbb xxx', 'bbb yyy', 'bbb zzz'
+      'ccc xxx', 'ccc yyy', 'ccc zzz'
+    ]
+  
+  it 'should sanitize variants list', ->
+    list = ['aaa', ' aaa', 'aaa ', 'aaa']
+    expect(x.sanitizeVariantsList list).toEqual ['aaa']
+  
+  it 'should get the root object for the element', ->
+    # Element not appended to the document.
+    elm = document.createElement 'div'
+    expect(x.getRoot elm).toBe elm
+    
+    # Element appended to the document.
+    document.body.appendChild elm
+    expect(x.getRoot elm).toBe document
+  
+  it 'should get optimised selector', ->
+    elm = root.querySelector '.itemOne a:nth-child(1)'
+    result = x.getSelector elm
+    expect(result).toBe '.itemOne.first .linkOne'
+  
+  it 'should construct unique selector for any given element', ->
     links = root.querySelectorAll('ul')[1].
       querySelectorAll('li')[1].
       querySelectorAll('a')

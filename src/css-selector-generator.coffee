@@ -76,43 +76,64 @@ class CssSelectorGenerator
       variants.push s.t + s.n
     variants
   
-  getOptimisedSelector: (element) ->
-    parents = @getParents element
+  getRoot: (element, parents = @getParents element) ->
+    # Get the top-most parent of the element. This is the root for elements
+    # that are not appended to the document.
     root = parents[parents.length - 1]
+    # If the element is appended to the document, us the document as root.
     root = root.parentNode if root.parentNode?
-    variants = null
+    root
+  
+  sanitizeVariant: (variant = '') ->
+    # trim whitespace
+    sanitized_variant = variant.replace /^\s+|\s+$/g, ''
+    # replace multiple spaces with single space
+    sanitized_variant = sanitized_variant.replace /\s\s+/, ' '
+    sanitized_variant
+  
+  sanitizeVariantsList: (variants = []) ->
+    sanitized_variants = []
+    for variant in variants
+      # Remove unnecessary whitespace.
+      variant = @sanitizeVariant variant
+      # Remove empty and non-unique selectors.
+      is_empty = variant is ''
+      is_unique = sanitized_variants.indexOf(variant) is -1
+      sanitized_variants.push(variant) if is_unique and not is_empty
+    sanitized_variants
+  
+  getVariantCombinations: (list1 = [], list2 = []) ->
+    result = []
+    
+    if (list1? and list1.length isnt 0) and (not list2? or list2.length is 0)
+      result = list1
+    if (list2? and list2.length isnt 0) and (not list1? or list1.length is 0)
+      result = list2
+    
+    for item1 in list1
+      for item2 in list2
+        result.push "#{item1} #{item2}"
+    result
+  
+  getSelectorVariantsList: (
+    element
+    parents = @getParents element
+    root = @getRoot element, parents
+  ) ->
+    variants = []
     for elm in parents
       if elm isnt root
         elm_variants = @getSelectorVariants elm
-        if variants?
-          old_variants = variants.slice()
-          for elm_variant in elm_variants
-            for old_variant in old_variants
-              new_variant = "#{elm_variant} #{old_variant}"
-              new_variant = new_variant.replace /(^\s*)|(\s*$)/g, ''
-              if variants.indexOf new_variant is -1
-                variants.push new_variant
-        else
-          variants = elm_variants
-    for selector in variants
-      return selector if @testSelector element, selector, root
-    null
+        variants = @getVariantCombinations elm_variants, variants
+    @sanitizeVariantsList variants
   
   getSelector: (element) ->
     parents = @getParents element
-    root = parents[parents.length - 1]
-    root = root.parentNode if root.parentNode?
-    selectors = []
-    for elm in parents
-      if elm isnt root
-        s = @getAllSelectors elm
-        selectors.unshift '' +
-          s.t +
-          (if s.i? then s.i else '') +
-          s.c.join('') +
-          s.a.join('') +
-          s.n
-    selectors.join ' '
+    root = @getRoot element, parents
+    variants = @getSelectorVariantsList element, parents, root
+    for selector in variants
+      return selector if @testSelector element, selector, root
+    null
   
 root = if exports? then exports else this
 root.CssSelectorGenerator = CssSelectorGenerator

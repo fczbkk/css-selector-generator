@@ -117,61 +117,102 @@
       return variants;
     };
 
-    CssSelectorGenerator.prototype.getOptimisedSelector = function(element) {
-      var elm, elm_variant, elm_variants, new_variant, old_variant, old_variants, parents, root, selector, variants, _i, _j, _k, _l, _len, _len1, _len2, _len3;
-      parents = this.getParents(element);
+    CssSelectorGenerator.prototype.getRoot = function(element, parents) {
+      var root;
+      if (parents == null) {
+        parents = this.getParents(element);
+      }
       root = parents[parents.length - 1];
       if (root.parentNode != null) {
         root = root.parentNode;
       }
-      variants = null;
+      return root;
+    };
+
+    CssSelectorGenerator.prototype.sanitizeVariant = function(variant) {
+      var sanitized_variant;
+      if (variant == null) {
+        variant = '';
+      }
+      sanitized_variant = variant.replace(/^\s+|\s+$/g, '');
+      sanitized_variant = sanitized_variant.replace(/\s\s+/, ' ');
+      return sanitized_variant;
+    };
+
+    CssSelectorGenerator.prototype.sanitizeVariantsList = function(variants) {
+      var is_empty, is_unique, sanitized_variants, variant, _i, _len;
+      if (variants == null) {
+        variants = [];
+      }
+      sanitized_variants = [];
+      for (_i = 0, _len = variants.length; _i < _len; _i++) {
+        variant = variants[_i];
+        variant = this.sanitizeVariant(variant);
+        is_empty = variant === '';
+        is_unique = sanitized_variants.indexOf(variant) === -1;
+        if (is_unique && !is_empty) {
+          sanitized_variants.push(variant);
+        }
+      }
+      return sanitized_variants;
+    };
+
+    CssSelectorGenerator.prototype.getVariantCombinations = function(list1, list2) {
+      var item1, item2, result, _i, _j, _len, _len1;
+      if (list1 == null) {
+        list1 = [];
+      }
+      if (list2 == null) {
+        list2 = [];
+      }
+      result = [];
+      if (((list1 != null) && list1.length !== 0) && ((list2 == null) || list2.length === 0)) {
+        result = list1;
+      }
+      if (((list2 != null) && list2.length !== 0) && ((list1 == null) || list1.length === 0)) {
+        result = list2;
+      }
+      for (_i = 0, _len = list1.length; _i < _len; _i++) {
+        item1 = list1[_i];
+        for (_j = 0, _len1 = list2.length; _j < _len1; _j++) {
+          item2 = list2[_j];
+          result.push("" + item1 + " " + item2);
+        }
+      }
+      return result;
+    };
+
+    CssSelectorGenerator.prototype.getSelectorVariantsList = function(element, parents, root) {
+      var elm, elm_variants, variants, _i, _len;
+      if (parents == null) {
+        parents = this.getParents(element);
+      }
+      if (root == null) {
+        root = this.getRoot(element, parents);
+      }
+      variants = [];
       for (_i = 0, _len = parents.length; _i < _len; _i++) {
         elm = parents[_i];
         if (elm !== root) {
           elm_variants = this.getSelectorVariants(elm);
-          if (variants != null) {
-            old_variants = variants.slice();
-            for (_j = 0, _len1 = elm_variants.length; _j < _len1; _j++) {
-              elm_variant = elm_variants[_j];
-              for (_k = 0, _len2 = old_variants.length; _k < _len2; _k++) {
-                old_variant = old_variants[_k];
-                new_variant = "" + elm_variant + " " + old_variant;
-                new_variant = new_variant.replace(/(^\s*)|(\s*$)/g, '');
-                if (variants.indexOf(new_variant === -1)) {
-                  variants.push(new_variant);
-                }
-              }
-            }
-          } else {
-            variants = elm_variants;
-          }
+          variants = this.getVariantCombinations(elm_variants, variants);
         }
       }
-      for (_l = 0, _len3 = variants.length; _l < _len3; _l++) {
-        selector = variants[_l];
+      return this.sanitizeVariantsList(variants);
+    };
+
+    CssSelectorGenerator.prototype.getSelector = function(element) {
+      var parents, root, selector, variants, _i, _len;
+      parents = this.getParents(element);
+      root = this.getRoot(element, parents);
+      variants = this.getSelectorVariantsList(element, parents, root);
+      for (_i = 0, _len = variants.length; _i < _len; _i++) {
+        selector = variants[_i];
         if (this.testSelector(element, selector, root)) {
           return selector;
         }
       }
       return null;
-    };
-
-    CssSelectorGenerator.prototype.getSelector = function(element) {
-      var elm, parents, root, s, selectors, _i, _len;
-      parents = this.getParents(element);
-      root = parents[parents.length - 1];
-      if (root.parentNode != null) {
-        root = root.parentNode;
-      }
-      selectors = [];
-      for (_i = 0, _len = parents.length; _i < _len; _i++) {
-        elm = parents[_i];
-        if (elm !== root) {
-          s = this.getAllSelectors(elm);
-          selectors.unshift('' + s.t + (s.i != null ? s.i : '') + s.c.join('') + s.a.join('') + s.n);
-        }
-      }
-      return selectors.join(' ');
     };
 
     return CssSelectorGenerator;

@@ -26,8 +26,9 @@ module.exports = (grunt) ->
         options:
           banner:
             """
-              // URL Match <%= pkg.version %> (https://github.com/fczbkk/css-selector-generator)
+              // <%= pkg.title %> <%= pkg.version %>
               // by <%= pkg.author %>
+              // <%= pkg.homepage %>
               
             """
         files:
