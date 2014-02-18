@@ -28,7 +28,8 @@ class CssSelectorGenerator
       class_string = class_string.replace /\s+/g, ' '
       # trim whitespace
       class_string = class_string.replace /^\s|\s$/g, ''
-      result = (".#{item}" for item in class_string.split /\s+/)
+      if class_string isnt ''
+        result = (".#{item}" for item in class_string.split /\s+/)
     result
   
   getAttributeSelectors: (element) ->

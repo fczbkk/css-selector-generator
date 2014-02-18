@@ -42,16 +42,18 @@
       if (class_string != null) {
         class_string = class_string.replace(/\s+/g, ' ');
         class_string = class_string.replace(/^\s|\s$/g, '');
-        result = (function() {
-          var _i, _len, _ref, _results;
-          _ref = class_string.split(/\s+/);
-          _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            item = _ref[_i];
-            _results.push("." + item);
-          }
-          return _results;
-        })();
+        if (class_string !== '') {
+          result = (function() {
+            var _i, _len, _ref, _results;
+            _ref = class_string.split(/\s+/);
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              item = _ref[_i];
+              _results.push("." + item);
+            }
+            return _results;
+          })();
+        }
       }
       return result;
     };

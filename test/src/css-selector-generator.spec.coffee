@@ -95,6 +95,12 @@ describe 'CSS Selector Generator', ->
     result = x.getClassSelectors elm
     expect(result).toEqual expectation
   
+  it 'should handle elements with empty class name', ->
+    elm = document.createElement 'div'
+    elm.setAttribute 'class', ''
+    result = x.getClassSelectors elm
+    expect(result).toEqual []
+  
   it 'should get attribute selectors for an element', ->
     elm = root.querySelector '#linkZero'
     result = x.getAttributeSelectors elm
@@ -190,11 +196,19 @@ describe 'CSS Selector Generator', ->
     expect(result).toBe '.itemOne.first .linkOne'
   
   it 'should construct unique selector for any given element', ->
-    links = root.querySelectorAll('ul')[1].
-      querySelectorAll('li')[1].
-      querySelectorAll('a')
+    all_elements = root.querySelectorAll '*'
+    for element in all_elements
+      selector = x.getSelector element
+      expect(x.testSelector element, selector, root).toBe true
+  
+  # TODO There's something that puts the script into infinite loop.
+  # it 'should pass the complex test', ->
+  #   root = document.createElement 'div'
+  #   root.innerHTML = complex_example
+  #   all_elements = root.querySelectorAll '*'
+  #   for element in all_elements
+  #     selector = x.getSelector element
+  #     console.log selector
+  #     expect(x.testSelector element, selector, root).toBe true
     
-    for elm in links
-      selector = x.getSelector elm
-      expect(x.testSelector elm, selector, root).toBe true
     

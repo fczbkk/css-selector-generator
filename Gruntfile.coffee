@@ -17,9 +17,16 @@ module.exports = (grunt) ->
 
     coffee:
       default:
+        options:
+          join: true
         files:
-          'build/css-selector-generator.js' : ['src/css-selector-generator.coffee']
-          'test/spec/css-selector-generator.spec.js' : ['test/src/css-selector-generator.spec.coffee']
+          'build/css-selector-generator.js' : [
+            'src/css-selector-generator.coffee'
+          ]
+          'test/spec/css-selector-generator.spec.js' : [
+            'test/src/complex-example.coffee'
+            'test/src/css-selector-generator.spec.coffee'
+          ]
 
     uglify:
       default:
@@ -46,6 +53,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-jasmine'
+  grunt.loadNpmTasks 'grunt-contrib-concat'
   
   grunt.registerTask 'build', ['dev', 'uglify:default']
   grunt.registerTask 'dev', ['coffeelint', 'coffee:default', 'jasmine:default']
