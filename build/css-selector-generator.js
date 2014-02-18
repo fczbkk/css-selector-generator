@@ -40,6 +40,8 @@
       result = [];
       class_string = element.getAttribute('class');
       if (class_string != null) {
+        class_string = class_string.replace(/\s+/g, ' ');
+        class_string = class_string.replace(/^\s|\s$/g, '');
         result = (function() {
           var _i, _len, _ref, _results;
           _ref = class_string.split(/\s+/);

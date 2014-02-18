@@ -3,7 +3,7 @@
     var root, x;
     x = new CssSelectorGenerator();
     root = document.createElement('div');
-    root.innerHTML = "    <ul>      <li></li>      <li></li>      <li>        <a href='linkOne' class='linkOne'></a>        <a href='linkTwo' class='linkTwo'></a>        <a href='linkThree' class='linkThree'></a>      </li>    </ul>    <ul>      <li class='itemOne first'>        <a href='linkOne' class='linkOne'></a>        <a href='linkTwo' class='linkTwo'></a>        <a href='linkThree' class='linkThree'></a>      </li>      <li class='itemTwo'>        <a href='linkOne'></a>        <a href='linkTwo'></a>        <a href='linkThree'></a>        <a></a>        <a          href='linkOne'          class='classOne classTwo classThree'        ></a>        <a          href='linkTwo'          target='someTarget2'          rel='someRel'          class='classOne classTwo classThree'        ></a>        <a          href='linkThree'          target='someTarget'          rel='someRel'          class='classOne classTwo classThree'          id='linkZero'        ></a>      </li>      <li class='itemThree last'>        <a          href='linkOne'          id='linkOne'          class='classOne classTwo classThree'        ></a>        <a href='linkTwo' id='linkTwo'></a>        <a href='linkThree' id='linkThree'></a>      </li>    <ul>  ";
+    root.innerHTML = "<ul> <li></li> <li></li> <li> <a href='linkOne' class='linkOne'></a> <a href='linkTwo' class='linkTwo'></a> <a href='linkThree' class='linkThree'></a> </li> </ul> <ul> <li class='itemOne first'> <a href='linkOne' class='linkOne'></a> <a href='linkTwo' class='linkTwo'></a> <a href='linkThree' class='linkThree'></a> </li> <li class='itemTwo'> <a href='linkOne'></a> <a href='linkTwo'></a> <a href='linkThree'></a> <a></a> <a href='linkOne' class='classOne classTwo classThree' ></a> <a href='linkTwo' target='someTarget2' rel='someRel' class='classOne classTwo classThree' ></a> <a href='linkThree' target='someTarget' rel='someRel' class='classOne classTwo classThree' id='linkZero' ></a> </li> <li class='itemThree last'> <a href='linkOne' id='linkOne' class='classOne classTwo classThree' ></a> <a href='linkTwo' id='linkTwo'></a> <a href='linkThree' id='linkThree'></a> </li> <ul>";
     it('should exist', function() {
       return expect(CssSelectorGenerator).toBeDefined();
     });
@@ -44,6 +44,14 @@
       expectation = ['.classOne', '.classTwo', '.classThree'];
       expect(result).toEqual(expectation);
       return expect(x.getClassSelectors(root)).toEqual([]);
+    });
+    it('should remove unnecessary whitespace when getting class names', function() {
+      var elm, expectation, result;
+      elm = document.createElement('div');
+      elm.setAttribute('class', ' aaa  bbb ccc      ');
+      expectation = ['.aaa', '.bbb', '.ccc'];
+      result = x.getClassSelectors(elm);
+      return expect(result).toEqual(expectation);
     });
     it('should get attribute selectors for an element', function() {
       var elm, result;

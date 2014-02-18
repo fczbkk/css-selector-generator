@@ -87,7 +87,14 @@ describe 'CSS Selector Generator', ->
     expectation = ['.classOne', '.classTwo', '.classThree']
     expect(result).toEqual expectation
     expect(x.getClassSelectors root).toEqual []
-
+  
+  it 'should remove unnecessary whitespace when getting class names', ->
+    elm = document.createElement 'div'
+    elm.setAttribute 'class', ' aaa  bbb ccc      '
+    expectation = ['.aaa', '.bbb', '.ccc']
+    result = x.getClassSelectors elm
+    expect(result).toEqual expectation
+  
   it 'should get attribute selectors for an element', ->
     elm = root.querySelector '#linkZero'
     result = x.getAttributeSelectors elm
