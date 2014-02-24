@@ -1,5 +1,6 @@
 (function() {
-  var CssSelectorGenerator, root;
+  var CssSelectorGenerator, root,
+    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   CssSelectorGenerator = (function() {
     function CssSelectorGenerator() {}
@@ -59,13 +60,13 @@
     };
 
     CssSelectorGenerator.prototype.getAttributeSelectors = function(element) {
-      var attribute, blacklist, result, _i, _len, _ref;
+      var attribute, blacklist, result, _i, _len, _ref, _ref1;
       result = [];
       blacklist = ['id', 'class'];
       _ref = element.attributes;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         attribute = _ref[_i];
-        if (blacklist.indexOf(attribute.nodeName) === -1) {
+        if (_ref1 = attribute.nodeName, __indexOf.call(blacklist, _ref1) < 0) {
           result.push("[" + attribute.nodeName + "=" + attribute.nodeValue + "]");
         }
       }
@@ -73,14 +74,18 @@
     };
 
     CssSelectorGenerator.prototype.getNthChildSelector = function(element) {
-      var i, parent_element, sibling, siblings, _i, _len;
+      var counter, parent_element, sibling, siblings, _i, _len;
       parent_element = element.parentNode;
       if (parent_element != null) {
-        siblings = parent_element.querySelectorAll(element.tagName.toLowerCase());
-        for (i = _i = 0, _len = siblings.length; _i < _len; i = ++_i) {
-          sibling = siblings[i];
-          if (sibling === element) {
-            return ":nth-child(" + (i + 1) + ")";
+        counter = 0;
+        siblings = parent_element.childNodes;
+        for (_i = 0, _len = siblings.length; _i < _len; _i++) {
+          sibling = siblings[_i];
+          if (this.isElement(sibling)) {
+            counter++;
+            if (sibling === element) {
+              return ":nth-child(" + counter + ")";
+            }
           }
         }
       }
@@ -88,12 +93,18 @@
     };
 
     CssSelectorGenerator.prototype.testSelector = function(element, selector, root) {
-      var result;
+      var is_unique, result;
+      if (root == null) {
+        root = document;
+      }
+      is_unique = false;
       if ((selector != null) && selector !== '') {
         result = root.querySelectorAll(selector);
-        return result.length === 1 && result[0] === element;
+        if (result.length === 1 && result[0] === element) {
+          is_unique = true;
+        }
       }
-      return false;
+      return is_unique;
     };
 
     CssSelectorGenerator.prototype.getAllSelectors = function(element) {
@@ -106,114 +117,54 @@
       };
     };
 
-    CssSelectorGenerator.prototype.getSelectorVariants = function(element) {
-      var s, variants;
-      variants = [];
-      s = this.getAllSelectors(element);
-      if (s.i != null) {
-        variants.push(s.i);
-      } else {
-        variants.push('');
-        variants.push(s.c.join(''));
-        variants.push(s.t + s.c.join(''));
-        variants.push(s.t + s.n);
-      }
-      return variants;
+    CssSelectorGenerator.prototype.testUniqueness = function(element, selector) {
+      var found_elements, parent;
+      parent = element.parentNode;
+      found_elements = parent.querySelectorAll(selector);
+      return found_elements.length === 1 && found_elements[0] === element;
     };
 
-    CssSelectorGenerator.prototype.getRoot = function(element, parents) {
-      var root;
-      if (parents == null) {
-        parents = this.getParents(element);
+    CssSelectorGenerator.prototype.getUniqueSelector = function(element) {
+      var all_classes, selector, selectors;
+      selectors = this.getAllSelectors(element);
+      if (selectors.i != null) {
+        return selectors.i;
       }
-      root = parents[parents.length - 1];
-      if (root.parentNode != null) {
-        root = root.parentNode;
+      if (this.testUniqueness(element, selectors.t)) {
+        return selectors.t;
       }
-      return root;
-    };
-
-    CssSelectorGenerator.prototype.sanitizeVariant = function(variant) {
-      var sanitized_variant;
-      if (variant == null) {
-        variant = '';
-      }
-      sanitized_variant = variant.replace(/^\s+|\s+$/g, '');
-      sanitized_variant = sanitized_variant.replace(/\s\s+/, ' ');
-      return sanitized_variant;
-    };
-
-    CssSelectorGenerator.prototype.sanitizeVariantsList = function(variants) {
-      var is_empty, is_unique, sanitized_variants, variant, _i, _len;
-      if (variants == null) {
-        variants = [];
-      }
-      sanitized_variants = [];
-      for (_i = 0, _len = variants.length; _i < _len; _i++) {
-        variant = variants[_i];
-        variant = this.sanitizeVariant(variant);
-        is_empty = variant === '';
-        is_unique = sanitized_variants.indexOf(variant) === -1;
-        if (is_unique && !is_empty) {
-          sanitized_variants.push(variant);
+      if (selectors.c.length !== 0) {
+        all_classes = selectors.c.join('');
+        selector = all_classes;
+        if (this.testUniqueness(element, selector)) {
+          return selector;
+        }
+        selector = selectors.t + all_classes;
+        if (this.testUniqueness(element, selector)) {
+          return selector;
         }
       }
-      return sanitized_variants;
-    };
-
-    CssSelectorGenerator.prototype.getVariantCombinations = function(list1, list2) {
-      var item1, item2, result, _i, _j, _len, _len1;
-      if (list1 == null) {
-        list1 = [];
-      }
-      if (list2 == null) {
-        list2 = [];
-      }
-      result = [];
-      if (((list1 != null) && list1.length !== 0) && ((list2 == null) || list2.length === 0)) {
-        result = list1;
-      }
-      if (((list2 != null) && list2.length !== 0) && ((list1 == null) || list1.length === 0)) {
-        result = list2;
-      }
-      for (_i = 0, _len = list1.length; _i < _len; _i++) {
-        item1 = list1[_i];
-        for (_j = 0, _len1 = list2.length; _j < _len1; _j++) {
-          item2 = list2[_j];
-          result.push("" + item1 + " " + item2);
-        }
-      }
-      return result;
-    };
-
-    CssSelectorGenerator.prototype.getSelectorVariantsList = function(element, parents, root) {
-      var elm, elm_variants, variants, _i, _len;
-      if (parents == null) {
-        parents = this.getParents(element);
-      }
-      if (root == null) {
-        root = this.getRoot(element, parents);
-      }
-      variants = [];
-      for (_i = 0, _len = parents.length; _i < _len; _i++) {
-        elm = parents[_i];
-        if (elm !== root) {
-          elm_variants = this.getSelectorVariants(elm);
-          variants = this.getVariantCombinations(elm_variants, variants);
-        }
-      }
-      return this.sanitizeVariantsList(variants);
+      return selectors.n;
     };
 
     CssSelectorGenerator.prototype.getSelector = function(element) {
-      var parents, root, selector, variants, _i, _len;
+      var all_selectors, item, parents, result, selector, selectors, _i, _j, _len, _len1;
+      all_selectors = [];
       parents = this.getParents(element);
-      root = this.getRoot(element, parents);
-      variants = this.getSelectorVariantsList(element, parents, root);
-      for (_i = 0, _len = variants.length; _i < _len; _i++) {
-        selector = variants[_i];
-        if (this.testSelector(element, selector, root)) {
-          return selector;
+      for (_i = 0, _len = parents.length; _i < _len; _i++) {
+        item = parents[_i];
+        selector = this.getUniqueSelector(item);
+        if (selector != null) {
+          all_selectors.push(selector);
+        }
+      }
+      selectors = [];
+      for (_j = 0, _len1 = all_selectors.length; _j < _len1; _j++) {
+        item = all_selectors[_j];
+        selectors.unshift(item);
+        result = selectors.join(' > ');
+        if (this.testSelector(element, result)) {
+          return result;
         }
       }
       return null;

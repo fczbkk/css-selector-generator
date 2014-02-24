@@ -5,9 +5,17 @@
 
   describe('CSS Selector Generator', function() {
     var root, x;
-    x = new CssSelectorGenerator();
-    root = document.createElement('div');
-    root.innerHTML = "<ul> <li></li> <li></li> <li> <a href='linkOne' class='linkOne'></a> <a href='linkTwo' class='linkTwo'></a> <a href='linkThree' class='linkThree'></a> </li> </ul> <ul> <li class='itemOne first'> <a href='linkOne' class='linkOne'></a> <a href='linkTwo' class='linkTwo'></a> <a href='linkThree' class='linkThree'></a> </li> <li class='itemTwo'> <a href='linkOne'></a> <a href='linkTwo'></a> <a href='linkThree'></a> <a></a> <a href='linkOne' class='classOne classTwo classThree' ></a> <a href='linkTwo' target='someTarget2' rel='someRel' class='classOne classTwo classThree' ></a> <a href='linkThree' target='someTarget' rel='someRel' class='classOne classTwo classThree' id='linkZero' ></a> </li> <li class='itemThree last'> <a href='linkOne' id='linkOne' class='classOne classTwo classThree' ></a> <a href='linkTwo' id='linkTwo'></a> <a href='linkThree' id='linkThree'></a> </li> <ul>";
+    root = null;
+    x = null;
+    beforeEach(function() {
+      x = new CssSelectorGenerator();
+      root = document.createElement('div');
+      root.innerHTML = "<ul> <li></li> <li></li> <li> <a href='linkOne' class='linkOne'></a> <a href='linkTwo' class='linkTwo'></a> <a href='linkThree' class='linkThree'></a> </li> </ul> <ul> <li class='itemOne first'> <a href='linkOne' class='linkOne'></a> <a href='linkTwo' class='linkTwo'></a> <a href='linkThree' class='linkThree'></a> </li> <li class='itemTwo'> <a href='linkOne'></a> <a href='linkTwo'></a> <a href='linkThree'></a> <a></a> <a href='linkOne' class='classOne classTwo classThree' ></a> <a href='linkTwo' target='someTarget2' rel='someRel' class='classOne classTwo classThree' ></a> <a href='linkThree' target='someTarget' rel='someRel' class='classOne classTwo classThree' id='linkZero' ></a> </li> <li class='itemThree last'> <a href='linkOne' id='linkOne' class='classOne classTwo classThree' ></a> <a href='linkTwo' id='linkTwo'></a> <a href='linkThree' id='linkThree'></a> </li> </ul>";
+      return document.body.appendChild(root);
+    });
+    afterEach(function() {
+      return root.parentNode.removeChild(root);
+    });
     it('should exist', function() {
       return expect(CssSelectorGenerator).toBeDefined();
     });
@@ -24,7 +32,7 @@
       var elm, result;
       elm = root.querySelector('#linkZero');
       result = x.getParents(elm);
-      expect(result.length).toBe(4);
+      expect(result.length).toBe(6);
       expect(result[0]).toBe(elm);
       expect(result[1].tagName).toBe('LI');
       expect(result[2].tagName).toBe('UL');
@@ -79,19 +87,7 @@
       var elm, result;
       elm = root.querySelector('#linkZero');
       result = x.getNthChildSelector(elm);
-      expect(result).toBe(':nth-child(7)');
-      return expect(x.getNthChildSelector(root)).toBe(null);
-    });
-    it('should get list of variants of CSS selectors', function() {
-      var elm, result;
-      elm = root.querySelector('#linkZero');
-      result = x.getSelectorVariants(elm);
-      expect(result).toEqual(['#linkZero']);
-      elm = root.querySelector('.itemTwo a:nth-child(6)');
-      result = x.getSelectorVariants(elm);
-      expect(result).toContain('.classOne.classTwo.classThree');
-      expect(result).toContain('a.classOne.classTwo.classThree');
-      return expect(result).toContain('a:nth-child(6)');
+      return expect(result).toBe(':nth-child(7)');
     });
     it('should test, if selector returns only expected element', function() {
       var elm, selector;
@@ -107,46 +103,28 @@
       selector = 'a[target=someTarget][rel=someRel]';
       return expect(x.testSelector(elm, selector, root)).toBe(true);
     });
-    it('should sanitize the selector', function() {
-      expect(x.sanitizeVariant('aaa bbb')).toBe('aaa bbb');
-      expect(x.sanitizeVariant(' aaa bbb   ')).toBe('aaa bbb');
-      return expect(x.sanitizeVariant('aaa  bbb')).toBe('aaa bbb');
-    });
-    it('should get list of variant combinations', function() {
-      var list1, list2;
-      list1 = ['aaa', 'bbb', 'ccc'];
-      list2 = ['xxx', 'yyy', 'zzz'];
-      expect(x.getVariantCombinations(null, null)).toEqual([]);
-      expect(x.getVariantCombinations(list1, null)).toEqual(list1);
-      expect(x.getVariantCombinations(null, list1)).toEqual(list1);
-      return expect(x.getVariantCombinations(list1, list2)).toEqual(['aaa xxx', 'aaa yyy', 'aaa zzz', 'bbb xxx', 'bbb yyy', 'bbb zzz', 'ccc xxx', 'ccc yyy', 'ccc zzz']);
-    });
-    it('should sanitize variants list', function() {
-      var list;
-      list = ['aaa', ' aaa', 'aaa ', 'aaa'];
-      return expect(x.sanitizeVariantsList(list)).toEqual(['aaa']);
-    });
-    it('should get the root object for the element', function() {
-      var elm;
-      elm = document.createElement('div');
-      expect(x.getRoot(elm)).toBe(elm);
-      document.body.appendChild(elm);
-      return expect(x.getRoot(elm)).toBe(document);
-    });
-    it('should get optimised selector', function() {
-      var elm, result;
-      elm = root.querySelector('.itemOne a:nth-child(1)');
-      result = x.getSelector(elm);
-      return expect(result).toBe('.itemOne.first .linkOne');
-    });
-    return it('should construct unique selector for any given element', function() {
+    it('should construct unique selector for any given element', function() {
       var all_elements, element, selector, _i, _len, _results;
       all_elements = root.querySelectorAll('*');
       _results = [];
       for (_i = 0, _len = all_elements.length; _i < _len; _i++) {
         element = all_elements[_i];
         selector = x.getSelector(element);
-        _results.push(expect(x.testSelector(element, selector, root)).toBe(true));
+        _results.push(expect(x.testSelector(element, selector)).toBe(true));
+      }
+      return _results;
+    });
+    return it('should pass the complex test', function() {
+      var all_elements, element, selector, _i, _len, _results;
+      root = document.createElement('div');
+      root.innerHTML = complex_example;
+      document.body.appendChild(root);
+      all_elements = root.querySelectorAll('*');
+      _results = [];
+      for (_i = 0, _len = all_elements.length; _i < _len; _i++) {
+        element = all_elements[_i];
+        selector = x.getSelector(element);
+        _results.push(expect(x.testSelector(element, selector)).toBe(true));
       }
       return _results;
     });
