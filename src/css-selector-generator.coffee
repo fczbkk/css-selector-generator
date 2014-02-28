@@ -51,10 +51,10 @@ class CssSelectorGenerator
           return ":nth-child(#{counter})" if sibling is element
     null
   
-  testSelector: (element, selector, root = document) ->
+  testSelector: (element, selector) ->
     is_unique = false
     if selector? and selector isnt ''
-      result = root.querySelectorAll selector
+      result = element.ownerDocument.querySelectorAll selector
       is_unique = true if result.length is 1 and result[0] is element
     is_unique
   

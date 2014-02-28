@@ -92,14 +92,11 @@
       return null;
     };
 
-    CssSelectorGenerator.prototype.testSelector = function(element, selector, root) {
+    CssSelectorGenerator.prototype.testSelector = function(element, selector) {
       var is_unique, result;
-      if (root == null) {
-        root = document;
-      }
       is_unique = false;
       if ((selector != null) && selector !== '') {
-        result = root.querySelectorAll(selector);
+        result = element.ownerDocument.querySelectorAll(selector);
         if (result.length === 1 && result[0] === element) {
           is_unique = true;
         }
