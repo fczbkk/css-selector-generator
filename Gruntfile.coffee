@@ -61,6 +61,15 @@ module.exports = (grunt) ->
         ]
         tasks: ['dev']
 
+    bump:
+      options:
+        files: [
+          'package.json'
+          # 'bower.json'
+        ]
+        updateConfigs: ['pkg']
+        commitFiles: ['-a']
+        pushTo: 'origin'
 
   # Constructs the code, runs tests and if everyting is OK, creates a minified
   # version ready for production. This task is intended to be run manually.
