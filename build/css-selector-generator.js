@@ -26,10 +26,19 @@
       return element.tagName.toLowerCase();
     };
 
+    CssSelectorGenerator.prototype.validateId = function(id) {
+      if (id != null) {
+        if (!/^[0-9]/.exec(id)) {
+          return true;
+        }
+      }
+      return false;
+    };
+
     CssSelectorGenerator.prototype.getIdSelector = function(element) {
       var id;
       id = element.getAttribute('id');
-      if (id != null) {
+      if (this.validateId(id)) {
         return "#" + id;
       } else {
         return null;

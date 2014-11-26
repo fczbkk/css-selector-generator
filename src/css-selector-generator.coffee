@@ -1,6 +1,6 @@
 class CssSelectorGenerator
   constructor: ->
-  
+
   isElement: (element) ->
     !!(element?.nodeType is 1)
 
@@ -12,14 +12,25 @@ class CssSelectorGenerator
         result.push current_element
         current_element = current_element.parentNode
     result
-  
+
   getTagSelector: (element) ->
     element.tagName.toLowerCase()
-  
+
+  validateId: (id) ->
+    if id?
+
+      # ID can not start with number
+      return true unless /^[0-9]/.exec id
+
+    false
+
   getIdSelector: (element) ->
     id = element.getAttribute 'id'
-    if id? then "##{id}" else null
-  
+    if @validateId id
+      "##{id}"
+    else
+      null
+
   getClassSelectors: (element) ->
     result = []
     class_string = element.getAttribute 'class'
@@ -31,7 +42,7 @@ class CssSelectorGenerator
       if class_string isnt ''
         result = (".#{item}" for item in class_string.split /\s+/)
     result
-  
+
   getAttributeSelectors: (element) ->
     result = []
     blacklist = ['id', 'class']
@@ -39,7 +50,7 @@ class CssSelectorGenerator
       unless attribute.nodeName in blacklist
         result.push "[#{attribute.nodeName}=#{attribute.nodeValue}]"
     result
-  
+
   getNthChildSelector: (element) ->
     parent_element = element.parentNode
     if parent_element?
@@ -50,14 +61,14 @@ class CssSelectorGenerator
           counter++
           return ":nth-child(#{counter})" if sibling is element
     null
-  
+
   testSelector: (element, selector) ->
     is_unique = false
     if selector? and selector isnt ''
       result = element.ownerDocument.querySelectorAll selector
       is_unique = true if result.length is 1 and result[0] is element
     is_unique
-  
+
   getAllSelectors: (element) ->
     {
       t: @getTagSelector element         # tag
@@ -66,18 +77,18 @@ class CssSelectorGenerator
       a: @getAttributeSelectors element  # attributes
       n: @getNthChildSelector element    # n-th child
     }
-  
+
   testUniqueness: (element, selector) ->
     parent = element.parentNode
     found_elements = parent.querySelectorAll selector
     found_elements.length is 1 and found_elements[0] is element
-  
+
   getUniqueSelector: (element) ->
     selectors = @getAllSelectors element
-    
+
     # ID selector (no need to check for uniqueness)
     return selectors.i if selectors.i?
-    
+
     # tag selector (should return unique for BODY)
     return selectors.t if @testUniqueness element, selectors.t
 
@@ -85,18 +96,18 @@ class CssSelectorGenerator
     # class selector
     if selectors.c.length isnt 0
       all_classes = selectors.c.join ''
-      
+
       # class selector without tag
       selector = all_classes
       return selector if @testUniqueness element, selector
-      
+
       # class selector with tag
       selector = selectors.t + all_classes
       return selector if @testUniqueness element, selector
-    
+
     # if anything else fails, return n-th child selector
     return selectors.n
-  
+
   getSelector: (element) ->
     all_selectors = []
     parents = @getParents element
@@ -109,6 +120,6 @@ class CssSelectorGenerator
       result = selectors.join ' > '
       return result if @testSelector element, result
     null
-  
+
 root = if exports? then exports else this
 root.CssSelectorGenerator = CssSelectorGenerator
