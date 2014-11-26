@@ -1,0 +1,29 @@
+{
+  "name": "css-selector-generator",
+  "version": "0.3.0",
+  "homepage": "https://github.com/fczbkk/css-selector-generator",
+  "authors": [
+    "Riki Fridrich <riki@fczbkk.com> (https://github.com/fczbkk)"
+  ],
+  "description": "JavaScript object that creates unique CSS selector for given element.",
+  "moduleType": [
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "css", "selector"
+  ],
+  "license": "UNLICENSE",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "src",
+    "doc",
+    "Gruntfile.coffee",
+    ".DS_Store",
+    "bower.json",
+    "package.json"
+  ]
+}
