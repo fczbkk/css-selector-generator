@@ -1,12 +1,26 @@
 module.exports = (grunt) ->
 
+  require('load-grunt-tasks')(grunt)
+
   grunt.initConfig
-  
+
     pkg: grunt.file.readJSON 'package.json'
-    
+
+    banner:
+      """
+        /*
+        <%= pkg.title %>, v<%= pkg.version %>
+        by <%= pkg.author %>
+        <%= pkg.homepage %>
+        */
+      """
+
     coffeelint:
-      app: ['src/css-selector-generator.coffee', 'test/src/css-selector-generator.spec.coffee']
-    
+      app: [
+        'src/css-selector-generator.coffee'
+        'test/src/css-selector-generator.spec.coffee'
+      ]
+
     jasmine:
       default:
         src: ['build/css-selector-generator.js']
@@ -31,30 +45,34 @@ module.exports = (grunt) ->
     uglify:
       default:
         options:
-          banner:
-            """
-              // <%= pkg.title %> <%= pkg.version %>
-              // by <%= pkg.author %>
-              // <%= pkg.homepage %>
-              
-            """
+          banner: "<%= banner %>"
         files:
-          'build/css-selector-generator.min.js' : ['build/css-selector-generator.js']
-    
+          'build/css-selector-generator.min.js' : [
+            'build/css-selector-generator.js'
+          ]
+
     watch:
       default:
         options:
           atBegin: true
-        files: ['src/css-selector-generator.coffee', 'test/src/css-selector-generator.spec.coffee']
+        files: [
+          'src/css-selector-generator.coffee'
+          'test/src/css-selector-generator.spec.coffee'
+        ]
         tasks: ['dev']
-    
-  grunt.loadNpmTasks 'grunt-coffeelint'
-  grunt.loadNpmTasks 'grunt-contrib-watch'
-  grunt.loadNpmTasks 'grunt-contrib-coffee'
-  grunt.loadNpmTasks 'grunt-contrib-uglify'
-  grunt.loadNpmTasks 'grunt-contrib-jasmine'
-  grunt.loadNpmTasks 'grunt-contrib-concat'
-  
-  grunt.registerTask 'build', ['dev', 'uglify:default']
-  grunt.registerTask 'dev', ['coffeelint', 'coffee:default', 'jasmine:default']
-  grunt.registerTask 'default', ['watch:default']
+
+
+  # Constructs the code, runs tests and if everyting is OK, creates a minified
+  # version ready for production. This task is intended to be run manually.
+  grunt.registerTask 'build', 'Bumps version and builds JS.', (version_type) ->
+    version_type = 'patch' unless version_type in ['patch', 'minor', 'major']
+    grunt.task.run [
+      "bump-only:#{version_type}"
+      'dev'
+      'uglify'
+      'bump-commit'
+    ]
+
+
+  grunt.registerTask 'dev', ['coffeelint', 'coffee', 'jasmine']
+  grunt.registerTask 'default', ['watch']
