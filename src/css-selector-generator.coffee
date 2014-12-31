@@ -16,6 +16,11 @@ class CssSelectorGenerator
   getTagSelector: (element) ->
     element.tagName.toLowerCase()
 
+  # escapes special characters in class and ID selectors
+  sanitizeItem: (item) ->
+    escape item
+      .replace /\%/g, '\\'
+
   validateId: (id) ->
     if id?
 
@@ -27,7 +32,7 @@ class CssSelectorGenerator
   getIdSelector: (element) ->
     id = element.getAttribute 'id'
     if @validateId id
-      "##{id}"
+      "##{@sanitizeItem id}"
     else
       null
 
@@ -40,7 +45,8 @@ class CssSelectorGenerator
       # trim whitespace
       class_string = class_string.replace /^\s|\s$/g, ''
       if class_string isnt ''
-        result = (".#{item}" for item in class_string.split /\s+/)
+        result = for item in class_string.split /\s+/
+          ".#{@sanitizeItem item}"
     result
 
   getAttributeSelectors: (element) ->

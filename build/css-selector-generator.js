@@ -26,6 +26,10 @@
       return element.tagName.toLowerCase();
     };
 
+    CssSelectorGenerator.prototype.sanitizeItem = function(item) {
+      return escape(item).replace(/\%/g, '\\');
+    };
+
     CssSelectorGenerator.prototype.validateId = function(id) {
       if (id != null) {
         if (!/^[0-9]/.exec(id)) {
@@ -39,7 +43,7 @@
       var id;
       id = element.getAttribute('id');
       if (this.validateId(id)) {
-        return "#" + id;
+        return "#" + (this.sanitizeItem(id));
       } else {
         return null;
       }
@@ -59,10 +63,10 @@
             _results = [];
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
               item = _ref[_i];
-              _results.push("." + item);
+              _results.push("." + (this.sanitizeItem(item)));
             }
             return _results;
-          })();
+          }).call(this);
         }
       }
       return result;

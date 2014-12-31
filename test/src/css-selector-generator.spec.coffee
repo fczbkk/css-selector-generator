@@ -89,6 +89,11 @@ describe 'CSS Selector Generator', ->
     expect(x.getIdSelector elm).toBe '#linkZero'
     expect(x.getIdSelector root).toBe null
 
+  it 'should sanitize ID selector', ->
+    root.innerHTML = '<div id="aaa:bbb"></div>'
+    elm = root.firstChild
+    expect(x.getIdSelector elm).toBe '#aaa\\3Abbb'
+
   it 'should ignore invalid ID attributes', ->
     root.innerHTML = '<div id="111aaa"></div>'
     elm = root.firstChild
@@ -113,6 +118,12 @@ describe 'CSS Selector Generator', ->
     elm.setAttribute 'class', ''
     result = x.getClassSelectors elm
     expect(result).toEqual []
+
+  it 'should sanitize class selector', ->
+    root.innerHTML = '<div class="aaa:bbb"></div>'
+    elm = root.firstChild
+    result = x.getClassSelectors elm
+    expect(result).toContain '.aaa\\3Abbb'
 
   it 'should get attribute selectors for an element', ->
     elm = root.querySelector '#linkZero'
