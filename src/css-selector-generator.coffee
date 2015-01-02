@@ -1,5 +1,17 @@
 class CssSelectorGenerator
-  constructor: ->
+
+  default_options:
+    # choose from 'tag', 'id', 'class', 'nthchild', 'attribute'
+    selectors: ['tag', 'id', 'class', 'nthchild']
+
+  constructor: (options = {}) ->
+    @options = {}
+    @setOptions @default_options
+    @setOptions options
+
+  setOptions: (options = {}) ->
+    for key, val of options
+      @options[key] = val if @default_options.hasOwnProperty key
 
   isElement: (element) ->
     !!(element?.nodeType is 1)
@@ -76,13 +88,25 @@ class CssSelectorGenerator
     is_unique
 
   getAllSelectors: (element) ->
-    {
-      t: @getTagSelector element         # tag
-      i: @getIdSelector element          # ID
-      c: @getClassSelectors element      # classes
-      a: @getAttributeSelectors element  # attributes
-      n: @getNthChildSelector element    # n-th child
-    }
+    result = t: null, i: null, c: null, a: null, n: null
+
+    if 'tag' in @options.selectors
+      result.t = @getTagSelector element
+
+    if 'id' in @options.selectors
+      result.i = @getIdSelector element
+
+    if 'class' in @options.selectors
+      result.c = @getClassSelectors element
+
+    if 'attribute' in @options.selectors
+      result.a = @getAttributeSelector element
+
+    if 'nthchild' in @options.selectors
+      result.n = @getNthChildSelector element
+
+    result
+
 
   testUniqueness: (element, selector) ->
     parent = element.parentNode

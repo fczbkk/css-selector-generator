@@ -3,7 +3,35 @@
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   CssSelectorGenerator = (function() {
-    function CssSelectorGenerator() {}
+    CssSelectorGenerator.prototype.default_options = {
+      selectors: ['tag', 'id', 'class', 'nthchild']
+    };
+
+    function CssSelectorGenerator(options) {
+      if (options == null) {
+        options = {};
+      }
+      this.options = {};
+      this.setOptions(this.default_options);
+      this.setOptions(options);
+    }
+
+    CssSelectorGenerator.prototype.setOptions = function(options) {
+      var key, val, _results;
+      if (options == null) {
+        options = {};
+      }
+      _results = [];
+      for (key in options) {
+        val = options[key];
+        if (this.default_options.hasOwnProperty(key)) {
+          _results.push(this.options[key] = val);
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
+    };
 
     CssSelectorGenerator.prototype.isElement = function(element) {
       return !!((element != null ? element.nodeType : void 0) === 1);
@@ -118,13 +146,30 @@
     };
 
     CssSelectorGenerator.prototype.getAllSelectors = function(element) {
-      return {
-        t: this.getTagSelector(element),
-        i: this.getIdSelector(element),
-        c: this.getClassSelectors(element),
-        a: this.getAttributeSelectors(element),
-        n: this.getNthChildSelector(element)
+      var result;
+      result = {
+        t: null,
+        i: null,
+        c: null,
+        a: null,
+        n: null
       };
+      if (__indexOf.call(this.options.selectors, 'tag') >= 0) {
+        result.t = this.getTagSelector(element);
+      }
+      if (__indexOf.call(this.options.selectors, 'id') >= 0) {
+        result.i = this.getIdSelector(element);
+      }
+      if (__indexOf.call(this.options.selectors, 'class') >= 0) {
+        result.c = this.getClassSelectors(element);
+      }
+      if (__indexOf.call(this.options.selectors, 'attribute') >= 0) {
+        result.a = this.getAttributeSelector(element);
+      }
+      if (__indexOf.call(this.options.selectors, 'nthchild') >= 0) {
+        result.n = this.getNthChildSelector(element);
+      }
+      return result;
     };
 
     CssSelectorGenerator.prototype.testUniqueness = function(element, selector) {
