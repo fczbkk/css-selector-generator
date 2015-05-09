@@ -34,19 +34,30 @@ class CssSelectorGenerator
       .replace /\%/g, '\\'
 
   validateId: (id) ->
-    if id?
+    # ID must exist
+    return false unless id?
 
-      # ID can not start with number
-      return true unless /^[0-9]/.exec id
+    # ID can not start with number
+    return false if /^\d/.exec id
 
-    false
+    # ID must be unique
+    return false unless document.querySelectorAll("##{id}").length is 1
+
+    true
 
   getIdSelector: (element) ->
     id = element.getAttribute 'id'
-    if @validateId id
-      "##{@sanitizeItem id}"
-    else
-      null
+
+    if id?
+      id = @sanitizeItem id
+
+    id =
+      if @validateId id
+        id = "##{id}"
+      else
+        id = null
+
+    id
 
   getClassSelectors: (element) ->
     result = []

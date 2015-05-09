@@ -59,22 +59,26 @@
     };
 
     CssSelectorGenerator.prototype.validateId = function(id) {
-      if (id != null) {
-        if (!/^[0-9]/.exec(id)) {
-          return true;
-        }
+      if (id == null) {
+        return false;
       }
-      return false;
+      if (/^\d/.exec(id)) {
+        return false;
+      }
+      if (document.querySelectorAll("#" + id).length !== 1) {
+        return false;
+      }
+      return true;
     };
 
     CssSelectorGenerator.prototype.getIdSelector = function(element) {
       var id;
       id = element.getAttribute('id');
-      if (this.validateId(id)) {
-        return "#" + (this.sanitizeItem(id));
-      } else {
-        return null;
+      if (id != null) {
+        id = this.sanitizeItem(id);
       }
+      id = this.validateId(id) ? id = "#" + id : id = null;
+      return id;
     };
 
     CssSelectorGenerator.prototype.getClassSelectors = function(element) {

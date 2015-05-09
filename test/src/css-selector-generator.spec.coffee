@@ -109,14 +109,14 @@ describe 'CSS Selector Generator', ->
         expect(x.getIdSelector root).toBe null
 
       it 'should sanitize ID selector', ->
-        root.innerHTML = '<div id="aaa:bbb"></div>'
-        elm = root.firstChild
-        expect(x.getIdSelector elm).toBe '#aaa\\3Abbb'
+        expect(x.sanitizeItem 'aaa:bbb').toEqual 'aaa\\3Abbb'
 
-      it 'should ignore invalid ID attributes', ->
-        root.innerHTML = '<div id="111aaa"></div>'
-        elm = root.firstChild
-        expect(x.getIdSelector elm).toBe null
+      it 'should ignore ID attribute begining with a number', ->
+        expect(x.validateId '111aaa').toBe false
+
+      it 'should ignore non-unique ID attribute', ->
+        root.innerHTML = '<div id="aaa"></div><div id="aaa"></div>'
+        expect(x.validateId 'aaa').toBe false
 
     describe 'class', ->
 
