@@ -41,7 +41,7 @@ class CssSelectorGenerator
     return false if /^\d/.exec id
 
     # ID must be unique
-    return false unless document.querySelectorAll("##{id}").length is 1
+    return document.querySelectorAll("##{id}").length is 1
 
     true
 
