@@ -43,8 +43,6 @@ class CssSelectorGenerator
     # ID must be unique
     return document.querySelectorAll("##{id}").length is 1
 
-    true
-
   getIdSelector: (element) ->
     id = element.getAttribute 'id'
 
@@ -162,5 +160,8 @@ class CssSelectorGenerator
       return result if @testSelector element, result
     null
 
-root = if exports? then exports else this
-root.CssSelectorGenerator = CssSelectorGenerator
+if define?.amd
+  define [], -> CssSelectorGenerator
+else
+  root = if exports? then exports else this
+  root.CssSelectorGenerator = CssSelectorGenerator
