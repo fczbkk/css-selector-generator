@@ -111,6 +111,16 @@ describe 'CSS Selector Generator', ->
       it 'should sanitize ID selector', ->
         expect(x.sanitizeItem 'aaa:bbb').toEqual 'aaa\\3Abbb'
 
+      it 'should escape special characters in ID selector', ->
+        expect(x.sanitizeItem 'aaa*bbb').toEqual 'aaa\*bbb'
+        expect(x.sanitizeItem 'aaa+bbb').toEqual 'aaa\+bbb'
+        expect(x.sanitizeItem 'aaa-bbb').toEqual 'aaa\-bbb'
+        expect(x.sanitizeItem 'aaa.bbb').toEqual 'aaa\.bbb'
+        expect(x.sanitizeItem 'aaa/bbb').toEqual 'aaa\/bbb'
+
+      it 'should escape ID selector containing UTF8 characters', ->
+        expect(x.sanitizeItem 'aaa✓bbb').toEqual 'aaa\\u2713bbb'
+
       it 'should ignore ID attribute begining with a number', ->
         expect(x.validateId '111aaa').toBe false
 

@@ -32,6 +32,8 @@ class CssSelectorGenerator
   sanitizeItem: (item) ->
     escape item
       .replace /\%/g, '\\'
+      # special characters *+-./
+      .replace /\*\+\-\.\//g, '\\$&'
 
   validateId: (id) ->
     # ID must exist
