@@ -55,7 +55,7 @@
     };
 
     CssSelectorGenerator.prototype.sanitizeItem = function(item) {
-      return escape(item).replace(/\%/g, '\\');
+      return escape(item).replace(/\%/g, '\\').replace(/\*\+\-\.\//g, '\\$&');
     };
 
     CssSelectorGenerator.prototype.validateId = function(id) {
