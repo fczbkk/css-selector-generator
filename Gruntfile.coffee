@@ -71,6 +71,13 @@ module.exports = (grunt) ->
         commitFiles: ['-a']
         pushTo: 'origin'
 
+    conventionalChangelog:
+      options:
+        changelogOpts:
+          preset: 'angular'
+      release:
+        src: 'CHANGELOG.md'
+
   # Constructs the code, runs tests and if everyting is OK, creates a minified
   # version ready for production. This task is intended to be run manually.
   grunt.registerTask 'build', 'Bumps version and builds JS.', (version_type) ->
@@ -79,6 +86,7 @@ module.exports = (grunt) ->
       "bump-only:#{version_type}"
       'dev'
       'uglify'
+      'conventionalChangelog'
       'bump-commit'
     ]
 
