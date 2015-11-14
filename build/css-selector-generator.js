@@ -55,6 +55,30 @@
     };
 
     CssSelectorGenerator.prototype.sanitizeItem = function(item) {
+      var characters;
+      characters = (item.split('')).map(function(character) {
+        if (character === ':') {
+          return "\\" + (':'.charCodeAt(0).toString(16).toUpperCase()) + " ";
+        } else if (/[ !"#$%&'()*+,.\/;<=>?@\[\\\]^`{|}~]/.test(character)) {
+          return "\\" + character;
+        } else {
+          return escape(character).replace(/\%/g, '\\');
+        }
+      });
+      return characters.join('');
+      console.log('item', characters);
+
+      /*
+      				// `\r` is already tokenized away at this point by the HTML parser.
+      				// `:` can be escaped as `\:`, but that fails in IE < 8.
+      				if (/[\t\n\v\f:]/.test(character)) {
+      					value = '\\' + charCode.toString(16).toUpperCase() + ' ';
+      				} else if (/[ !"#$%&'()*+,./;<=>?@\[\\\]^`{|}~]/.test(character)) {
+      					value = '\\' + character;
+      				} else {
+      					value = character;
+      				}
+       */
       return escape(item).replace(/\%/g, '\\').replace(/\*\+\-\.\//g, '\\$&');
     };
 
