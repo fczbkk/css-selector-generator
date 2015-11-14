@@ -30,6 +30,32 @@ class CssSelectorGenerator
 
   # escapes special characters in class and ID selectors
   sanitizeItem: (item) ->
+    characters = (item.split '').map (character) ->
+      if character is ':'
+        "\\#{':'.charCodeAt(0).toString(16).toUpperCase()} "
+      else if /[ !"#$%&'()*+,./;<=>?@\[\\\]^`{|}~]/.test character
+        "\\#{character}"
+      else
+        escape character
+          .replace /\%/g, '\\'
+
+    return characters.join ''
+
+    console.log 'item', characters
+
+
+    ###
+				// `\r` is already tokenized away at this point by the HTML parser.
+				// `:` can be escaped as `\:`, but that fails in IE < 8.
+				if (/[\t\n\v\f:]/.test(character)) {
+					value = '\\' + charCode.toString(16).toUpperCase() + ' ';
+				} else if (/[ !"#$%&'()*+,./;<=>?@\[\\\]^`{|}~]/.test(character)) {
+					value = '\\' + character;
+				} else {
+					value = character;
+				}
+    ###
+
     escape item
       .replace /\%/g, '\\'
       # special characters *+-./

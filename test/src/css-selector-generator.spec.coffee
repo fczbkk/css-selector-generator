@@ -108,18 +108,20 @@ describe 'CSS Selector Generator', ->
         expect(x.getIdSelector elm).toBe '#linkZero'
         expect(x.getIdSelector root).toBe null
 
-      it 'should sanitize ID selector', ->
-        expect(x.sanitizeItem 'aaa:bbb').toEqual 'aaa\\3Abbb'
-
       it 'should escape special characters in ID selector', ->
-        expect(x.sanitizeItem 'aaa*bbb').toEqual 'aaa\*bbb'
-        expect(x.sanitizeItem 'aaa+bbb').toEqual 'aaa\+bbb'
-        expect(x.sanitizeItem 'aaa-bbb').toEqual 'aaa\-bbb'
-        expect(x.sanitizeItem 'aaa.bbb').toEqual 'aaa\.bbb'
-        expect(x.sanitizeItem 'aaa/bbb').toEqual 'aaa\/bbb'
+        special_characters = '*+-./;'
+        for special_character in special_characters.split ''
+          root.innerHTML = "<div id='aaa#{special_character}bbb'></div>"
+          selector = x.getIdSelector root.firstChild
+          expect(document.querySelector selector).toEqual root.firstChild
 
       it 'should escape ID selector containing UTF8 characters', ->
         expect(x.sanitizeItem 'aaa✓bbb').toEqual 'aaa\\u2713bbb'
+
+      it 'should match element with colon in its ID', ->
+        root.innerHTML = '<div id="aaa:bbb"></div>'
+        selector = x.getIdSelector root.firstChild
+        expect(document.querySelector selector).toEqual root.firstChild
 
       it 'should ignore ID attribute begining with a number', ->
         expect(x.validateId '111aaa').toBe false
@@ -154,7 +156,7 @@ describe 'CSS Selector Generator', ->
         root.innerHTML = '<div class="aaa:bbb"></div>'
         elm = root.firstChild
         result = x.getClassSelectors elm
-        expect(result).toContain '.aaa\\3Abbb'
+        expect(result).toContain '.aaa\\3A bbb'
 
     describe 'attribute', ->
 
