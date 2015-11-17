@@ -205,13 +205,22 @@
     };
 
     CssSelectorGenerator.prototype.getUniqueSelector = function(element) {
-      var all_classes, selector, selectors;
+      var all_classes, i, item, len, ref, selector, selectors;
       selectors = this.getAllSelectors(element);
       if (selectors.i != null) {
         return selectors.i;
       }
       if (this.testUniqueness(element, selectors.t)) {
         return selectors.t;
+      }
+      if (selectors.a !== null && selectors.a.length !== 0) {
+        ref = selectors.a;
+        for (i = 0, len = ref.length; i < len; i++) {
+          item = ref[i];
+          if (this.testUniqueness(element, item)) {
+            return item;
+          }
+        }
       }
       if (selectors.c.length !== 0) {
         all_classes = selectors.c.join('');
