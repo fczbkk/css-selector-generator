@@ -189,7 +189,7 @@
         result.c = this.getClassSelectors(element);
       }
       if (indexOf.call(this.options.selectors, 'attribute') >= 0) {
-        result.a = this.getAttributeSelector(element);
+        result.a = this.getAttributeSelectors(element);
       }
       if (indexOf.call(this.options.selectors, 'nthchild') >= 0) {
         result.n = this.getNthChildSelector(element);

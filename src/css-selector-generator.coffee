@@ -137,7 +137,7 @@ class CssSelectorGenerator
       result.c = @getClassSelectors element
 
     if 'attribute' in @options.selectors
-      result.a = @getAttributeSelector element
+      result.a = @getAttributeSelectors element
 
     if 'nthchild' in @options.selectors
       result.n = @getNthChildSelector element
