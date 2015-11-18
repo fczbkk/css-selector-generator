@@ -131,7 +131,14 @@ class CssSelectorGenerator
     found_elements = parent.querySelectorAll selector
     found_elements.length is 1 and found_elements[0] is element
 
+
   getUniqueSelector: (element) ->
+
+    ###
+    for selector_type in @options.selectors
+      console.log 'selector type', selector_type
+    ###
+
     selectors = @getAllSelectors element
 
     # ID selector (no need to check for uniqueness)
@@ -141,26 +148,30 @@ class CssSelectorGenerator
     if selectors.t?
       return selectors.t if @testUniqueness element, selectors.t
 
-    # attribute selector
-    if selectors.a? and selectors.a.length isnt 0
-      for item in selectors.a
-        return item if @testUniqueness element, item
-
-    # TODO check each class separately
     # class selector
     if selectors.c? and selectors.c.length isnt 0
-      all_classes = selectors.c.join ''
+      for item in @getCombinations selectors.c
+        return item if @testUniqueness element, item
 
-      # class selector without tag
-      selector = all_classes
-      return selector if @testUniqueness element, selector
+      # if tag selector is enabled, try attaching it
+      if selectors.t?
+        for item in @getCombinations selectors.c, selectors.t
+          return item if @testUniqueness element, item
 
-      # class selector with tag
-      selector = selectors.t + all_classes
-      return selector if @testUniqueness element, selector
+    # attribute selector
+    if selectors.a? and selectors.a.length isnt 0
+      for item in @getCombinations selectors.a
+        return item if @testUniqueness element, item
+
+      # if tag selector is enabled, try attaching it
+      if selectors.t?
+        for item in @getCombinations selectors.a, selectors.t
+          return item if @testUniqueness element, item
+
 
     # if anything else fails, return n-th child selector
     return selectors.n
+
 
   getSelector: (element) ->
     all_selectors = []
@@ -174,6 +185,29 @@ class CssSelectorGenerator
       result = selectors.join ' > '
       return result if @testSelector element, result
     null
+
+
+
+
+  getCombinations: (items = [], prefix = '') ->
+    # first item must be empty (seed), it will be removed later
+    result = [[]]
+
+    for i in [0..items.length - 1]
+      for j in [0..result.length - 1]
+        result.push result[j].concat items[i]
+
+    # remove first empty item (seed)
+    result.shift()
+
+    # sort results by length, we want the shortest selectors to win
+    result = result.sort (a, b) -> a.length - b.length
+
+    # collapse combinations and add prefix
+    result = result.map (item) -> prefix + item.join ''
+
+    result
+
 
 if define?.amd
   define [], -> CssSelectorGenerator

@@ -163,6 +163,34 @@ describe 'CSS Selector Generator', ->
         result = x.getClassSelectors elm
         expect(result).toContain '.aaa\\3A bbb'
 
+      it 'should get element by class selector', ->
+        x.setOptions selectors: ['class']
+        root.innerHTML = '<div class="aaa"></div>'
+        expect(x.getSelector root.firstChild).toEqual '.aaa'
+
+      it 'should combine class selector with tag selector if needed', ->
+        x.setOptions selectors: ['tag', 'class']
+        root.innerHTML = '
+          <div class="aaa"></div>
+          <div></div>
+          <p class="aaa"></p>
+        '
+        expect(x.getSelector root.firstChild).toEqual 'div.aaa'
+
+      it 'should use single unique class when applicable', ->
+        x.setOptions selectors: ['class']
+        root.innerHTML = '<p class="aaa bbb"></p><p class="aaa ccc"></p>'
+        expect(x.getSelector root.firstChild).toEqual '.bbb'
+
+      it 'should use combination of classes when applicable', ->
+        x.setOptions selectors: ['class']
+        root.innerHTML = '
+          <div class="aaa bbb"></div>
+          <div class="aaa ccc"></div>
+          <div class="bbb ccc"></div>
+        '
+        expect(x.getSelector root.firstChild).toEqual '.aaa.bbb'
+
     describe 'attribute', ->
 
       it 'should get attribute selectors for an element', ->
@@ -180,6 +208,37 @@ describe 'CSS Selector Generator', ->
         root.innerHTML = '<a rel="aaa"></a><a rel="bbb"></a>'
         result = x.getSelector root.firstChild
         expect(result).toEqual '[rel=aaa]'
+
+      it 'should get element by attribute selector', ->
+        x.setOptions selectors: ['attribute']
+        root.innerHTML = '<a href="aaa"></a>'
+        expect(x.getSelector root.firstChild).toEqual '[href=aaa]'
+
+      it 'should combine attribute selector with tag selector if needed', ->
+        x.setOptions selectors: ['attribute', 'tag']
+        root.innerHTML = '
+          <a href="aaa"></a>
+          <a href="bbb"></a>
+          <link href="aaa"></link>
+        '
+        expect(x.getSelector root.firstChild).toEqual 'a[href=aaa]'
+
+      it 'should use single unique attribute when applicable', ->
+        x.setOptions selectors: ['attribute']
+        root.innerHTML = '
+          <a href="aaa" rel="bbb"></a>
+          <a href="aaa" rel="ccc"></a>
+        '
+        expect(x.getSelector root.firstChild).toEqual '[rel=bbb]'
+
+      it 'should use combination of classes when applicable', ->
+        x.setOptions selectors: ['attribute']
+        root.innerHTML = '
+          <a href="aaa" rel="aaa"></a>
+          <a href="aaa" rel="xxx"></a>
+          <a href="xxx" rel="aaa"></a>
+        '
+        expect(x.getSelector root.firstChild).toEqual '[href=aaa][rel=aaa]'
 
     describe 'n-th child', ->
 
@@ -232,3 +291,30 @@ describe 'CSS Selector Generator', ->
       for element in all_elements
         selector = x.getSelector element
         expect(x.testSelector element, selector).toBe true
+
+
+  describe 'utilities', ->
+
+    describe '`getCombinations`', ->
+
+      it 'should return all possible combinations of items', ->
+        result = x.getCombinations ['a', 'b', 'c']
+        expect(result).toContain 'a'
+        expect(result).toContain 'b'
+        expect(result).toContain 'c'
+        expect(result).toContain 'ab'
+        expect(result).toContain 'ac'
+        expect(result).toContain 'bc'
+        expect(result).toContain 'abc'
+        expect(result).not.toContain ''
+        expect(result).not.toContain 'aa'
+
+      it 'should sort results from shortest to longest', ->
+        result = x.getCombinations ['a', 'b', 'c']
+        expect(result[6]).toEqual 'abc'
+
+      it 'should add prefix to combinations', ->
+        result = x.getCombinations ['a', 'b'], 'x'
+        expect(result).toContain 'xa'
+        expect(result).toContain 'xb'
+        expect(result).toContain 'xab'
