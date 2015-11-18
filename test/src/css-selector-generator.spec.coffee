@@ -98,7 +98,7 @@ describe 'CSS Selector Generator', ->
       x.setOptions selectors: ['tag']
       expect(x.getSelector root.firstChild).toEqual null
 
-    it 'should keep order of prefered selector types', ->
+    it 'should keep order of preferred selector types', ->
       root.innerHTML = '<div id="aaa"></div>'
 
       x.setOptions selectors: ['id', 'tag', 'nthchild']
