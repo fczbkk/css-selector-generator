@@ -137,7 +137,7 @@ class CssSelectorGenerator
       result.c = @getClassSelectors element
 
     if 'attribute' in @options.selectors
-      result.a = @getAttributeSelector element
+      result.a = @getAttributeSelectors element
 
     if 'nthchild' in @options.selectors
       result.n = @getNthChildSelector element
@@ -158,6 +158,11 @@ class CssSelectorGenerator
 
     # tag selector (should return unique for BODY)
     return selectors.t if @testUniqueness element, selectors.t
+
+    # attribute selector
+    if selectors.a isnt null and selectors.a.length isnt 0
+      for item in selectors.a
+        return item if @testUniqueness element, item
 
     # TODO check each class separately
     # class selector
