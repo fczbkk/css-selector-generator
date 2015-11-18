@@ -50,9 +50,11 @@ my_selector_generator.setOptions(custom_options);
 
 ### selectors
 
-default: `['tag', 'id', 'class', 'nthchild']`
+default: `['id', 'class', 'tag', 'nthchild']`
 
 So far the only option available is the list of types of selectors that will be used when constructing the unique CSS selector. You may want to adjust this list for browser compatibility.
+
+NOTE: The generator keeps the order of selectors when testing for their uniqueness. So if you will set `['class', 'id']` and the element will have unique classname and ID, the resulting selector will contain classname, even if ID is stronger. Also, keep the `nthchild` selector in last place, because it always generates unique selector and it will prevent using any other selector type behind it.
 
 Available values:
 
