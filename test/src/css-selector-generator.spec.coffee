@@ -92,6 +92,11 @@ describe 'CSS Selector Generator', ->
       x.setOptions selectors: ['attribute']
       expect(x.options.selectors).toEqual ['attribute']
 
+    it 'should not use selectors that are not allowed', ->
+      root.innerHTML = '<a></a><a></a>'
+      x.setOptions selectors: ['tag']
+      expect(x.getSelector root.firstChild).toEqual null
+
 
   describe 'selectors', ->
 
@@ -169,6 +174,12 @@ describe 'CSS Selector Generator', ->
         expect(result).not.toContain '[id=linkZero]'
         expect(result.length).toBe 3
         expect(x.getClassSelectors root).toEqual []
+
+      it 'should use attribute selector when enabled', ->
+        x.setOptions selectors: ['tag', 'id', 'class', 'nthchild', 'attribute']
+        root.innerHTML = '<a rel="aaa"></a><a rel="bbb"></a>'
+        result = x.getSelector root.firstChild
+        expect(result).toEqual '[rel=aaa]'
 
     describe 'n-th child', ->
 

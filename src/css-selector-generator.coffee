@@ -41,25 +41,6 @@ class CssSelectorGenerator
 
     return characters.join ''
 
-    console.log 'item', characters
-
-
-    ###
-				// `\r` is already tokenized away at this point by the HTML parser.
-				// `:` can be escaped as `\:`, but that fails in IE < 8.
-				if (/[\t\n\v\f:]/.test(character)) {
-					value = '\\' + charCode.toString(16).toUpperCase() + ' ';
-				} else if (/[ !"#$%&'()*+,./;<=>?@\[\\\]^`{|}~]/.test(character)) {
-					value = '\\' + character;
-				} else {
-					value = character;
-				}
-    ###
-
-    escape item
-      .replace /\%/g, '\\'
-      # special characters *+-./
-      .replace /\*\+\-\.\//g, '\\$&'
 
   validateId: (id) ->
     # ID must exist
@@ -157,16 +138,17 @@ class CssSelectorGenerator
     return selectors.i if selectors.i?
 
     # tag selector (should return unique for BODY)
-    return selectors.t if @testUniqueness element, selectors.t
+    if selectors.t?
+      return selectors.t if @testUniqueness element, selectors.t
 
     # attribute selector
-    if selectors.a isnt null and selectors.a.length isnt 0
+    if selectors.a? and selectors.a.length isnt 0
       for item in selectors.a
         return item if @testUniqueness element, item
 
     # TODO check each class separately
     # class selector
-    if selectors.c.length isnt 0
+    if selectors.c? and selectors.c.length isnt 0
       all_classes = selectors.c.join ''
 
       # class selector without tag
