@@ -142,6 +142,8 @@ class CssSelectorGenerator
       for item in (items.map (item) -> tag + item)
         return item if @testUniqueness element, item
 
+    return null
+
 
   getUniqueSelector: (element) ->
     selectors = @getAllSelectors element
