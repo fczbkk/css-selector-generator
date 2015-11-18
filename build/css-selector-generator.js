@@ -4,7 +4,7 @@
 
   CssSelectorGenerator = (function() {
     CssSelectorGenerator.prototype.default_options = {
-      selectors: ['tag', 'id', 'class', 'nthchild']
+      selectors: ['id', 'class', 'tag', 'nthchild']
     };
 
     function CssSelectorGenerator(options) {
@@ -66,20 +66,6 @@
         }
       });
       return characters.join('');
-      console.log('item', characters);
-
-      /*
-      				// `\r` is already tokenized away at this point by the HTML parser.
-      				// `:` can be escaped as `\:`, but that fails in IE < 8.
-      				if (/[\t\n\v\f:]/.test(character)) {
-      					value = '\\' + charCode.toString(16).toUpperCase() + ' ';
-      				} else if (/[ !"#$%&'()*+,./;<=>?@\[\\\]^`{|}~]/.test(character)) {
-      					value = '\\' + character;
-      				} else {
-      					value = character;
-      				}
-       */
-      return escape(item).replace(/\%/g, '\\').replace(/\*\+\-\.\//g, '\\$&');
     };
 
     CssSelectorGenerator.prototype.validateId = function(id) {
@@ -111,11 +97,11 @@
         class_string = class_string.replace(/^\s|\s$/g, '');
         if (class_string !== '') {
           result = (function() {
-            var i, len, ref, results;
+            var k, len, ref, results;
             ref = class_string.split(/\s+/);
             results = [];
-            for (i = 0, len = ref.length; i < len; i++) {
-              item = ref[i];
+            for (k = 0, len = ref.length; k < len; k++) {
+              item = ref[k];
               results.push("." + (this.sanitizeItem(item)));
             }
             return results;
@@ -126,12 +112,12 @@
     };
 
     CssSelectorGenerator.prototype.getAttributeSelectors = function(element) {
-      var attribute, blacklist, i, len, ref, ref1, result;
+      var attribute, blacklist, k, len, ref, ref1, result;
       result = [];
       blacklist = ['id', 'class'];
       ref = element.attributes;
-      for (i = 0, len = ref.length; i < len; i++) {
-        attribute = ref[i];
+      for (k = 0, len = ref.length; k < len; k++) {
+        attribute = ref[k];
         if (ref1 = attribute.nodeName, indexOf.call(blacklist, ref1) < 0) {
           result.push("[" + attribute.nodeName + "=" + attribute.nodeValue + "]");
         }
@@ -140,13 +126,13 @@
     };
 
     CssSelectorGenerator.prototype.getNthChildSelector = function(element) {
-      var counter, i, len, parent_element, sibling, siblings;
+      var counter, k, len, parent_element, sibling, siblings;
       parent_element = element.parentNode;
       if (parent_element != null) {
         counter = 0;
         siblings = parent_element.childNodes;
-        for (i = 0, len = siblings.length; i < len; i++) {
-          sibling = siblings[i];
+        for (k = 0, len = siblings.length; k < len; k++) {
+          sibling = siblings[k];
           if (this.isElement(sibling)) {
             counter++;
             if (sibling === element) {
@@ -204,52 +190,86 @@
       return found_elements.length === 1 && found_elements[0] === element;
     };
 
-    CssSelectorGenerator.prototype.getUniqueSelector = function(element) {
-      var all_classes, i, item, len, ref, selector, selectors;
-      selectors = this.getAllSelectors(element);
-      if (selectors.i != null) {
-        return selectors.i;
+    CssSelectorGenerator.prototype.testCombinations = function(element, items, tag) {
+      var item, k, l, len, len1, ref, ref1;
+      ref = this.getCombinations(items);
+      for (k = 0, len = ref.length; k < len; k++) {
+        item = ref[k];
+        if (this.testUniqueness(element, item)) {
+          return item;
+        }
       }
-      if (this.testUniqueness(element, selectors.t)) {
-        return selectors.t;
-      }
-      if (selectors.a !== null && selectors.a.length !== 0) {
-        ref = selectors.a;
-        for (i = 0, len = ref.length; i < len; i++) {
-          item = ref[i];
+      if (tag != null) {
+        ref1 = items.map(function(item) {
+          return tag + item;
+        });
+        for (l = 0, len1 = ref1.length; l < len1; l++) {
+          item = ref1[l];
           if (this.testUniqueness(element, item)) {
             return item;
           }
         }
       }
-      if (selectors.c.length !== 0) {
-        all_classes = selectors.c.join('');
-        selector = all_classes;
-        if (this.testUniqueness(element, selector)) {
-          return selector;
-        }
-        selector = selectors.t + all_classes;
-        if (this.testUniqueness(element, selector)) {
-          return selector;
+    };
+
+    CssSelectorGenerator.prototype.getUniqueSelector = function(element) {
+      var found_selector, k, len, ref, selector_type, selectors;
+      selectors = this.getAllSelectors(element);
+      ref = this.options.selectors;
+      for (k = 0, len = ref.length; k < len; k++) {
+        selector_type = ref[k];
+        switch (selector_type) {
+          case 'id':
+            if (selectors.i != null) {
+              return selectors.i;
+            }
+            break;
+          case 'tag':
+            if (selectors.t != null) {
+              if (this.testUniqueness(element, selectors.t)) {
+                return selectors.t;
+              }
+            }
+            break;
+          case 'class':
+            if ((selectors.c != null) && selectors.c.length !== 0) {
+              found_selector = this.testCombinations(element, selectors.c, selectors.t);
+              if (found_selector) {
+                return found_selector;
+              }
+            }
+            break;
+          case 'attribute':
+            if ((selectors.a != null) && selectors.a.length !== 0) {
+              found_selector = this.testCombinations(element, selectors.a, selectors.t);
+              if (found_selector) {
+                return found_selector;
+              }
+            }
+            break;
+          case 'nthchild':
+            if (selectors.n != null) {
+              return selectors.n;
+            }
         }
       }
-      return selectors.n;
+      return '*';
     };
 
     CssSelectorGenerator.prototype.getSelector = function(element) {
-      var all_selectors, i, item, j, len, len1, parents, result, selector, selectors;
+      var all_selectors, item, k, l, len, len1, parents, result, selector, selectors;
       all_selectors = [];
       parents = this.getParents(element);
-      for (i = 0, len = parents.length; i < len; i++) {
-        item = parents[i];
+      for (k = 0, len = parents.length; k < len; k++) {
+        item = parents[k];
         selector = this.getUniqueSelector(item);
         if (selector != null) {
           all_selectors.push(selector);
         }
       }
       selectors = [];
-      for (j = 0, len1 = all_selectors.length; j < len1; j++) {
-        item = all_selectors[j];
+      for (l = 0, len1 = all_selectors.length; l < len1; l++) {
+        item = all_selectors[l];
         selectors.unshift(item);
         result = selectors.join(' > ');
         if (this.testSelector(element, result)) {
@@ -257,6 +277,27 @@
         }
       }
       return null;
+    };
+
+    CssSelectorGenerator.prototype.getCombinations = function(items) {
+      var i, j, k, l, ref, ref1, result;
+      if (items == null) {
+        items = [];
+      }
+      result = [[]];
+      for (i = k = 0, ref = items.length - 1; 0 <= ref ? k <= ref : k >= ref; i = 0 <= ref ? ++k : --k) {
+        for (j = l = 0, ref1 = result.length - 1; 0 <= ref1 ? l <= ref1 : l >= ref1; j = 0 <= ref1 ? ++l : --l) {
+          result.push(result[j].concat(items[i]));
+        }
+      }
+      result.shift();
+      result = result.sort(function(a, b) {
+        return a.length - b.length;
+      });
+      result = result.map(function(item) {
+        return item.join('');
+      });
+      return result;
     };
 
     return CssSelectorGenerator;
