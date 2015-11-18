@@ -2,7 +2,7 @@ class CssSelectorGenerator
 
   default_options:
     # choose from 'tag', 'id', 'class', 'nthchild', 'attribute'
-    selectors: ['tag', 'id', 'class', 'nthchild']
+    selectors: ['id', 'class', 'tag', 'nthchild']
 
   constructor: (options = {}) ->
     @options = {}
@@ -132,64 +132,72 @@ class CssSelectorGenerator
     found_elements.length is 1 and found_elements[0] is element
 
 
+  # helper function that tests all combinations for uniqueness
+  testCombinations: (element, items, tag) ->
+    for item in @getCombinations items
+      return item if @testUniqueness element, item
+
+    # if tag selector is enabled, try attaching it
+    if tag?
+      for item in (items.map (item) -> tag + item)
+        return item if @testUniqueness element, item
+
+
   getUniqueSelector: (element) ->
-
-    ###
-    for selector_type in @options.selectors
-      console.log 'selector type', selector_type
-    ###
-
     selectors = @getAllSelectors element
 
-    # ID selector (no need to check for uniqueness)
-    return selectors.i if selectors.i?
+    for selector_type in @options.selectors
 
-    # tag selector (should return unique for BODY)
-    if selectors.t?
-      return selectors.t if @testUniqueness element, selectors.t
+      switch selector_type
 
-    # class selector
-    if selectors.c? and selectors.c.length isnt 0
-      for item in @getCombinations selectors.c
-        return item if @testUniqueness element, item
+        # ID selector (no need to check for uniqueness)
+        when 'id'
+          if selectors.i?
+            return selectors.i
 
-      # if tag selector is enabled, try attaching it
-      if selectors.t?
-        for item in @getCombinations selectors.c, selectors.t
-          return item if @testUniqueness element, item
+        # tag selector (should return unique for BODY)
+        when 'tag'
+          if selectors.t?
+            return selectors.t if @testUniqueness element, selectors.t
 
-    # attribute selector
-    if selectors.a? and selectors.a.length isnt 0
-      for item in @getCombinations selectors.a
-        return item if @testUniqueness element, item
+        # class selector
+        when 'class'
+          if selectors.c? and selectors.c.length isnt 0
+            found_selector = @testCombinations element, selectors.c, selectors.t
+            return found_selector if found_selector
 
-      # if tag selector is enabled, try attaching it
-      if selectors.t?
-        for item in @getCombinations selectors.a, selectors.t
-          return item if @testUniqueness element, item
+        # attribute selector
+        when 'attribute'
+          if selectors.a? and selectors.a.length isnt 0
+            found_selector = @testCombinations element, selectors.a, selectors.t
+            return found_selector if found_selector
 
+        # if anything else fails, return n-th child selector
+        when 'nthchild'
+          if selectors.n?
+            return selectors.n
 
-    # if anything else fails, return n-th child selector
-    return selectors.n
+    return '*'
 
 
   getSelector: (element) ->
     all_selectors = []
+
     parents = @getParents element
     for item in parents
       selector = @getUniqueSelector item
       all_selectors.push selector if selector?
+
     selectors = []
     for item in all_selectors
       selectors.unshift item
       result = selectors.join ' > '
       return result if @testSelector element, result
-    null
+
+    return null
 
 
-
-
-  getCombinations: (items = [], prefix = '') ->
+  getCombinations: (items = []) ->
     # first item must be empty (seed), it will be removed later
     result = [[]]
 
@@ -204,7 +212,7 @@ class CssSelectorGenerator
     result = result.sort (a, b) -> a.length - b.length
 
     # collapse combinations and add prefix
-    result = result.map (item) -> prefix + item.join ''
+    result = result.map (item) -> item.join ''
 
     result
 

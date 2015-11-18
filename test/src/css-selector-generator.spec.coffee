@@ -86,7 +86,8 @@ describe 'CSS Selector Generator', ->
   describe 'options', ->
 
     it 'should use default set of allowed selectors', ->
-      expect(x.options.selectors).toEqual ['tag', 'id', 'class', 'nthchild']
+      expectation = ['tag', 'id', 'class', 'nthchild']
+      expect(x.options.selectors).toEqual jasmine.arrayContaining expectation
 
     it 'should allow to customize allowed selectors', ->
       x.setOptions selectors: ['attribute']
@@ -96,6 +97,17 @@ describe 'CSS Selector Generator', ->
       root.innerHTML = '<a></a><a></a>'
       x.setOptions selectors: ['tag']
       expect(x.getSelector root.firstChild).toEqual null
+
+    it 'should keep order of prefered selector types', ->
+      root.innerHTML = '<div id="aaa"></div>'
+
+      x.setOptions selectors: ['id', 'tag', 'nthchild']
+      result = (x.getSelector root.firstChild).split(' > ').pop()
+      expect(result).toEqual '#aaa'
+
+      x.setOptions selectors: ['tag', 'id', 'nthchild']
+      result = (x.getSelector root.firstChild).split(' > ').pop()
+      expect(result).toEqual 'div'
 
 
   describe 'selectors', ->
@@ -204,7 +216,7 @@ describe 'CSS Selector Generator', ->
         expect(x.getClassSelectors root).toEqual []
 
       it 'should use attribute selector when enabled', ->
-        x.setOptions selectors: ['tag', 'id', 'class', 'nthchild', 'attribute']
+        x.setOptions selectors: ['tag', 'id', 'class', 'attribute', 'nthchild']
         root.innerHTML = '<a rel="aaa"></a><a rel="bbb"></a>'
         result = x.getSelector root.firstChild
         expect(result).toEqual '[rel=aaa]'
@@ -299,22 +311,10 @@ describe 'CSS Selector Generator', ->
 
       it 'should return all possible combinations of items', ->
         result = x.getCombinations ['a', 'b', 'c']
-        expect(result).toContain 'a'
-        expect(result).toContain 'b'
-        expect(result).toContain 'c'
-        expect(result).toContain 'ab'
-        expect(result).toContain 'ac'
-        expect(result).toContain 'bc'
-        expect(result).toContain 'abc'
-        expect(result).not.toContain ''
-        expect(result).not.toContain 'aa'
+        expectation = ['a', 'b', 'c', 'ab', 'ac', 'bc', 'abc']
+        expect(result).toEqual jasmine.arrayContaining expectation
+        expect(result).not.toEqual jasmine.arrayContaining ['', 'aa']
 
       it 'should sort results from shortest to longest', ->
         result = x.getCombinations ['a', 'b', 'c']
-        expect(result[6]).toEqual 'abc'
-
-      it 'should add prefix to combinations', ->
-        result = x.getCombinations ['a', 'b'], 'x'
-        expect(result).toContain 'xa'
-        expect(result).toContain 'xb'
-        expect(result).toContain 'xab'
+        expect(result.pop()).toEqual 'abc'
