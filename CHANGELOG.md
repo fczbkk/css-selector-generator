@@ -1,3 +1,14 @@
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/fczbkk/css-selector-generator/compare/v1.0.0...v1.0.1) (2015-11-24)
+
+
+### Bug Fixes
+
+* define main file for easier require ([dbf47d4](https://github.com/fczbkk/css-selector-generator/commit/dbf47d4))
+* when testing combinations, explicitly return `null` when none is found ([4c2299a](https://github.com/fczbkk/css-selector-generator/commit/4c2299a))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/fczbkk/css-selector-generator/compare/v0.8.0...v1.0.0) (2015-11-18)
 

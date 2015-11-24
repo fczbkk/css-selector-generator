@@ -210,6 +210,7 @@
           }
         }
       }
+      return null;
     };
 
     CssSelectorGenerator.prototype.getUniqueSelector = function(element) {
