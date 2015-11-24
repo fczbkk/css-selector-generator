@@ -6,6 +6,9 @@
   "author": "Riki Fridrich <riki@fczbkk.com> (http://fczbkk.com)",
   "license": "UNLICENSE",
   "main": "build/css-selector-generator.js",
+  "scripts": {
+    "test": "grunt dev"
+  },
   "devDependencies": {
     "coffeelint": "1.13.1",
     "grunt": "^0.4.5",
