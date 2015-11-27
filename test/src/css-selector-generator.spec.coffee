@@ -147,6 +147,11 @@ describe 'CSS Selector Generator', ->
         root.innerHTML = '<div id="aaa"></div><div id="aaa"></div>'
         expect(x.validateId 'aaa').toBe false
 
+      it 'should ignore empty ID attributes (and other weirdnesses)', ->
+        root.innerHTML = '<div id=""></div>'
+        selector = x.getIdSelector root.firstChild
+        expect(document.querySelector selector).toBe null
+
     describe 'class', ->
 
       it 'should get class selectors for an element', ->

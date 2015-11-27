@@ -46,11 +46,11 @@ class CssSelectorGenerator
     # ID must exist
     return false unless id?
 
-    # ID can not start with number
-    return false if /^\d/.exec id
-
     # ID must be unique
-    return document.querySelectorAll("##{id}").length is 1
+    try
+      return document.querySelectorAll("##{id}").length is 1
+    catch
+      return false
 
   getIdSelector: (element) ->
     id = element.getAttribute 'id'

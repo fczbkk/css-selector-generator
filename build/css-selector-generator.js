@@ -72,10 +72,11 @@
       if (id == null) {
         return false;
       }
-      if (/^\d/.exec(id)) {
+      try {
+        return document.querySelectorAll("#" + id).length === 1;
+      } catch (_error) {
         return false;
       }
-      return document.querySelectorAll("#" + id).length === 1;
     };
 
     CssSelectorGenerator.prototype.getIdSelector = function(element) {
