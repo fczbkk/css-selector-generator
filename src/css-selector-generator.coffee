@@ -31,6 +31,8 @@ class CssSelectorGenerator
   # escapes special characters in class and ID selectors
   sanitizeItem: (item) ->
     characters = (item.split '').map (character) ->
+      # colon is valid character in an attribute, but has to be escaped before
+      # being used in a selector, because it would clash with the CSS syntax
       if character is ':'
         "\\#{':'.charCodeAt(0).toString(16).toUpperCase()} "
       else if /[ !"#$%&'()*+,./;<=>?@\[\\\]^`{|}~]/.test character
@@ -42,29 +44,26 @@ class CssSelectorGenerator
     return characters.join ''
 
 
-  validateId: (id) ->
-    # ID must exist
-    return false unless id?
-
-    # ID can not start with number
-    return false if /^\d/.exec id
-
-    # ID must be unique
-    return document.querySelectorAll("##{id}").length is 1
-
   getIdSelector: (element) ->
     id = element.getAttribute 'id'
 
-    if id?
-      id = @sanitizeItem id
+    # ID must... exist, not to be empty and not to contain whitespace
+    if (
+      # ...exist
+      id? and
+      # ...not be empty
+      (id isnt '') and
+      # ...not contain whitespace
+      not (/\s/.exec id) and
+      # ...not start with a number
+      not (/^\d/.exec id)
+    )
+      sanitized_id = "##{@sanitizeItem id}"
+      # ID must match single element
+      if document.querySelectorAll(sanitized_id).length is 1
+        return sanitized_id
 
-    id =
-      if @validateId id
-        id = "##{id}"
-      else
-        id = null
-
-    id
+    null
 
   getClassSelectors: (element) ->
     result = []

@@ -141,11 +141,29 @@ describe 'CSS Selector Generator', ->
         expect(document.querySelector selector).toEqual root.firstChild
 
       it 'should ignore ID attribute begining with a number', ->
-        expect(x.validateId '111aaa').toBe false
+        root.innerHTML = '<div id="111aaa"></div>'
+        selector = x.getIdSelector root.firstChild
+        expect(selector).toBe null
 
       it 'should ignore non-unique ID attribute', ->
         root.innerHTML = '<div id="aaa"></div><div id="aaa"></div>'
-        expect(x.validateId 'aaa').toBe false
+        selector = x.getIdSelector root.firstChild
+        expect(selector).toBe null
+
+      it 'should ignore empty ID attribute', ->
+        root.innerHTML = '<div id=""></div>'
+        selector = x.getIdSelector root.firstChild
+        expect(selector).toBe null
+
+      it 'should ignore ID attribute containing only whitespace', ->
+        root.innerHTML = '<div id="   "></div>'
+        selector = x.getIdSelector root.firstChild
+        expect(selector).toBe null
+
+      it 'should ignore ID attribute with whitespace', ->
+        root.innerHTML = '<div id="aaa bbb"></div>'
+        selector = x.getIdSelector root.firstChild
+        expect(selector).toBe null
 
     describe 'class', ->
 
