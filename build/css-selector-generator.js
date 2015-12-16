@@ -68,24 +68,16 @@
       return characters.join('');
     };
 
-    CssSelectorGenerator.prototype.validateId = function(id) {
-      if (id == null) {
-        return false;
-      }
-      if (/^\d/.exec(id)) {
-        return false;
-      }
-      return document.querySelectorAll("#" + id).length === 1;
-    };
-
     CssSelectorGenerator.prototype.getIdSelector = function(element) {
-      var id;
+      var id, sanitized_id;
       id = element.getAttribute('id');
-      if (id != null) {
-        id = this.sanitizeItem(id);
+      if ((id != null) && (id !== '') && !(/\s/.exec(id)) && !(/^\d/.exec(id))) {
+        sanitized_id = "#" + (this.sanitizeItem(id));
+        if (document.querySelectorAll(sanitized_id).length === 1) {
+          return sanitized_id;
+        }
       }
-      id = this.validateId(id) ? id = "#" + id : id = null;
-      return id;
+      return null;
     };
 
     CssSelectorGenerator.prototype.getClassSelectors = function(element) {

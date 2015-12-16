@@ -1,3 +1,14 @@
+<a name="1.0.2"></a>
+## [1.0.2](https://github.com/fczbkk/css-selector-generator/compare/v1.0.1...v1.0.2) (2015-12-16)
+
+
+### Bug Fixes
+
+* add more checks for validity of an ID attribute ([3bc5c55](https://github.com/fczbkk/css-selector-generator/commit/3bc5c55))
+* npm v3 does not install peer dependencies automatically any more ([6aedec6](https://github.com/fczbkk/css-selector-generator/commit/6aedec6))
+
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/fczbkk/css-selector-generator/compare/v1.0.0...v1.0.1) (2015-11-24)
 
