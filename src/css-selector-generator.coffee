@@ -60,7 +60,7 @@ class CssSelectorGenerator
     )
       sanitized_id = "##{@sanitizeItem id}"
       # ID must match single element
-      if document.querySelectorAll(sanitized_id).length is 1
+      if element.ownerDocument.querySelectorAll(sanitized_id).length is 1
         return sanitized_id
 
     null
