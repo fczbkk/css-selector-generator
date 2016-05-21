@@ -73,7 +73,7 @@
       id = element.getAttribute('id');
       if ((id != null) && (id !== '') && !(/\s/.exec(id)) && !(/^\d/.exec(id))) {
         sanitized_id = "#" + (this.sanitizeItem(id));
-        if (document.querySelectorAll(sanitized_id).length === 1) {
+        if (element.ownerDocument.querySelectorAll(sanitized_id).length === 1) {
           return sanitized_id;
         }
       }
