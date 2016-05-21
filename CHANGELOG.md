@@ -1,3 +1,13 @@
+<a name="1.0.4"></a>
+## [1.0.4](https://github.com/fczbkk/css-selector-generator/compare/v1.0.3...v1.0.4) (2016-05-21)
+
+
+### Bug Fixes
+
+* support namespaced tag selectors ([d214007](https://github.com/fczbkk/css-selector-generator/commit/d214007))
+
+
+
 <a name="1.0.3"></a>
 ## [1.0.3](https://github.com/fczbkk/css-selector-generator/compare/v1.0.2...v1.0.3) (2016-05-21)
 
