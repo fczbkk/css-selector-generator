@@ -26,7 +26,7 @@ class CssSelectorGenerator
     result
 
   getTagSelector: (element) ->
-    element.tagName.toLowerCase()
+    @sanitizeItem element.tagName.toLowerCase()
 
   # escapes special characters in class and ID selectors
   sanitizeItem: (item) ->

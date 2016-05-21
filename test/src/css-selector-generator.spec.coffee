@@ -118,6 +118,11 @@ describe 'CSS Selector Generator', ->
         elm = root.querySelector '#linkZero'
         expect(x.getTagSelector elm).toBe 'a'
 
+      it 'should get tag selector for namespaced element', ->
+        root.innerHTML = '<aaa:bbb />'
+        selector = x.getTagSelector root.firstChild
+        expect(root.querySelector selector).toEqual root.firstChild
+
     describe 'ID', ->
 
       it 'should get ID selector for an element', ->

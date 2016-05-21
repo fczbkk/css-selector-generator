@@ -51,7 +51,7 @@
     };
 
     CssSelectorGenerator.prototype.getTagSelector = function(element) {
-      return element.tagName.toLowerCase();
+      return this.sanitizeItem(element.tagName.toLowerCase());
     };
 
     CssSelectorGenerator.prototype.sanitizeItem = function(item) {
