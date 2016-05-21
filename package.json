@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fczbkk/css-selector-generator.git"
+    "url": "git+ssh://git@github.com/fczbkk/css-selector-generator.git"
   },
   "homepage": "https://github.com/fczbkk/css-selector-generator/"
 }
