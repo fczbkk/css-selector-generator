@@ -136,7 +136,8 @@ class CssSelectorGenerator
 
         # tag selector (should return unique for BODY)
         when 'tag'
-          selector = tag_selector if tag_selector && @testUniqueness element, tag_selector
+          if tag_selector && @testUniqueness element, tag_selector
+            selector = tag_selector
 
         # class selector
         when 'class'
