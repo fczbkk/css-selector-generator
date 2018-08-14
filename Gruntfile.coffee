@@ -78,7 +78,7 @@ module.exports = (grunt) ->
       release:
         src: 'CHANGELOG.md'
 
-  # Constructs the code, runs tests and if everyting is OK, creates a minified
+  # Constructs the code, runs tests and if everything is OK, creates a minified
   # version ready for production. This task is intended to be run manually.
   grunt.registerTask 'build', 'Bumps version and builds JS.', (version_type) ->
     version_type = 'patch' unless version_type in ['patch', 'minor', 'major']
