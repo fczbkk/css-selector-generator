@@ -104,26 +104,6 @@ class CssSelectorGenerator
       is_unique = true if result.length is 1 and result[0] is element
     is_unique
 
-  getAllSelectors: (element) ->
-    result = t: null, i: null, c: null, a: null, n: null
-
-    if 'tag' in @options.selectors
-      result.t = @getTagSelector element
-
-    if 'id' in @options.selectors
-      result.i = @getIdSelector element
-
-    if 'class' in @options.selectors
-      result.c = @getClassSelectors element
-
-    if 'attribute' in @options.selectors
-      result.a = @getAttributeSelectors element
-
-    if 'nthchild' in @options.selectors
-      result.n = @getNthChildSelector element
-
-    result
-
 
   testUniqueness: (element, selector) ->
     parent = element.parentNode
@@ -145,55 +125,50 @@ class CssSelectorGenerator
 
 
   getUniqueSelector: (element) ->
-    selectors = @getAllSelectors element
+    tag_selector = @getTagSelector element
 
     for selector_type in @options.selectors
-
       switch selector_type
 
         # ID selector (no need to check for uniqueness)
         when 'id'
-          if selectors.i?
-            return selectors.i
+          selector = @getIdSelector element
 
         # tag selector (should return unique for BODY)
         when 'tag'
-          if selectors.t?
-            return selectors.t if @testUniqueness element, selectors.t
+          selector = tag_selector if tag_selector && @testUniqueness element, tag_selector
 
         # class selector
         when 'class'
-          if selectors.c? and selectors.c.length isnt 0
-            found_selector = @testCombinations element, selectors.c, selectors.t
-            return found_selector if found_selector
+          selectors = @getClassSelectors element
+          if selectors? and selectors.length isnt 0
+            selector = @testCombinations element, selectors, tag_selector
 
         # attribute selector
         when 'attribute'
-          if selectors.a? and selectors.a.length isnt 0
-            found_selector = @testCombinations element, selectors.a, selectors.t
-            return found_selector if found_selector
+          selectors = @getAttributeSelectors element
+          if selectors? and selectors.length isnt 0
+            selector = @testCombinations element, selectors, tag_selector
 
         # if anything else fails, return n-th child selector
         when 'nthchild'
-          if selectors.n?
-            return selectors.n
+          selector = @getNthChildSelector element
+
+      return selector if selector
 
     return '*'
 
 
   getSelector: (element) ->
-    all_selectors = []
+    selectors = []
 
     parents = @getParents element
     for item in parents
       selector = @getUniqueSelector item
-      all_selectors.push selector if selector?
-
-    selectors = []
-    for item in all_selectors
-      selectors.unshift item
-      result = selectors.join ' > '
-      return result if @testSelector element, result
+      if selector?
+        selectors.unshift selector
+        result = selectors.join ' > '
+        return result if @testSelector element, result
 
     return null
 
