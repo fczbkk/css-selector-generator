@@ -148,33 +148,6 @@
       return is_unique;
     };
 
-    CssSelectorGenerator.prototype.getAllSelectors = function(element) {
-      var result;
-      result = {
-        t: null,
-        i: null,
-        c: null,
-        a: null,
-        n: null
-      };
-      if (indexOf.call(this.options.selectors, 'tag') >= 0) {
-        result.t = this.getTagSelector(element);
-      }
-      if (indexOf.call(this.options.selectors, 'id') >= 0) {
-        result.i = this.getIdSelector(element);
-      }
-      if (indexOf.call(this.options.selectors, 'class') >= 0) {
-        result.c = this.getClassSelectors(element);
-      }
-      if (indexOf.call(this.options.selectors, 'attribute') >= 0) {
-        result.a = this.getAttributeSelectors(element);
-      }
-      if (indexOf.call(this.options.selectors, 'nthchild') >= 0) {
-        result.n = this.getNthChildSelector(element);
-      }
-      return result;
-    };
-
     CssSelectorGenerator.prototype.testUniqueness = function(element, selector) {
       var found_elements, parent;
       parent = element.parentNode;
@@ -206,67 +179,55 @@
     };
 
     CssSelectorGenerator.prototype.getUniqueSelector = function(element) {
-      var found_selector, k, len, ref, selector_type, selectors;
-      selectors = this.getAllSelectors(element);
+      var k, len, ref, selector, selector_type, selectors, tag_selector;
+      tag_selector = this.getTagSelector(element);
       ref = this.options.selectors;
       for (k = 0, len = ref.length; k < len; k++) {
         selector_type = ref[k];
         switch (selector_type) {
           case 'id':
-            if (selectors.i != null) {
-              return selectors.i;
-            }
+            selector = this.getIdSelector(element);
             break;
           case 'tag':
-            if (selectors.t != null) {
-              if (this.testUniqueness(element, selectors.t)) {
-                return selectors.t;
-              }
+            if (tag_selector && this.testUniqueness(element, tag_selector)) {
+              selector = tag_selector;
             }
             break;
           case 'class':
-            if ((selectors.c != null) && selectors.c.length !== 0) {
-              found_selector = this.testCombinations(element, selectors.c, selectors.t);
-              if (found_selector) {
-                return found_selector;
-              }
+            selectors = this.getClassSelectors(element);
+            if ((selectors != null) && selectors.length !== 0) {
+              selector = this.testCombinations(element, selectors, tag_selector);
             }
             break;
           case 'attribute':
-            if ((selectors.a != null) && selectors.a.length !== 0) {
-              found_selector = this.testCombinations(element, selectors.a, selectors.t);
-              if (found_selector) {
-                return found_selector;
-              }
+            selectors = this.getAttributeSelectors(element);
+            if ((selectors != null) && selectors.length !== 0) {
+              selector = this.testCombinations(element, selectors, tag_selector);
             }
             break;
           case 'nthchild':
-            if (selectors.n != null) {
-              return selectors.n;
-            }
+            selector = this.getNthChildSelector(element);
+        }
+        if (selector) {
+          return selector;
         }
       }
       return '*';
     };
 
     CssSelectorGenerator.prototype.getSelector = function(element) {
-      var all_selectors, item, k, l, len, len1, parents, result, selector, selectors;
-      all_selectors = [];
+      var item, k, len, parents, result, selector, selectors;
+      selectors = [];
       parents = this.getParents(element);
       for (k = 0, len = parents.length; k < len; k++) {
         item = parents[k];
         selector = this.getUniqueSelector(item);
         if (selector != null) {
-          all_selectors.push(selector);
-        }
-      }
-      selectors = [];
-      for (l = 0, len1 = all_selectors.length; l < len1; l++) {
-        item = all_selectors[l];
-        selectors.unshift(item);
-        result = selectors.join(' > ');
-        if (this.testSelector(element, result)) {
-          return result;
+          selectors.unshift(selector);
+          result = selectors.join(' > ');
+          if (this.testSelector(element, result)) {
+            return result;
+          }
         }
       }
       return null;
