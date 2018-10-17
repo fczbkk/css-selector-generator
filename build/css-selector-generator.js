@@ -4,7 +4,9 @@
 
   CssSelectorGenerator = (function() {
     CssSelectorGenerator.prototype.default_options = {
-      selectors: ['id', 'class', 'tag', 'nthchild']
+      selectors: ['id', 'class', 'tag', 'nthchild'],
+      prefix_tag: false,
+      log: false
     };
 
     function CssSelectorGenerator(options) {
@@ -69,10 +71,11 @@
     };
 
     CssSelectorGenerator.prototype.getIdSelector = function(element) {
-      var id, sanitized_id;
+      var id, prefix, sanitized_id;
+      prefix = this.options.prefix_tag ? this.getTagSelector(element) : '';
       id = element.getAttribute('id');
       if ((id != null) && (id !== '') && !(/\s/.exec(id)) && !(/^\d/.exec(id))) {
-        sanitized_id = "#" + (this.sanitizeItem(id));
+        sanitized_id = prefix + ("#" + (this.sanitizeItem(id)));
         if (element.ownerDocument.querySelectorAll(sanitized_id).length === 1) {
           return sanitized_id;
         }
@@ -118,8 +121,9 @@
     };
 
     CssSelectorGenerator.prototype.getNthChildSelector = function(element) {
-      var counter, k, len, parent_element, sibling, siblings;
+      var counter, k, len, parent_element, prefix, sibling, siblings;
       parent_element = element.parentNode;
+      prefix = this.options.prefix_tag ? this.getTagSelector(element) : '';
       if (parent_element != null) {
         counter = 0;
         siblings = parent_element.childNodes;
@@ -128,7 +132,7 @@
           if (this.isElement(sibling)) {
             counter++;
             if (sibling === element) {
-              return ":nth-child(" + counter + ")";
+              return prefix + (":nth-child(" + counter + ")");
             }
           }
         }
@@ -150,29 +154,51 @@
 
     CssSelectorGenerator.prototype.testUniqueness = function(element, selector) {
       var found_elements, parent;
+      if (this.options.log) {
+        console.log("selector", element, selector);
+      }
       parent = element.parentNode;
       found_elements = parent.querySelectorAll(selector);
       return found_elements.length === 1 && found_elements[0] === element;
     };
 
     CssSelectorGenerator.prototype.testCombinations = function(element, items, tag) {
-      var item, k, l, len, len1, ref, ref1;
-      ref = this.getCombinations(items);
-      for (k = 0, len = ref.length; k < len; k++) {
-        item = ref[k];
-        if (this.testUniqueness(element, item)) {
-          return item;
-        }
+      var item, k, l, len, len1, len2, len3, m, n, ref, ref1, ref2, ref3;
+      if (tag == null) {
+        tag = this.getTagSelector(element);
       }
-      if (tag != null) {
-        ref1 = items.map(function(item) {
-          return tag + item;
-        });
+      if (!this.options.prefix_tag) {
+        ref = this.getCombinations(items);
+        for (k = 0, len = ref.length; k < len; k++) {
+          item = ref[k];
+          if (this.testSelector(element, item)) {
+            return item;
+          }
+        }
+        ref1 = this.getCombinations(items);
         for (l = 0, len1 = ref1.length; l < len1; l++) {
           item = ref1[l];
           if (this.testUniqueness(element, item)) {
             return item;
           }
+        }
+      }
+      ref2 = this.getCombinations(items).map(function(item) {
+        return tag + item;
+      });
+      for (m = 0, len2 = ref2.length; m < len2; m++) {
+        item = ref2[m];
+        if (this.testSelector(element, item)) {
+          return item;
+        }
+      }
+      ref3 = this.getCombinations(items).map(function(item) {
+        return tag + item;
+      });
+      for (n = 0, len3 = ref3.length; n < len3; n++) {
+        item = ref3[n];
+        if (this.testUniqueness(element, item)) {
+          return item;
         }
       }
       return null;

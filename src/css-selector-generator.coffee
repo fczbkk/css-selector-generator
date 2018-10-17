@@ -2,7 +2,8 @@ class CssSelectorGenerator
 
   default_options:
     # choose from 'tag', 'id', 'class', 'nthchild', 'attribute'
-    selectors: ['id', 'class', 'tag', 'nthchild']
+    selectors: ['id', 'class', 'tag', 'nthchild'],
+    prefix_tag: false, log: false
 
   constructor: (options = {}) ->
     @options = {}
@@ -45,6 +46,7 @@ class CssSelectorGenerator
 
 
   getIdSelector: (element) ->
+    prefix = if @options.prefix_tag then @getTagSelector element else ''
     id = element.getAttribute 'id'
 
     # ID must... exist, not to be empty and not to contain whitespace
@@ -58,7 +60,7 @@ class CssSelectorGenerator
       # ...not start with a number
       not (/^\d/.exec id)
     )
-      sanitized_id = "##{@sanitizeItem id}"
+      sanitized_id = prefix + "##{@sanitizeItem id}"
       # ID must match single element
       if element.ownerDocument.querySelectorAll(sanitized_id).length is 1
         return sanitized_id
@@ -88,13 +90,14 @@ class CssSelectorGenerator
 
   getNthChildSelector: (element) ->
     parent_element = element.parentNode
+    prefix = if @options.prefix_tag then @getTagSelector element else ''
     if parent_element?
       counter = 0
       siblings = parent_element.childNodes
       for sibling in siblings
         if @isElement sibling
           counter++
-          return ":nth-child(#{counter})" if sibling is element
+          return prefix + ":nth-child(#{counter})" if sibling is element
     null
 
   testSelector: (element, selector) ->
@@ -106,6 +109,8 @@ class CssSelectorGenerator
 
 
   testUniqueness: (element, selector) ->
+    if @options.log
+      console.log("selector", element, selector)
     parent = element.parentNode
     found_elements = parent.querySelectorAll selector
     found_elements.length is 1 and found_elements[0] is element
@@ -113,13 +118,20 @@ class CssSelectorGenerator
 
   # helper function that tests all combinations for uniqueness
   testCombinations: (element, items, tag) ->
-    for item in @getCombinations items
-      return item if @testUniqueness element, item
+    if not tag?
+      tag = @getTagSelector element
+
+    if not @options.prefix_tag
+      for item in @getCombinations items
+        return item if @testSelector element, item
+      for item in @getCombinations items
+        return item if @testUniqueness element, item
 
     # if tag selector is enabled, try attaching it
-    if tag?
-      for item in (items.map (item) -> tag + item)
-        return item if @testUniqueness element, item
+    for item in (@getCombinations(items).map (item) -> tag + item)
+      return item if @testSelector element, item
+    for item in (@getCombinations(items).map (item) -> tag + item)
+      return item if @testUniqueness element, item
 
     return null
 
