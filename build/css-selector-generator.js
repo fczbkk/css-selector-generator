@@ -8,7 +8,8 @@
       prefix_tag: false,
       log: false,
       attribute_blacklist: [],
-      attribute_whitelist: []
+      attribute_whitelist: [],
+      quote_attribute_when_needed: false
     };
 
     function CssSelectorGenerator(options) {
@@ -72,6 +73,44 @@
       return characters.join('');
     };
 
+    CssSelectorGenerator.prototype.sanitizeAttribute = function(item) {
+      var characters;
+      if (this.options.quote_attribute_when_needed) {
+        return this.quoteAttribute(item);
+      }
+      characters = (item.split('')).map(function(character) {
+        if (character === ':') {
+          return "\\" + (':'.charCodeAt(0).toString(16).toUpperCase()) + " ";
+        } else if (/[ !"#$%&'()*+,.\/;<=>?@\[\\\]^`{|}~]/.test(character)) {
+          return "\\" + character;
+        } else {
+          return escape(character).replace(/\%/g, '\\');
+        }
+      });
+      return characters.join('');
+    };
+
+    CssSelectorGenerator.prototype.quoteAttribute = function(item) {
+      var characters, quotesNeeded;
+      quotesNeeded = false;
+      characters = (item.split('')).map(function(character) {
+        if (character === ':') {
+          quotesNeeded = true;
+          return character;
+        } else if (character === "'") {
+          quotesNeeded = true;
+          return "\\" + character;
+        } else {
+          quotesNeeded = quotesNeeded || (escape(character === !character));
+          return character;
+        }
+      });
+      if (quotesNeeded) {
+        return "'" + (characters.join('')) + "'";
+      }
+      return characters.join('');
+    };
+
     CssSelectorGenerator.prototype.getIdSelector = function(element) {
       var id, prefix, sanitized_id;
       prefix = this.options.prefix_tag ? this.getTagSelector(element) : '';
@@ -115,7 +154,7 @@
       for (k = 0, len = whitelist.length; k < len; k++) {
         attr = whitelist[k];
         if (element.hasAttribute(attr)) {
-          result.push("[" + attr + "=" + (this.sanitizeItem(element.getAttribute(attr))) + "]");
+          result.push("[" + attr + "=" + (this.sanitizeAttribute(element.getAttribute(attr))) + "]");
         }
       }
       blacklist = this.options.attribute_blacklist.concat(['id', 'class']);
@@ -123,7 +162,7 @@
       for (l = 0, len1 = ref.length; l < len1; l++) {
         a = ref[l];
         if (!((ref1 = a.nodeName, indexOf.call(blacklist, ref1) >= 0) || (ref2 = a.nodeName, indexOf.call(whitelist, ref2) >= 0))) {
-          result.push("[" + a.nodeName + "=" + (this.sanitizeItem(a.nodeValue)) + "]");
+          result.push("[" + a.nodeName + "=" + (this.sanitizeAttribute(a.nodeValue)) + "]");
         }
       }
       return result;
@@ -153,6 +192,9 @@
       var is_unique, result;
       is_unique = false;
       if ((selector != null) && selector !== '') {
+        if (this.options.log) {
+          console.log('selector', selector);
+        }
         result = element.ownerDocument.querySelectorAll(selector);
         if (result.length === 1 && result[0] === element) {
           is_unique = true;
@@ -163,9 +205,6 @@
 
     CssSelectorGenerator.prototype.testUniqueness = function(element, selector) {
       var found_elements, parent;
-      if (this.options.log) {
-        console.log("selector", element, selector);
-      }
       parent = element.parentNode;
       found_elements = parent.querySelectorAll(selector);
       return found_elements.length === 1 && found_elements[0] === element;

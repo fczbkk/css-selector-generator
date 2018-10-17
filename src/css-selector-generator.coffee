@@ -5,7 +5,8 @@ class CssSelectorGenerator
     selectors: ['id', 'class', 'tag', 'nthchild'],
     prefix_tag: false, log: false,
     attribute_blacklist: [],
-    attribute_whitelist: []
+    attribute_whitelist: [],
+    quote_attribute_when_needed: false
 
   constructor: (options = {}) ->
     @options = {}
@@ -47,6 +48,45 @@ class CssSelectorGenerator
     return characters.join ''
 
 
+  # escapes special characters in attributes
+  sanitizeAttribute: (item) ->
+    if @options.quote_attribute_when_needed
+      return @quoteAttribute item
+
+    characters = (item.split '').map (character) ->
+      # colon is valid character in an attribute, but has to be escaped before
+      # being used in a selector, because it would clash with the CSS syntax
+      if character is ':'
+        "\\#{':'.charCodeAt(0).toString(16).toUpperCase()} "
+      else if /[ !"#$%&'()*+,./;<=>?@\[\\\]^`{|}~]/.test character
+        "\\#{character}"
+      else
+        escape character
+          .replace /\%/g, '\\'
+
+    return characters.join ''
+
+  quoteAttribute: (item) ->
+
+    quotesNeeded = false
+    characters = (item.split '').map (character) ->
+      # colon is valid character in an attribute, but has to be escaped before
+      # being used in a selector, because it would clash with the CSS syntax
+      if character is ':'
+        quotesNeeded = true
+        character
+      else if character is "'"
+        quotesNeeded = true
+        "\\#{character}"
+      else
+        quotesNeeded = quotesNeeded or ( escape character is not character )
+        character
+
+    if quotesNeeded
+      return "'" + ( characters.join '' ) + "'"
+
+    return characters.join ''
+
   getIdSelector: (element) ->
     prefix = if @options.prefix_tag then @getTagSelector element else ''
     id = element.getAttribute 'id'
@@ -87,11 +127,11 @@ class CssSelectorGenerator
     whitelist = @options.attribute_whitelist
     for attr in whitelist
       if element.hasAttribute attr
-        result.push "[#{attr}=#{@sanitizeItem element.getAttribute(attr)}]"
+        result.push "[#{attr}=#{@sanitizeAttribute element.getAttribute(attr)}]"
     blacklist = @options.attribute_blacklist.concat(['id', 'class'])
     for a in element.attributes
       unless a.nodeName in blacklist or a.nodeName in whitelist
-        result.push "[#{a.nodeName}=#{@sanitizeItem a.nodeValue}]"
+        result.push "[#{a.nodeName}=#{@sanitizeAttribute a.nodeValue}]"
     result
 
   getNthChildSelector: (element) ->
@@ -109,14 +149,13 @@ class CssSelectorGenerator
   testSelector: (element, selector) ->
     is_unique = false
     if selector? and selector isnt ''
+      console.log('selector', selector) if @options.log
       result = element.ownerDocument.querySelectorAll selector
       is_unique = true if result.length is 1 and result[0] is element
     is_unique
 
 
   testUniqueness: (element, selector) ->
-    if @options.log
-      console.log("selector", element, selector)
     parent = element.parentNode
     found_elements = parent.querySelectorAll selector
     found_elements.length is 1 and found_elements[0] is element
