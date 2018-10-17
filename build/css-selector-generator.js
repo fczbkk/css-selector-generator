@@ -6,7 +6,9 @@
     CssSelectorGenerator.prototype.default_options = {
       selectors: ['id', 'class', 'tag', 'nthchild'],
       prefix_tag: false,
-      log: false
+      log: false,
+      attribute_blacklist: [],
+      attribute_whitelist: []
     };
 
     function CssSelectorGenerator(options) {
@@ -107,14 +109,21 @@
     };
 
     CssSelectorGenerator.prototype.getAttributeSelectors = function(element) {
-      var attribute, blacklist, k, len, ref, ref1, result;
+      var a, attr, blacklist, k, l, len, len1, ref, ref1, ref2, result, whitelist;
       result = [];
-      blacklist = ['id', 'class'];
+      whitelist = this.options.attribute_whitelist;
+      for (k = 0, len = whitelist.length; k < len; k++) {
+        attr = whitelist[k];
+        if (element.hasAttribute(attr)) {
+          result.push("[" + attr + "=" + (this.sanitizeItem(element.getAttribute(attr))) + "]");
+        }
+      }
+      blacklist = this.options.attribute_blacklist.concat(['id', 'class']);
       ref = element.attributes;
-      for (k = 0, len = ref.length; k < len; k++) {
-        attribute = ref[k];
-        if (ref1 = attribute.nodeName, indexOf.call(blacklist, ref1) < 0) {
-          result.push("[" + attribute.nodeName + "=" + attribute.nodeValue + "]");
+      for (l = 0, len1 = ref.length; l < len1; l++) {
+        a = ref[l];
+        if (!((ref1 = a.nodeName, indexOf.call(blacklist, ref1) >= 0) || (ref2 = a.nodeName, indexOf.call(whitelist, ref2) >= 0))) {
+          result.push("[" + a.nodeName + "=" + (this.sanitizeItem(a.nodeValue)) + "]");
         }
       }
       return result;

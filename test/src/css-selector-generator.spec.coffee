@@ -341,6 +341,45 @@ describe 'CSS Selector Generator', ->
         expect(x.getSelector elm).
                  toEqual '[rel=bbb]'
 
+      it 'should get attribute selectors for an element ignoring blacklist', ->
+        x.setOptions attribute_blacklist: [ 'href' ]
+        elm = root.querySelector '#linkZero'
+        result = x.getAttributeSelectors elm
+        expect(result).not.toContain '[href=linkThree]'
+        expect(result).toContain '[target=someTarget]'
+        expect(result).toContain '[rel=someRel]'
+        expect(result).not.toContain '[id=linkZero]'
+        expect(result.length).toBe 2
+        expect(x.getClassSelectors root).toEqual []
+
+      it 'should get attribute selectors prioritizing whitelist', ->
+        x.setOptions attribute_whitelist: [ 'rel' ]
+        elm = root.querySelector '#linkZero'
+        result = x.getAttributeSelectors elm
+        expect(result[0]).toEqual '[rel=someRel]'
+        expect(x.getClassSelectors root).toEqual []
+
+      it 'should sanitize attribute values', ->
+        x.setOptions selectors: ['attribute']
+        x.setOptions attribute_whitelist: ['href']
+        x.setOptions log:true
+        href = "https://www.google.co.in/" + \
+               "search?rlz=1C5CHFA_enIN755IN755&ei=wwPHW7OrOdv0rQHR-" + \
+               "KmABA&q=using+set+coffeescript&oq=using+set+coffeescript" + \
+               "&gs_l=psy-ab.3...2980.7444.0.7719.22." + \
+               "22.0.0.0.0.219.2518.0j15j2.17.0....0...1c.1.64.psy-ab..5" + \
+               ".15.2263...0" + \
+               "j0i131k1j0i67k1j0i131i67k1j0i22i30k1j33i22i29i30k1j33i21" + \
+               "k1j33i160k1." + \
+               "0.8WGhjkzVME4"
+        root.innerHTML = '<div data-id="a1"><a id="aaa" href=' + \
+                         "#{href}" + ' rel="bbb">link1</a></div>' + \
+                         '<div><a href="aaa" rel="aaa">link2</a></div>'
+
+        elm = root.querySelector '#aaa'
+        expect(x.getSelector elm).
+                 toEqual "[href=#{x.sanitizeItem href}]"
+
     describe 'n-th child', ->
 
       it 'should get n-th child selector for an element', ->

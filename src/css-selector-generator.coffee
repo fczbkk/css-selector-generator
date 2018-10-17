@@ -3,7 +3,9 @@ class CssSelectorGenerator
   default_options:
     # choose from 'tag', 'id', 'class', 'nthchild', 'attribute'
     selectors: ['id', 'class', 'tag', 'nthchild'],
-    prefix_tag: false, log: false
+    prefix_tag: false, log: false,
+    attribute_blacklist: [],
+    attribute_whitelist: []
 
   constructor: (options = {}) ->
     @options = {}
@@ -82,10 +84,14 @@ class CssSelectorGenerator
 
   getAttributeSelectors: (element) ->
     result = []
-    blacklist = ['id', 'class']
-    for attribute in element.attributes
-      unless attribute.nodeName in blacklist
-        result.push "[#{attribute.nodeName}=#{attribute.nodeValue}]"
+    whitelist = @options.attribute_whitelist
+    for attr in whitelist
+      if element.hasAttribute attr
+        result.push "[#{attr}=#{@sanitizeItem element.getAttribute(attr)}]"
+    blacklist = @options.attribute_blacklist.concat(['id', 'class'])
+    for a in element.attributes
+      unless a.nodeName in blacklist or a.nodeName in whitelist
+        result.push "[#{a.nodeName}=#{@sanitizeItem a.nodeValue}]"
     result
 
   getNthChildSelector: (element) ->
