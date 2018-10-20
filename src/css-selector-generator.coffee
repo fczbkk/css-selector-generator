@@ -3,10 +3,13 @@ class CssSelectorGenerator
   default_options:
     # choose from 'tag', 'id', 'class', 'nthchild', 'attribute'
     selectors: ['id', 'class', 'tag', 'nthchild'],
-    prefix_tag: false, log: false,
+    prefix_tag: false,
+    log: false,
     attribute_blacklist: [],
     attribute_whitelist: [],
-    quote_attribute_when_needed: false
+    quote_attribute_when_needed: false,
+    id_blacklist: [],
+    class_blacklist: []
 
   constructor: (options = {}) ->
     @options = {}
@@ -91,16 +94,20 @@ class CssSelectorGenerator
     prefix = if @options.prefix_tag then @getTagSelector element else ''
     id = element.getAttribute 'id'
 
+    id_blacklist = @options.id_blacklist.concat( [ '', /\s/, /^\d/ ] )
+
     # ID must... exist, not to be empty and not to contain whitespace
     if (
+      id and
       # ...exist
       id? and
       # ...not be empty
       (id isnt '') and
+      @notInList id, id_blacklist
       # ...not contain whitespace
-      not (/\s/.exec id) and
+      # not (/\s/.exec id) and
       # ...not start with a number
-      not (/^\d/.exec id)
+      # not (/^\d/.exec id)
     )
       sanitized_id = prefix + "##{@sanitizeItem id}"
       # ID must match single element
@@ -108,6 +115,12 @@ class CssSelectorGenerator
         return sanitized_id
 
     null
+
+  notInList: (item, list) ->
+    log = @options.log
+    return not list.find (x) ->
+      return x == item if typeof(x) == 'string'
+      return x.exec item
 
   getClassSelectors: (element) ->
     result = []
@@ -118,8 +131,9 @@ class CssSelectorGenerator
       # trim whitespace
       class_string = class_string.replace /^\s|\s$/g, ''
       if class_string isnt ''
-        result = for item in class_string.split /\s+/
-          ".#{@sanitizeItem item}"
+        for item in class_string.split /\s+/
+          if @notInList item, @options.class_blacklist
+            result.push ".#{@sanitizeItem item}"
     result
 
   getAttributeSelectors: (element) ->
@@ -149,7 +163,6 @@ class CssSelectorGenerator
   testSelector: (element, selector) ->
     is_unique = false
     if selector? and selector isnt ''
-      console.log('selector', selector) if @options.log
       result = element.ownerDocument.querySelectorAll selector
       is_unique = true if result.length is 1 and result[0] is element
     is_unique

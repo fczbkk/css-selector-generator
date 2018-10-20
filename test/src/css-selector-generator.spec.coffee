@@ -1,3 +1,33 @@
+# coffeelint: disable=no_backticks
+`if (!Array.prototype.find) {
+  Object.defineProperty(Array.prototype, 'find', {
+    enumerable: false,
+    configurable: true,
+    writable: true,
+    value: function(predicate) {
+      if (this == null) {
+        throw new TypeError('Array.prototype.find called on null or undefined');
+      }
+      if (typeof predicate !== 'function') {
+        throw new TypeError('predicate must be a function');
+      }
+      var list = Object(this);
+      var length = list.length >>> 0;
+      var thisArg = arguments[1];
+      var value;
+
+      for (var i = 0; i < length; i++) {
+        if (i in list) {
+          value = list[i];
+          if (predicate.call(thisArg, value, i, list)) {
+            return value;
+          }
+        }
+      }
+      return undefined;
+    }
+  });
+}`
 describe 'CSS Selector Generator', ->
 
   root = null
@@ -126,6 +156,7 @@ describe 'CSS Selector Generator', ->
     describe 'ID', ->
 
       it 'should get ID selector for an element', ->
+        x.setOptions log:true
         elm = root.querySelector '#linkZero'
         expect(x.getIdSelector elm).toBe '#linkZero'
         expect(x.getIdSelector root).toBe null
@@ -176,12 +207,40 @@ describe 'CSS Selector Generator', ->
         selector = x.getIdSelector root.firstChild
         expect(selector).toBe null
 
+      it 'should ignore ID attribute with given in blacklist as a string', ->
+        x.setOptions id_blacklist: [ 'aaa' ]
+        root.innerHTML = '<div id="aaa"></div>'
+        selector = x.getIdSelector root.firstChild
+        expect(selector).toBe null
+
+      it 'should ignore ID attribute with given in blacklist as a regex', ->
+        x.setOptions id_blacklist: [ /a+/ ], log: true
+        root.innerHTML = '<div id="aaa"></div>'
+        selector = x.getIdSelector root.firstChild
+        expect(selector).toBe null
+
     describe 'class', ->
 
       it 'should get class selectors for an element', ->
         elm = root.querySelector '#linkZero'
         result = x.getClassSelectors elm
         expectation = ['.classOne', '.classTwo', '.classThree']
+        expect(result).toEqual expectation
+        expect(x.getClassSelectors root).toEqual []
+
+      it 'should ignore class selectors given in blacklist as string', ->
+        x.setOptions class_blacklist: [ 'classOne' ]
+        elm = root.querySelector '#linkZero'
+        result = x.getClassSelectors elm
+        expectation = [ '.classTwo', '.classThree']
+        expect(result).toEqual expectation
+        expect(x.getClassSelectors root).toEqual []
+
+      it 'should ignore class selectors given in blacklist as regex', ->
+        x.setOptions class_blacklist: [ /classO.*/ ]
+        elm = root.querySelector '#linkZero'
+        result = x.getClassSelectors elm
+        expectation = [ '.classTwo', '.classThree']
         expect(result).toEqual expectation
         expect(x.getClassSelectors root).toEqual []
 

@@ -9,7 +9,9 @@
       log: false,
       attribute_blacklist: [],
       attribute_whitelist: [],
-      quote_attribute_when_needed: false
+      quote_attribute_when_needed: false,
+      id_blacklist: [],
+      class_blacklist: []
     };
 
     function CssSelectorGenerator(options) {
@@ -112,10 +114,11 @@
     };
 
     CssSelectorGenerator.prototype.getIdSelector = function(element) {
-      var id, prefix, sanitized_id;
+      var id, id_blacklist, prefix, sanitized_id;
       prefix = this.options.prefix_tag ? this.getTagSelector(element) : '';
       id = element.getAttribute('id');
-      if ((id != null) && (id !== '') && !(/\s/.exec(id)) && !(/^\d/.exec(id))) {
+      id_blacklist = this.options.id_blacklist.concat(['', /\s/, /^\d/]);
+      if (id && (id != null) && (id !== '') && this.notInList(id, id_blacklist)) {
         sanitized_id = prefix + ("#" + (this.sanitizeItem(id)));
         if (element.ownerDocument.querySelectorAll(sanitized_id).length === 1) {
           return sanitized_id;
@@ -124,24 +127,32 @@
       return null;
     };
 
+    CssSelectorGenerator.prototype.notInList = function(item, list) {
+      var log;
+      log = this.options.log;
+      return !list.find(function(x) {
+        if (typeof x === 'string') {
+          return x === item;
+        }
+        return x.exec(item);
+      });
+    };
+
     CssSelectorGenerator.prototype.getClassSelectors = function(element) {
-      var class_string, item, result;
+      var class_string, item, k, len, ref, result;
       result = [];
       class_string = element.getAttribute('class');
       if (class_string != null) {
         class_string = class_string.replace(/\s+/g, ' ');
         class_string = class_string.replace(/^\s|\s$/g, '');
         if (class_string !== '') {
-          result = (function() {
-            var k, len, ref, results;
-            ref = class_string.split(/\s+/);
-            results = [];
-            for (k = 0, len = ref.length; k < len; k++) {
-              item = ref[k];
-              results.push("." + (this.sanitizeItem(item)));
+          ref = class_string.split(/\s+/);
+          for (k = 0, len = ref.length; k < len; k++) {
+            item = ref[k];
+            if (this.notInList(item, this.options.class_blacklist)) {
+              result.push("." + (this.sanitizeItem(item)));
             }
-            return results;
-          }).call(this);
+          }
         }
       }
       return result;
@@ -192,9 +203,6 @@
       var is_unique, result;
       is_unique = false;
       if ((selector != null) && selector !== '') {
-        if (this.options.log) {
-          console.log('selector', selector);
-        }
         result = element.ownerDocument.querySelectorAll(selector);
         if (result.length === 1 && result[0] === element) {
           is_unique = true;
