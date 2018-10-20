@@ -2,7 +2,14 @@ class CssSelectorGenerator
 
   default_options:
     # choose from 'tag', 'id', 'class', 'nthchild', 'attribute'
-    selectors: ['id', 'class', 'tag', 'nthchild']
+    selectors: ['id', 'class', 'tag', 'nthchild'],
+    prefix_tag: false,
+    log: false,
+    attribute_blacklist: [],
+    attribute_whitelist: [],
+    quote_attribute_when_needed: false,
+    id_blacklist: [],
+    class_blacklist: []
 
   constructor: (options = {}) ->
     @options = {}
@@ -44,26 +51,76 @@ class CssSelectorGenerator
     return characters.join ''
 
 
+  # escapes special characters in attributes
+  sanitizeAttribute: (item) ->
+    if @options.quote_attribute_when_needed
+      return @quoteAttribute item
+
+    characters = (item.split '').map (character) ->
+      # colon is valid character in an attribute, but has to be escaped before
+      # being used in a selector, because it would clash with the CSS syntax
+      if character is ':'
+        "\\#{':'.charCodeAt(0).toString(16).toUpperCase()} "
+      else if /[ !"#$%&'()*+,./;<=>?@\[\\\]^`{|}~]/.test character
+        "\\#{character}"
+      else
+        escape character
+          .replace /\%/g, '\\'
+
+    return characters.join ''
+
+  quoteAttribute: (item) ->
+
+    quotesNeeded = false
+    characters = (item.split '').map (character) ->
+      # colon is valid character in an attribute, but has to be escaped before
+      # being used in a selector, because it would clash with the CSS syntax
+      if character is ':'
+        quotesNeeded = true
+        character
+      else if character is "'"
+        quotesNeeded = true
+        "\\#{character}"
+      else
+        quotesNeeded = quotesNeeded or ( escape character is not character )
+        character
+
+    if quotesNeeded
+      return "'" + ( characters.join '' ) + "'"
+
+    return characters.join ''
+
   getIdSelector: (element) ->
+    prefix = if @options.prefix_tag then @getTagSelector element else ''
     id = element.getAttribute 'id'
+
+    id_blacklist = @options.id_blacklist.concat( [ '', /\s/, /^\d/ ] )
 
     # ID must... exist, not to be empty and not to contain whitespace
     if (
+      id and
       # ...exist
       id? and
       # ...not be empty
       (id isnt '') and
+      @notInList id, id_blacklist
       # ...not contain whitespace
-      not (/\s/.exec id) and
+      # not (/\s/.exec id) and
       # ...not start with a number
-      not (/^\d/.exec id)
+      # not (/^\d/.exec id)
     )
-      sanitized_id = "##{@sanitizeItem id}"
+      sanitized_id = prefix + "##{@sanitizeItem id}"
       # ID must match single element
       if element.ownerDocument.querySelectorAll(sanitized_id).length is 1
         return sanitized_id
 
     null
+
+  notInList: (item, list) ->
+    log = @options.log
+    return not list.find (x) ->
+      return x == item if typeof(x) == 'string'
+      return x.exec item
 
   getClassSelectors: (element) ->
     result = []
@@ -74,27 +131,33 @@ class CssSelectorGenerator
       # trim whitespace
       class_string = class_string.replace /^\s|\s$/g, ''
       if class_string isnt ''
-        result = for item in class_string.split /\s+/
-          ".#{@sanitizeItem item}"
+        for item in class_string.split /\s+/
+          if @notInList item, @options.class_blacklist
+            result.push ".#{@sanitizeItem item}"
     result
 
   getAttributeSelectors: (element) ->
     result = []
-    blacklist = ['id', 'class']
-    for attribute in element.attributes
-      unless attribute.nodeName in blacklist
-        result.push "[#{attribute.nodeName}=#{attribute.nodeValue}]"
+    whitelist = @options.attribute_whitelist
+    for attr in whitelist
+      if element.hasAttribute attr
+        result.push "[#{attr}=#{@sanitizeAttribute element.getAttribute(attr)}]"
+    blacklist = @options.attribute_blacklist.concat(['id', 'class'])
+    for a in element.attributes
+      unless a.nodeName in blacklist or a.nodeName in whitelist
+        result.push "[#{a.nodeName}=#{@sanitizeAttribute a.nodeValue}]"
     result
 
   getNthChildSelector: (element) ->
     parent_element = element.parentNode
+    prefix = if @options.prefix_tag then @getTagSelector element else ''
     if parent_element?
       counter = 0
       siblings = parent_element.childNodes
       for sibling in siblings
         if @isElement sibling
           counter++
-          return ":nth-child(#{counter})" if sibling is element
+          return prefix + ":nth-child(#{counter})" if sibling is element
     null
 
   testSelector: (element, selector) ->
@@ -113,13 +176,20 @@ class CssSelectorGenerator
 
   # helper function that tests all combinations for uniqueness
   testCombinations: (element, items, tag) ->
-    for item in @getCombinations items
-      return item if @testUniqueness element, item
+    if not tag?
+      tag = @getTagSelector element
+
+    if not @options.prefix_tag
+      for item in @getCombinations items
+        return item if @testSelector element, item
+      for item in @getCombinations items
+        return item if @testUniqueness element, item
 
     # if tag selector is enabled, try attaching it
-    if tag?
-      for item in (items.map (item) -> tag + item)
-        return item if @testUniqueness element, item
+    for item in (@getCombinations(items).map (item) -> tag + item)
+      return item if @testSelector element, item
+    for item in (@getCombinations(items).map (item) -> tag + item)
+      return item if @testUniqueness element, item
 
     return null
 

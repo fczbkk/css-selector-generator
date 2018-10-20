@@ -1,3 +1,33 @@
+# coffeelint: disable=no_backticks
+`if (!Array.prototype.find) {
+  Object.defineProperty(Array.prototype, 'find', {
+    enumerable: false,
+    configurable: true,
+    writable: true,
+    value: function(predicate) {
+      if (this == null) {
+        throw new TypeError('Array.prototype.find called on null or undefined');
+      }
+      if (typeof predicate !== 'function') {
+        throw new TypeError('predicate must be a function');
+      }
+      var list = Object(this);
+      var length = list.length >>> 0;
+      var thisArg = arguments[1];
+      var value;
+
+      for (var i = 0; i < length; i++) {
+        if (i in list) {
+          value = list[i];
+          if (predicate.call(thisArg, value, i, list)) {
+            return value;
+          }
+        }
+      }
+      return undefined;
+    }
+  });
+}`
 describe 'CSS Selector Generator', ->
 
   root = null
@@ -126,8 +156,15 @@ describe 'CSS Selector Generator', ->
     describe 'ID', ->
 
       it 'should get ID selector for an element', ->
+        x.setOptions log:true
         elm = root.querySelector '#linkZero'
         expect(x.getIdSelector elm).toBe '#linkZero'
+        expect(x.getIdSelector root).toBe null
+
+      it 'should get ID selector for an element with tag', ->
+        x.setOptions prefix_tag: true
+        elm = root.querySelector '#linkZero'
+        expect(x.getIdSelector elm).toBe 'a#linkZero'
         expect(x.getIdSelector root).toBe null
 
       it 'should escape special characters in ID selector', ->
@@ -170,12 +207,40 @@ describe 'CSS Selector Generator', ->
         selector = x.getIdSelector root.firstChild
         expect(selector).toBe null
 
+      it 'should ignore ID attribute with given in blacklist as a string', ->
+        x.setOptions id_blacklist: [ 'aaa' ]
+        root.innerHTML = '<div id="aaa"></div>'
+        selector = x.getIdSelector root.firstChild
+        expect(selector).toBe null
+
+      it 'should ignore ID attribute with given in blacklist as a regex', ->
+        x.setOptions id_blacklist: [ /a+/ ], log: true
+        root.innerHTML = '<div id="aaa"></div>'
+        selector = x.getIdSelector root.firstChild
+        expect(selector).toBe null
+
     describe 'class', ->
 
       it 'should get class selectors for an element', ->
         elm = root.querySelector '#linkZero'
         result = x.getClassSelectors elm
         expectation = ['.classOne', '.classTwo', '.classThree']
+        expect(result).toEqual expectation
+        expect(x.getClassSelectors root).toEqual []
+
+      it 'should ignore class selectors given in blacklist as string', ->
+        x.setOptions class_blacklist: [ 'classOne' ]
+        elm = root.querySelector '#linkZero'
+        result = x.getClassSelectors elm
+        expectation = [ '.classTwo', '.classThree']
+        expect(result).toEqual expectation
+        expect(x.getClassSelectors root).toEqual []
+
+      it 'should ignore class selectors given in blacklist as regex', ->
+        x.setOptions class_blacklist: [ /classO.*/ ]
+        elm = root.querySelector '#linkZero'
+        result = x.getClassSelectors elm
+        expectation = [ '.classTwo', '.classThree']
         expect(result).toEqual expectation
         expect(x.getClassSelectors root).toEqual []
 
@@ -203,6 +268,11 @@ describe 'CSS Selector Generator', ->
         root.innerHTML = '<div class="aaa"></div>'
         expect(x.getSelector root.firstChild).toEqual '.aaa'
 
+      it 'should get element by class selector with tag', ->
+        x.setOptions selectors: ['class'], prefix_tag: true
+        root.innerHTML = '<div class="aaa"></div>'
+        expect(x.getSelector root.firstChild).toEqual 'div.aaa'
+
       it 'should combine class selector with tag selector if needed', ->
         x.setOptions selectors: ['tag', 'class']
         root.innerHTML = '
@@ -217,6 +287,11 @@ describe 'CSS Selector Generator', ->
         root.innerHTML = '<p class="aaa bbb"></p><p class="aaa ccc"></p>'
         expect(x.getSelector root.firstChild).toEqual '.bbb'
 
+      it 'should use single unique class when applicable with tag', ->
+        x.setOptions selectors: ['class'], prefix_tag: true
+        root.innerHTML = '<p class="aaa bbb"></p><p class="aaa ccc"></p>'
+        expect(x.getSelector root.firstChild).toEqual 'p.bbb'
+
       it 'should use combination of classes when applicable', ->
         x.setOptions selectors: ['class']
         root.innerHTML = '
@@ -225,6 +300,15 @@ describe 'CSS Selector Generator', ->
           <div class="bbb ccc"></div>
         '
         expect(x.getSelector root.firstChild).toEqual '.aaa.bbb'
+
+      it 'should use combination of classes when applicable with tag', ->
+        x.setOptions selectors: ['class' ], prefix_tag: true
+        root.innerHTML = '
+          <div class="aaa bbb"></div>
+          <div class="aaa ccc"></div>
+          <div class="bbb ccc"></div>
+        '
+        expect(x.getSelector root.firstChild).toEqual 'div.aaa.bbb'
 
     describe 'attribute', ->
 
@@ -244,10 +328,22 @@ describe 'CSS Selector Generator', ->
         result = x.getSelector root.firstChild
         expect(result).toEqual '[rel=aaa]'
 
+      it 'should use attribute selector when enabled with tag', ->
+        x.setOptions selectors: ['tag', 'id', 'class',
+                                 'attribute', 'nthchild'], prefix_tag: true
+        root.innerHTML = '<a rel="aaa"></a><a rel="bbb"></a>'
+        result = x.getSelector root.firstChild
+        expect(result).toEqual 'a[rel=aaa]'
+
       it 'should get element by attribute selector', ->
         x.setOptions selectors: ['attribute']
         root.innerHTML = '<a href="aaa"></a>'
         expect(x.getSelector root.firstChild).toEqual '[href=aaa]'
+
+      it 'should get element by attribute selector with tag', ->
+        x.setOptions selectors: ['attribute'], prefix_tag: true
+        root.innerHTML = '<a href="aaa"></a>'
+        expect(x.getSelector root.firstChild).toEqual 'a[href=aaa]'
 
       it 'should combine attribute selector with tag selector if needed', ->
         x.setOptions selectors: ['attribute', 'tag']
@@ -266,7 +362,15 @@ describe 'CSS Selector Generator', ->
         '
         expect(x.getSelector root.firstChild).toEqual '[rel=bbb]'
 
-      it 'should use combination of classes when applicable', ->
+      it 'should use single unique attribute when applicable with tag', ->
+        x.setOptions selectors: ['attribute'], prefix_tag: true
+        root.innerHTML = '
+          <a href="aaa" rel="bbb"></a>
+          <a href="aaa" rel="ccc"></a>
+        '
+        expect(x.getSelector root.firstChild).toEqual 'a[rel=bbb]'
+
+      it 'should use combination of attributes when applicable', ->
         x.setOptions selectors: ['attribute']
         root.innerHTML = '
           <a href="aaa" rel="aaa"></a>
@@ -275,12 +379,109 @@ describe 'CSS Selector Generator', ->
         '
         expect(x.getSelector root.firstChild).toEqual '[href=aaa][rel=aaa]'
 
+      it 'should use combination of attributes when applicable with tag', ->
+        x.setOptions selectors: ['attribute'], prefix_tag: true
+        root.innerHTML = '
+          <a href="aaa" rel="aaa"></a>
+          <a href="aaa" rel="xxx"></a>
+          <a href="xxx" rel="aaa"></a>
+        '
+        expect(x.getSelector root.firstChild).toEqual 'a[href=aaa][rel=aaa]'
+
+      it 'should use unique attribute from document', ->
+        x.setOptions selectors: ['attribute']
+        root.innerHTML = '
+            <div data-id="a1"><a id="aaa" href="aaa" rel="bbb">link1</a></div>
+            <div><a href="aaa" rel="aaa">link2</a></div>
+        '
+
+        elm = root.querySelector '#aaa'
+        expect(x.getSelector elm).
+                 toEqual '[rel=bbb]'
+
+      it 'should get attribute selectors for an element ignoring blacklist', ->
+        x.setOptions attribute_blacklist: [ 'href' ]
+        elm = root.querySelector '#linkZero'
+        result = x.getAttributeSelectors elm
+        expect(result).not.toContain '[href=linkThree]'
+        expect(result).toContain '[target=someTarget]'
+        expect(result).toContain '[rel=someRel]'
+        expect(result).not.toContain '[id=linkZero]'
+        expect(result.length).toBe 2
+        expect(x.getClassSelectors root).toEqual []
+
+      it 'should get attribute selectors prioritizing whitelist', ->
+        x.setOptions attribute_whitelist: [ 'rel' ]
+        elm = root.querySelector '#linkZero'
+        result = x.getAttributeSelectors elm
+        expect(result[0]).toEqual '[rel=someRel]'
+        expect(x.getClassSelectors root).toEqual []
+
+      it 'should sanitize attribute values', ->
+        x.setOptions selectors: ['attribute']
+        x.setOptions attribute_whitelist: ['href']
+
+        href = "https://www.google.co.in/" + \
+               "search?rlz=1C5CHFA_enIN755IN755&ei=wwPHW7OrOdv0rQHR-" + \
+               "KmABA&q=using+set+coffeescript&oq=using+set+coffeescript" + \
+               "&gs_l=psy-ab.3...2980.7444.0.7719.22." + \
+               "22.0.0.0.0.219.2518.0j15j2.17.0....0...1c.1.64.psy-ab..5" + \
+               ".15.2263...0" + \
+               "j0i131k1j0i67k1j0i131i67k1j0i22i30k1j33i22i29i30k1j33i21" + \
+               "k1j33i160k1." + \
+               "0.8WGhjkzVME4"
+        root.innerHTML = '<div data-id="a1"><a id="aaa" href=' + \
+                         "#{href}" + ' rel="bbb">link1</a></div>' + \
+                         '<div><a href="aaa" rel="aaa">link2</a></div>'
+
+        elm = root.querySelector '#aaa'
+        expect(x.getSelector elm).
+                 toEqual "[href=#{x.sanitizeItem href}]"
+
+      it 'should sanitize attribute values with quotes', ->
+        x.setOptions selectors: ['attribute']
+        x.setOptions attribute_whitelist: ['href']
+        x.setOptions quote_attribute_when_needed: true
+        x.setOptions log:true
+
+        href = "https'://www.google.co.in/" + \
+               "search?rlz=1C5CHFA_enIN755IN755&ei=wwPHW7OrOdv0rQHR-" + \
+               "KmABA&q=using+set+coffeescript&oq=using+set+coffeescript" + \
+               "&gs_l=psy-ab.3...2980.7444.0.7719.22." + \
+               "22.0.0.0.0.219.2518.0j15j2.17.0....0...1c.1.64.psy-ab..5" + \
+               ".15.2263...0" + \
+               "j0i131k1j0i67k1j0i131i67k1j0i22i30k1j33i22i29i30k1j33i21" + \
+               "k1j33i160k1." + \
+               "0.8WGhjkzVME4"
+        href_expected = "https\\'://www.google.co.in/" + \
+               "search?rlz=1C5CHFA_enIN755IN755&ei=wwPHW7OrOdv0rQHR-" + \
+               "KmABA&q=using+set+coffeescript&oq=using+set+coffeescript" + \
+               "&gs_l=psy-ab.3...2980.7444.0.7719.22." + \
+               "22.0.0.0.0.219.2518.0j15j2.17.0....0...1c.1.64.psy-ab..5" + \
+               ".15.2263...0" + \
+               "j0i131k1j0i67k1j0i131i67k1j0i22i30k1j33i22i29i30k1j33i21" + \
+               "k1j33i160k1." + \
+               "0.8WGhjkzVME4"
+        root.innerHTML = '<div data-id="a1"><a id="aaa" href=' + \
+                         "#{href}" + ' rel="bbb">link1</a></div>' + \
+                         '<div><a href="aaa" rel="aaa">link2</a></div>'
+
+        elm = root.querySelector '#aaa'
+        expect(x.getSelector elm).
+                 toEqual "[href='#{href_expected}']"
+
     describe 'n-th child', ->
 
       it 'should get n-th child selector for an element', ->
         elm = root.querySelector '#linkZero'
         result = x.getNthChildSelector elm
         expect(result).toBe ':nth-child(7)'
+
+      it 'should get n-th child selector for an element with tag', ->
+        x.setOptions prefix_tag: true
+        elm = root.querySelector '#linkZero'
+        result = x.getNthChildSelector elm
+        expect(result).toBe 'a:nth-child(7)'
 
 
   describe 'selector test', ->
