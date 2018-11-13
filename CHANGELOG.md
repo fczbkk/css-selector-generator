@@ -1,3 +1,16 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/fczbkk/css-selector-generator/compare/v1.1.0...v1.2.0) (2018-11-13)
+
+
+### Features
+
+* Added attribute_whitelist and attribute_blacklist ([6cea39f](https://github.com/fczbkk/css-selector-generator/commit/6cea39f))
+* added id_blacklist, class_blacklist to options ([d2ac0ec](https://github.com/fczbkk/css-selector-generator/commit/d2ac0ec))
+* added prefix_tag option ([649bc14](https://github.com/fczbkk/css-selector-generator/commit/649bc14))
+* Added quote_attribute_when_needed option ([15e783f](https://github.com/fczbkk/css-selector-generator/commit/15e783f))
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/fczbkk/css-selector-generator/compare/v1.0.4...v1.1.0) (2018-08-14)
 

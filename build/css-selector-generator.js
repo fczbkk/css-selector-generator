@@ -6,7 +6,6 @@
     CssSelectorGenerator.prototype.default_options = {
       selectors: ['id', 'class', 'tag', 'nthchild'],
       prefix_tag: false,
-      log: false,
       attribute_blacklist: [],
       attribute_whitelist: [],
       quote_attribute_when_needed: false,
@@ -128,8 +127,6 @@
     };
 
     CssSelectorGenerator.prototype.notInList = function(item, list) {
-      var log;
-      log = this.options.log;
       return !list.find(function(x) {
         if (typeof x === 'string') {
           return x === item;
