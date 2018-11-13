@@ -4,7 +4,6 @@ class CssSelectorGenerator
     # choose from 'tag', 'id', 'class', 'nthchild', 'attribute'
     selectors: ['id', 'class', 'tag', 'nthchild'],
     prefix_tag: false,
-    log: false,
     attribute_blacklist: [],
     attribute_whitelist: [],
     quote_attribute_when_needed: false,
@@ -117,7 +116,6 @@ class CssSelectorGenerator
     null
 
   notInList: (item, list) ->
-    log = @options.log
     return not list.find (x) ->
       return x == item if typeof(x) == 'string'
       return x.exec item

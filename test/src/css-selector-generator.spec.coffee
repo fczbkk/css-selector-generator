@@ -28,6 +28,7 @@
     }
   });
 }`
+
 describe 'CSS Selector Generator', ->
 
   root = null
@@ -156,7 +157,6 @@ describe 'CSS Selector Generator', ->
     describe 'ID', ->
 
       it 'should get ID selector for an element', ->
-        x.setOptions log:true
         elm = root.querySelector '#linkZero'
         expect(x.getIdSelector elm).toBe '#linkZero'
         expect(x.getIdSelector root).toBe null
@@ -214,7 +214,7 @@ describe 'CSS Selector Generator', ->
         expect(selector).toBe null
 
       it 'should ignore ID attribute with given in blacklist as a regex', ->
-        x.setOptions id_blacklist: [ /a+/ ], log: true
+        x.setOptions id_blacklist: [ /a+/ ]
         root.innerHTML = '<div id="aaa"></div>'
         selector = x.getIdSelector root.firstChild
         expect(selector).toBe null
@@ -442,7 +442,6 @@ describe 'CSS Selector Generator', ->
         x.setOptions selectors: ['attribute']
         x.setOptions attribute_whitelist: ['href']
         x.setOptions quote_attribute_when_needed: true
-        x.setOptions log:true
 
         href = "https'://www.google.co.in/" + \
                "search?rlz=1C5CHFA_enIN755IN755&ei=wwPHW7OrOdv0rQHR-" + \
