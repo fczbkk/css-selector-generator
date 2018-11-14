@@ -64,17 +64,35 @@ Available values:
 - `'nthchild'` - N-th child selector. It is supported by IE9 and higher, but it is necessary to create a unique CSS selector for every possible element. You can remove it from the list for backwards browser compatibility, but then make sure to use IDs or class names on each element you want to target. E.g. `:nth-child(0)`
 - `'attribute'` - Attribute selector. Compatible wth IE7 and higher. It will not create matching pairs for element's ID and class name attributes. This type of selector is disabled by default. E.g. `[rel=someRel]`
 
+### root_node
+
+default: element.ownerDocument
+
+The document root relative to which the CSS selector is generated.
+
+### id_whitelist
+
+default: `[]`
+
+List of ID values as strings or regular expressions, which will be processed first. These override the `id_blacklist` values.
+
 ### id_blacklist
 
 default: `[]`
 
-List of ID values, which will be ignored when creating ID selectors.
+List of ID values as strings or regular expressions, which will be ignored when creating ID selectors.
+
+### class_whitelist
+
+default: `[]`
+
+List of class names as strings or regular expressions, which will be processed before `class_blacklist`.
 
 ### class_blacklist
 
 default: `[]`
 
-List of class names, which will be ignored when creating class selectors.
+List of class names as strings or regular expressions, which will be ignored when creating class selectors.
 
 
 ### prefix_tag

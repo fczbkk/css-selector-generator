@@ -10,7 +10,10 @@
       attribute_whitelist: [],
       quote_attribute_when_needed: false,
       id_blacklist: [],
-      class_blacklist: []
+      id_whitelist: [],
+      class_blacklist: [],
+      class_whitelist: [],
+      root_node: null
     };
 
     function CssSelectorGenerator(options) {
@@ -113,13 +116,14 @@
     };
 
     CssSelectorGenerator.prototype.getIdSelector = function(element) {
-      var id, id_blacklist, prefix, sanitized_id;
+      var document, id, id_blacklist, prefix, sanitized_id;
       prefix = this.options.prefix_tag ? this.getTagSelector(element) : '';
       id = element.getAttribute('id');
       id_blacklist = this.options.id_blacklist.concat(['', /\s/, /^\d/]);
-      if (id && (id != null) && (id !== '') && this.notInList(id, id_blacklist)) {
+      if (id && (id != null) && (id !== '') && (!this.notInList(id, this.options.id_whitelist) || (this.notInList(id, id_blacklist)))) {
         sanitized_id = prefix + ("#" + (this.sanitizeItem(id)));
-        if (element.ownerDocument.querySelectorAll(sanitized_id).length === 1) {
+        document = this.options.root_node || element.ownerDocument;
+        if (document.querySelectorAll(sanitized_id).length === 1) {
           return sanitized_id;
         }
       }
@@ -135,19 +139,38 @@
       });
     };
 
+    CssSelectorGenerator.prototype.itemMatches = function(item, list) {
+      return list.find(function(x) {
+        if (typeof item === 'string') {
+          return x === item;
+        }
+        return item.exec(x);
+      });
+    };
+
     CssSelectorGenerator.prototype.getClassSelectors = function(element) {
-      var class_string, item, k, len, ref, result;
+      var class_string, classes, found, item, k, l, len, len1, ref, result;
       result = [];
       class_string = element.getAttribute('class');
       if (class_string != null) {
         class_string = class_string.replace(/\s+/g, ' ');
         class_string = class_string.replace(/^\s|\s$/g, '');
         if (class_string !== '') {
-          ref = class_string.split(/\s+/);
+          classes = class_string.split(/\s+/);
+          ref = this.options.class_whitelist;
           for (k = 0, len = ref.length; k < len; k++) {
             item = ref[k];
+            found = this.itemMatches(item, classes);
+            if (found) {
+              result.push("." + (this.sanitizeItem(found)));
+            }
+          }
+          for (l = 0, len1 = classes.length; l < len1; l++) {
+            item = classes[l];
             if (this.notInList(item, this.options.class_blacklist)) {
-              result.push("." + (this.sanitizeItem(item)));
+              if (this.notInList(item, this.options.class_whitelist)) {
+                result.push("." + (this.sanitizeItem(item)));
+              }
             }
           }
         }
@@ -197,10 +220,11 @@
     };
 
     CssSelectorGenerator.prototype.testSelector = function(element, selector) {
-      var is_unique, result;
+      var document, is_unique, result;
       is_unique = false;
       if ((selector != null) && selector !== '') {
-        result = element.ownerDocument.querySelectorAll(selector);
+        document = this.options.root_node || element.ownerDocument;
+        result = document.querySelectorAll(selector);
         if (result.length === 1 && result[0] === element) {
           is_unique = true;
         }

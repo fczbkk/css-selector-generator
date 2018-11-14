@@ -8,7 +8,10 @@ class CssSelectorGenerator
     attribute_whitelist: [],
     quote_attribute_when_needed: false,
     id_blacklist: [],
-    class_blacklist: []
+    id_whitelist: [],
+    class_blacklist: [],
+    class_whitelist: []
+    root_node: null
 
   constructor: (options = {}) ->
     @options = {}
@@ -102,7 +105,10 @@ class CssSelectorGenerator
       id? and
       # ...not be empty
       (id isnt '') and
-      @notInList id, id_blacklist
+      (
+        not @notInList(id, @options.id_whitelist) or
+        (@notInList id, id_blacklist)
+      )
       # ...not contain whitespace
       # not (/\s/.exec id) and
       # ...not start with a number
@@ -110,7 +116,8 @@ class CssSelectorGenerator
     )
       sanitized_id = prefix + "##{@sanitizeItem id}"
       # ID must match single element
-      if element.ownerDocument.querySelectorAll(sanitized_id).length is 1
+      document = @options.root_node || element.ownerDocument
+      if document.querySelectorAll(sanitized_id).length is 1
         return sanitized_id
 
     null
@@ -119,6 +126,11 @@ class CssSelectorGenerator
     return not list.find (x) ->
       return x == item if typeof(x) == 'string'
       return x.exec item
+
+  itemMatches: (item, list) ->
+    return list.find (x) ->
+      return x == item if typeof(item) == 'string'
+      return item.exec x
 
   getClassSelectors: (element) ->
     result = []
@@ -129,9 +141,15 @@ class CssSelectorGenerator
       # trim whitespace
       class_string = class_string.replace /^\s|\s$/g, ''
       if class_string isnt ''
-        for item in class_string.split /\s+/
+        classes = class_string.split /\s+/
+        for item in @options.class_whitelist
+          found = @itemMatches item, classes
+          if found
+            result.push ".#{@sanitizeItem found}"
+        for item in classes
           if @notInList item, @options.class_blacklist
-            result.push ".#{@sanitizeItem item}"
+            if @notInList item, @options.class_whitelist
+              result.push ".#{@sanitizeItem item}"
     result
 
   getAttributeSelectors: (element) ->
@@ -161,7 +179,8 @@ class CssSelectorGenerator
   testSelector: (element, selector) ->
     is_unique = false
     if selector? and selector isnt ''
-      result = element.ownerDocument.querySelectorAll selector
+      document = @options.root_node || element.ownerDocument
+      result = document.querySelectorAll selector
       is_unique = true if result.length is 1 and result[0] is element
     is_unique
 

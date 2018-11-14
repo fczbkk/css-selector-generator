@@ -219,6 +219,20 @@ describe 'CSS Selector Generator', ->
         selector = x.getIdSelector root.firstChild
         expect(selector).toBe null
 
+      it 'should get ID given in whitelist overriding blacklist as strings', ->
+        x.setOptions id_blacklist: [ 'aaa' ]
+        x.setOptions id_whitelist: [ 'aaa' ]
+        root.innerHTML = '<div id="aaa"></div>'
+        selector = x.getIdSelector root.firstChild
+        expect(selector).toEqual '#aaa'
+
+      it 'should ignore ID attribute with given in blacklist as a regex', ->
+        x.setOptions id_blacklist: [ /a+/ ]
+        x.setOptions id_whitelist: [ /a+/ ]
+        root.innerHTML = '<div id="aaa"></div>'
+        selector = x.getIdSelector root.firstChild
+        expect(selector).toEqual '#aaa'
+
     describe 'class', ->
 
       it 'should get class selectors for an element', ->
@@ -241,6 +255,24 @@ describe 'CSS Selector Generator', ->
         elm = root.querySelector '#linkZero'
         result = x.getClassSelectors elm
         expectation = [ '.classTwo', '.classThree']
+        expect(result).toEqual expectation
+        expect(x.getClassSelectors root).toEqual []
+
+      it 'should prioritize class selectors given in whitelist as string', ->
+        x.setOptions class_blacklist: [ 'classOne' ]
+        x.setOptions class_whitelist: [ 'classThree' ]
+        elm = root.querySelector '#linkZero'
+        result = x.getClassSelectors elm
+        expectation = [ '.classThree', '.classTwo' ]
+        expect(result).toEqual expectation
+        expect(x.getClassSelectors root).toEqual []
+
+      it 'should prioritize class selectors given in whitelist as regex', ->
+        x.setOptions class_blacklist: [ /classO.*/ ]
+        x.setOptions class_whitelist: [ /classTh.*/ ]
+        elm = root.querySelector '#linkZero'
+        result = x.getClassSelectors elm
+        expectation = [ '.classThree', '.classTwo' ]
         expect(result).toEqual expectation
         expect(x.getClassSelectors root).toEqual []
 
@@ -512,6 +544,29 @@ describe 'CSS Selector Generator', ->
 
   describe 'unique selector', ->
 
+    it 'should consider given document root to find unique selector', ->
+      root.innerHTML = "
+        <ul id='ul1'>
+          <li>
+            <a id='li1link1' href='linkOne' class='linkOne'></a>
+            <a id='li1link2' href='linkTwo' class='linkTwo'></a>
+            <a id='li1link3' href='linkThree' class='linkThree'></a>
+          </li>
+        </ul>
+        <ul id='ul2'>
+          <li>
+            <a id='li2link1' href='linkOne' class='linkOne'></a>
+            <a id='li2link2' href='linkTwo' class='linkTwo'></a>
+            <a id='li2link3' href='linkThree' class='linkThree'></a>
+          </li>
+        </ul>
+      "
+      elm = root.querySelector '#li1link1'
+      x.setOptions id_blacklist: [ /li.*/ ]
+      expect(x.getSelector elm).toEqual '#ul1 > li > .linkOne'
+      x.setOptions root_node: root.querySelector('#ul1')
+      expect(x.getSelector elm).toEqual '.linkOne'
+  
     it 'should construct unique selector for any given element', ->
       all_elements = root.querySelectorAll '*'
       for element in all_elements
