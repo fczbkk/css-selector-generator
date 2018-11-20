@@ -1,6 +1,5 @@
 (function() {
-  var CssSelectorGenerator, root,
-    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+  var CssSelectorGenerator, root;
 
   CssSelectorGenerator = (function() {
     CssSelectorGenerator.prototype.default_options = {
@@ -156,7 +155,7 @@
     };
 
     CssSelectorGenerator.prototype.getAttributeSelectors = function(element) {
-      var a, attr, blacklist, k, l, len, len1, ref, ref1, ref2, result, whitelist;
+      var a, attr, blacklist, k, l, len, len1, ref, result, whitelist;
       result = [];
       whitelist = this.options.attribute_whitelist;
       for (k = 0, len = whitelist.length; k < len; k++) {
@@ -169,7 +168,7 @@
       ref = element.attributes;
       for (l = 0, len1 = ref.length; l < len1; l++) {
         a = ref[l];
-        if (!((ref1 = a.nodeName, indexOf.call(blacklist, ref1) >= 0) || (ref2 = a.nodeName, indexOf.call(whitelist, ref2) >= 0))) {
+        if (this.notInList(a.nodeName, blacklist) && this.notInList(a.nodeName, whitelist)) {
           result.push("[" + a.nodeName + "=" + (this.sanitizeAttribute(a.nodeValue)) + "]");
         }
       }

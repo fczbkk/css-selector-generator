@@ -103,10 +103,6 @@ class CssSelectorGenerator
       # ...not be empty
       (id isnt '') and
       @notInList id, id_blacklist
-      # ...not contain whitespace
-      # not (/\s/.exec id) and
-      # ...not start with a number
-      # not (/^\d/.exec id)
     )
       sanitized_id = prefix + "##{@sanitizeItem id}"
       # ID must match single element
@@ -142,7 +138,7 @@ class CssSelectorGenerator
         result.push "[#{attr}=#{@sanitizeAttribute element.getAttribute(attr)}]"
     blacklist = @options.attribute_blacklist.concat(['id', 'class'])
     for a in element.attributes
-      unless a.nodeName in blacklist or a.nodeName in whitelist
+      if @notInList(a.nodeName, blacklist) and @notInList(a.nodeName, whitelist)
         result.push "[#{a.nodeName}=#{@sanitizeAttribute a.nodeValue}]"
     result
 
