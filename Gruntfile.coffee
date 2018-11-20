@@ -33,6 +33,11 @@ module.exports = (grunt) ->
       default:
         options:
           join: true
+          transpile:
+            moduleId: "CssSelectorGenerator"
+            presets: [["@babel/preset-env",
+              modules: false
+            ]]
         files:
           'build/css-selector-generator.js' : [
             'src/css-selector-generator.coffee'
@@ -56,8 +61,7 @@ module.exports = (grunt) ->
         options:
           atBegin: true
         files: [
-          'src/css-selector-generator.coffee'
-          'test/src/css-selector-generator.spec.coffee'
+          '**/*.coffee'
         ]
         tasks: ['dev']
 

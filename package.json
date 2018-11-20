@@ -10,17 +10,20 @@
     "test": "grunt dev"
   },
   "devDependencies": {
-    "coffeelint": "1.15.7",
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
+    "coffeelint": "^1.16.2",
     "grunt": "^1.0.3",
     "grunt-bump": "^0.8.0",
     "grunt-coffeelint": "^0.0.15",
-    "grunt-contrib-coffee": "^1.0.0",
-    "grunt-contrib-jasmine": "^1.0.3",
+    "grunt-contrib-coffee": "^2.0.0",
+    "grunt-contrib-jasmine": "^2.0.3",
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-conventional-changelog": "^6.1.0",
     "load-grunt-tasks": "^3.5.0"
   },
+  "browserslist": "> 0.25%, not dead",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/fczbkk/css-selector-generator.git"
