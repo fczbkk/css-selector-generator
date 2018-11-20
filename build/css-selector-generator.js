@@ -1,6 +1,5 @@
 (function() {
-  var CssSelectorGenerator, root,
-    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+  var CssSelectorGenerator, root;
 
   CssSelectorGenerator = (function() {
     CssSelectorGenerator.prototype.default_options = {
@@ -14,6 +13,11 @@
       class_blacklist: [],
       class_whitelist: [],
       root_node: null
+    };
+
+    CssSelectorGenerator.prototype.nthSelectors = {
+      child: 0,
+      type: 1
     };
 
     function CssSelectorGenerator(options) {
@@ -120,7 +124,7 @@
       prefix = this.options.prefix_tag ? this.getTagSelector(element) : '';
       id = element.getAttribute('id');
       id_blacklist = this.options.id_blacklist.concat(['', /\s/, /^\d/]);
-      if (id && (id != null) && (id !== '') && (!this.notInList(id, this.options.id_whitelist) || (this.notInList(id, id_blacklist)))) {
+      if (id && (id != null) && (id !== '') && (this.inList(id, this.options.id_whitelist) || (!this.inList(id, id_blacklist)))) {
         sanitized_id = prefix + ("#" + (this.sanitizeItem(id)));
         document = this.options.root_node || element.ownerDocument;
         if (document.querySelectorAll(sanitized_id).length === 1) {
@@ -130,12 +134,12 @@
       return null;
     };
 
-    CssSelectorGenerator.prototype.notInList = function(item, list) {
-      return !list.find(function(x) {
+    CssSelectorGenerator.prototype.inList = function(item, list) {
+      return list.some(function(x) {
         if (typeof x === 'string') {
           return x === item;
         }
-        return x.exec(item);
+        return x.test(item);
       });
     };
 
@@ -167,8 +171,8 @@
           }
           for (l = 0, len1 = classes.length; l < len1; l++) {
             item = classes[l];
-            if (this.notInList(item, this.options.class_blacklist)) {
-              if (this.notInList(item, this.options.class_whitelist)) {
+            if (!this.inList(item, this.options.class_blacklist)) {
+              if (!this.inList(item, this.options.class_whitelist)) {
                 result.push("." + (this.sanitizeItem(item)));
               }
             }
@@ -179,39 +183,56 @@
     };
 
     CssSelectorGenerator.prototype.getAttributeSelectors = function(element) {
-      var a, attr, blacklist, k, l, len, len1, ref, ref1, ref2, result, whitelist;
+      var a, append_attr, attributes, blacklist, k, l, len, len1, result, whitelist;
       result = [];
+      attributes = element.attributes;
+      append_attr = (function(_this) {
+        return function(attr_node) {
+          return result.push("[" + attr_node.nodeName + "=" + (_this.sanitizeAttribute(attr_node.nodeValue)) + "]");
+        };
+      })(this);
       whitelist = this.options.attribute_whitelist;
-      for (k = 0, len = whitelist.length; k < len; k++) {
-        attr = whitelist[k];
-        if (element.hasAttribute(attr)) {
-          result.push("[" + attr + "=" + (this.sanitizeAttribute(element.getAttribute(attr))) + "]");
+      for (k = 0, len = attributes.length; k < len; k++) {
+        a = attributes[k];
+        if (this.inList(a.nodeName, whitelist)) {
+          append_attr(a);
         }
       }
       blacklist = this.options.attribute_blacklist.concat(['id', 'class']);
-      ref = element.attributes;
-      for (l = 0, len1 = ref.length; l < len1; l++) {
-        a = ref[l];
-        if (!((ref1 = a.nodeName, indexOf.call(blacklist, ref1) >= 0) || (ref2 = a.nodeName, indexOf.call(whitelist, ref2) >= 0))) {
-          result.push("[" + a.nodeName + "=" + (this.sanitizeAttribute(a.nodeValue)) + "]");
+      for (l = 0, len1 = attributes.length; l < len1; l++) {
+        a = attributes[l];
+        if (!this.inList(a.nodeName, blacklist) && !this.inList(a.nodeName, whitelist)) {
+          append_attr(a);
         }
       }
       return result;
     };
 
     CssSelectorGenerator.prototype.getNthChildSelector = function(element) {
-      var counter, k, len, parent_element, prefix, sibling, siblings;
+      return this.getNthSelector(element, this.nthSelectors.child);
+    };
+
+    CssSelectorGenerator.prototype.getNthTypeSelector = function(element) {
+      return this.getNthSelector(element, this.nthSelectors.type);
+    };
+
+    CssSelectorGenerator.prototype.getNthSelector = function(element, selector) {
+      var counter, k, len, parent_element, prefix, sibling, siblings, suffix;
       parent_element = element.parentNode;
-      prefix = this.options.prefix_tag ? this.getTagSelector(element) : '';
+      prefix = '';
+      if (selector === this.nthSelectors.type || this.options.prefix_tag) {
+        prefix = this.getTagSelector(element);
+      }
+      suffix = selector === this.nthSelectors.child ? "child" : "of-type";
       if (parent_element != null) {
         counter = 0;
         siblings = parent_element.childNodes;
         for (k = 0, len = siblings.length; k < len; k++) {
           sibling = siblings[k];
-          if (this.isElement(sibling)) {
+          if (this.isElement(sibling) && (selector === this.nthSelectors.child || this.getTagSelector(sibling) === prefix)) {
             counter++;
             if (sibling === element) {
-              return prefix + (":nth-child(" + counter + ")");
+              return prefix + ":nth-" + suffix + "(" + counter + ")";
             }
           }
         }
@@ -310,6 +331,9 @@
             break;
           case 'nthchild':
             selector = this.getNthChildSelector(element);
+            break;
+          case 'nthtype':
+            selector = this.getNthTypeSelector(element);
         }
         if (selector) {
           return selector;

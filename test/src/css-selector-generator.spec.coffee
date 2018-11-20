@@ -68,6 +68,7 @@ describe 'CSS Selector Generator', ->
             rel='someRel'
             class='classOne classTwo classThree'
           ></a>
+          <span>&nbsp;</span>
           <a
             href='linkThree'
             target='someTarget'
@@ -442,8 +443,26 @@ describe 'CSS Selector Generator', ->
         expect(result.length).toBe 2
         expect(x.getClassSelectors root).toEqual []
 
+      it 'should ignore attribute with given in blacklist as a regex', ->
+        x.setOptions attribute_blacklist: [ /^hr/ ]
+        elm = root.querySelector '#linkZero'
+        result = x.getAttributeSelectors elm
+        expect(result).not.toContain '[href=linkThree]'
+        expect(result).toContain '[target=someTarget]'
+        expect(result).toContain '[rel=someRel]'
+        expect(result).not.toContain '[id=linkZero]'
+        expect(result.length).toBe 2
+        expect(x.getClassSelectors root).toEqual []
+
       it 'should get attribute selectors prioritizing whitelist', ->
         x.setOptions attribute_whitelist: [ 'rel' ]
+        elm = root.querySelector '#linkZero'
+        result = x.getAttributeSelectors elm
+        expect(result[0]).toEqual '[rel=someRel]'
+        expect(x.getClassSelectors root).toEqual []
+
+      it 'should get attribute selectors prioritizing whitelist as regex', ->
+        x.setOptions attribute_whitelist: [ /^re/ ]
         elm = root.querySelector '#linkZero'
         result = x.getAttributeSelectors elm
         expect(result[0]).toEqual '[rel=someRel]'
@@ -506,14 +525,20 @@ describe 'CSS Selector Generator', ->
       it 'should get n-th child selector for an element', ->
         elm = root.querySelector '#linkZero'
         result = x.getNthChildSelector elm
-        expect(result).toBe ':nth-child(7)'
+        expect(result).toBe ':nth-child(8)'
 
       it 'should get n-th child selector for an element with tag', ->
         x.setOptions prefix_tag: true
         elm = root.querySelector '#linkZero'
         result = x.getNthChildSelector elm
-        expect(result).toBe 'a:nth-child(7)'
+        expect(result).toBe 'a:nth-child(8)'
 
+    describe 'n-th type', ->
+
+      it 'should get n-th type selector for an element', ->
+        elm = root.querySelector '#linkZero'
+        result = x.getNthTypeSelector elm
+        expect(result).toBe 'a:nth-of-type(7)'
 
   describe 'selector test', ->
     elm = null
@@ -582,6 +607,15 @@ describe 'CSS Selector Generator', ->
         selector = x.getSelector element
         expect(x.testSelector element, selector).toBe true
 
+    it 'should pass the complex test with nthtype', ->
+      x.setOptions selectors: ['id', 'class', 'tag', 'nthtype'],
+      root = document.createElement 'div'
+      root.innerHTML = complex_example
+      document.body.appendChild root
+      all_elements = root.querySelectorAll '*'
+      for element in all_elements
+        selector = x.getSelector element
+        expect(x.testSelector element, selector).toBe true
 
   describe 'utilities', ->
 

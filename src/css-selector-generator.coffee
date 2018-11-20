@@ -1,7 +1,7 @@
 class CssSelectorGenerator
 
   default_options:
-    # choose from 'tag', 'id', 'class', 'nthchild', 'attribute'
+    # choose from 'tag', 'id', 'class', 'nthchild', 'nthtype', 'attribute'
     selectors: ['id', 'class', 'tag', 'nthchild'],
     prefix_tag: false,
     attribute_blacklist: [],
@@ -12,6 +12,10 @@ class CssSelectorGenerator
     class_blacklist: [],
     class_whitelist: []
     root_node: null
+
+  nthSelectors:
+    child: 0
+    type: 1
 
   constructor: (options = {}) ->
     @options = {}
@@ -106,8 +110,8 @@ class CssSelectorGenerator
       # ...not be empty
       (id isnt '') and
       (
-        not @notInList(id, @options.id_whitelist) or
-        (@notInList id, id_blacklist)
+        @inList(id, @options.id_whitelist) or
+        (not @inList id, id_blacklist)
       )
       # ...not contain whitespace
       # not (/\s/.exec id) and
@@ -122,10 +126,10 @@ class CssSelectorGenerator
 
     null
 
-  notInList: (item, list) ->
-    return not list.find (x) ->
+  inList: (item, list) ->
+    return list.some (x) ->
       return x == item if typeof(x) == 'string'
-      return x.exec item
+      return x.test item
 
   itemMatches: (item, list) ->
     return list.find (x) ->
@@ -147,33 +151,58 @@ class CssSelectorGenerator
           if found
             result.push ".#{@sanitizeItem found}"
         for item in classes
-          if @notInList item, @options.class_blacklist
-            if @notInList item, @options.class_whitelist
+          if not @inList item, @options.class_blacklist
+            if not @inList item, @options.class_whitelist
               result.push ".#{@sanitizeItem item}"
     result
 
   getAttributeSelectors: (element) ->
     result = []
+    attributes = element.attributes
+
+    append_attr = (attr_node) =>
+      result.push "[#{attr_node.nodeName}=\
+          #{@sanitizeAttribute attr_node.nodeValue}]"
+
     whitelist = @options.attribute_whitelist
-    for attr in whitelist
-      if element.hasAttribute attr
-        result.push "[#{attr}=#{@sanitizeAttribute element.getAttribute(attr)}]"
+    for a in attributes
+      if @inList(a.nodeName, whitelist)
+        append_attr a
+
+
     blacklist = @options.attribute_blacklist.concat(['id', 'class'])
-    for a in element.attributes
-      unless a.nodeName in blacklist or a.nodeName in whitelist
-        result.push "[#{a.nodeName}=#{@sanitizeAttribute a.nodeValue}]"
+    for a in attributes
+      if not @inList(a.nodeName, blacklist) and
+          not @inList(a.nodeName, whitelist)
+        append_attr a
+
     result
 
   getNthChildSelector: (element) ->
+    return @getNthSelector element, @nthSelectors.child
+
+  getNthTypeSelector: (element) ->
+    return @getNthSelector element, @nthSelectors.type
+
+  getNthSelector: (element, selector) ->
     parent_element = element.parentNode
-    prefix = if @options.prefix_tag then @getTagSelector element else ''
+    prefix = ''
+    if selector == @nthSelectors.type or @options.prefix_tag
+      prefix = @getTagSelector element
+    suffix = if selector == @nthSelectors.child then "child" else "of-type"
     if parent_element?
       counter = 0
       siblings = parent_element.childNodes
       for sibling in siblings
-        if @isElement sibling
+        if (
+          @isElement(sibling) and
+          (
+            selector == @nthSelectors.child or
+            @getTagSelector(sibling) == prefix
+          )
+        )
           counter++
-          return prefix + ":nth-child(#{counter})" if sibling is element
+          return "#{prefix}:nth-#{suffix}(#{counter})" if sibling is element
     null
 
   testSelector: (element, selector) ->
@@ -238,9 +267,13 @@ class CssSelectorGenerator
           if selectors? and selectors.length isnt 0
             selector = @testCombinations element, selectors, tag_selector
 
-        # if anything else fails, return n-th child selector
+        # nthchild selector
         when 'nthchild'
           selector = @getNthChildSelector element
+
+        # nthtype selector
+        when 'nthtype'
+          selector = @getNthTypeSelector element
 
       return selector if selector
 

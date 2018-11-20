@@ -61,7 +61,8 @@ Available values:
 - `'tag'` - Tag selector. E.g. `p`, `div`.
 - `'id'` - ID selector. E.g. `#myElement`.
 - `'class'` - Class selector. It will get all class names of the element. E.g. `.myClass`, `.firstClass.secondClass`.
-- `'nthchild'` - N-th child selector. It is supported by IE9 and higher, but it is necessary to create a unique CSS selector for every possible element. You can remove it from the list for backwards browser compatibility, but then make sure to use IDs or class names on each element you want to target. E.g. `:nth-child(0)`
+- `'nthchild'` - N-th child selector. It is supported by IE9 and higher, but either of `nthchild` or `nthtype` is necessary to create a unique CSS selector for every possible element. You can remove them from the list for backwards browser compatibility, but then make sure to use IDs or class names on each element you want to target. E.g. `:nth-child(1)`
+- `'nthtype'` - N-th type selector (always prefixed with the tag name). It is supported by IE9 and higher, but either of `nthchild` or `nthtype` is necessary to create a unique CSS selector for every possible element. You can remove them from the list for backwards browser compatibility, but then make sure to use IDs or class names on each element you want to target. E.g. `a:nth-of-type(1)`
 - `'attribute'` - Attribute selector. Compatible wth IE7 and higher. It will not create matching pairs for element's ID and class name attributes. This type of selector is disabled by default. E.g. `[rel=someRel]`
 
 ### root_node
