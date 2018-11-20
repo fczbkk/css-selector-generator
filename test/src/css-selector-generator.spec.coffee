@@ -410,6 +410,17 @@ describe 'CSS Selector Generator', ->
         expect(result.length).toBe 2
         expect(x.getClassSelectors root).toEqual []
 
+      it 'should ignore attribute with given in blacklist as a regex', ->
+        x.setOptions attribute_blacklist: [ /^hr/ ]
+        elm = root.querySelector '#linkZero'
+        result = x.getAttributeSelectors elm
+        expect(result).not.toContain '[href=linkThree]'
+        expect(result).toContain '[target=someTarget]'
+        expect(result).toContain '[rel=someRel]'
+        expect(result).not.toContain '[id=linkZero]'
+        expect(result.length).toBe 2
+        expect(x.getClassSelectors root).toEqual []
+
       it 'should get attribute selectors prioritizing whitelist', ->
         x.setOptions attribute_whitelist: [ 'rel' ]
         elm = root.querySelector '#linkZero'
