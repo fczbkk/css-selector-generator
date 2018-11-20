@@ -428,6 +428,13 @@ describe 'CSS Selector Generator', ->
         expect(result[0]).toEqual '[rel=someRel]'
         expect(x.getClassSelectors root).toEqual []
 
+      it 'should get attribute selectors prioritizing whitelist as regex', ->
+        x.setOptions attribute_whitelist: [ /^re/ ]
+        elm = root.querySelector '#linkZero'
+        result = x.getAttributeSelectors elm
+        expect(result[0]).toEqual '[rel=someRel]'
+        expect(x.getClassSelectors root).toEqual []
+
       it 'should sanitize attribute values', ->
         x.setOptions selectors: ['attribute']
         x.setOptions attribute_whitelist: ['href']

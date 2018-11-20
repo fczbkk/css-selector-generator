@@ -116,7 +116,7 @@
       prefix = this.options.prefix_tag ? this.getTagSelector(element) : '';
       id = element.getAttribute('id');
       id_blacklist = this.options.id_blacklist.concat(['', /\s/, /^\d/]);
-      if (id && (id != null) && (id !== '') && this.notInList(id, id_blacklist)) {
+      if (id && (id != null) && (id !== '') && !this.inList(id, id_blacklist)) {
         sanitized_id = prefix + ("#" + (this.sanitizeItem(id)));
         if (element.ownerDocument.querySelectorAll(sanitized_id).length === 1) {
           return sanitized_id;
@@ -125,12 +125,12 @@
       return null;
     };
 
-    CssSelectorGenerator.prototype.notInList = function(item, list) {
-      return !list.find(function(x) {
+    CssSelectorGenerator.prototype.inList = function(item, list) {
+      return list.some(function(x) {
         if (typeof x === 'string') {
           return x === item;
         }
-        return x.exec(item);
+        return x.test(item);
       });
     };
 
@@ -145,7 +145,7 @@
           ref = class_string.split(/\s+/);
           for (k = 0, len = ref.length; k < len; k++) {
             item = ref[k];
-            if (this.notInList(item, this.options.class_blacklist)) {
+            if (!this.inList(item, this.options.class_blacklist)) {
               result.push("." + (this.sanitizeItem(item)));
             }
           }
@@ -155,21 +155,26 @@
     };
 
     CssSelectorGenerator.prototype.getAttributeSelectors = function(element) {
-      var a, attr, blacklist, k, l, len, len1, ref, result, whitelist;
+      var a, append_attr, attributes, blacklist, k, l, len, len1, result, whitelist;
       result = [];
+      attributes = element.attributes;
+      append_attr = (function(_this) {
+        return function(attr_node) {
+          return result.push("[" + attr_node.nodeName + "=" + (_this.sanitizeAttribute(attr_node.nodeValue)) + "]");
+        };
+      })(this);
       whitelist = this.options.attribute_whitelist;
-      for (k = 0, len = whitelist.length; k < len; k++) {
-        attr = whitelist[k];
-        if (element.hasAttribute(attr)) {
-          result.push("[" + attr + "=" + (this.sanitizeAttribute(element.getAttribute(attr))) + "]");
+      for (k = 0, len = attributes.length; k < len; k++) {
+        a = attributes[k];
+        if (this.inList(a.nodeName, whitelist)) {
+          append_attr(a);
         }
       }
       blacklist = this.options.attribute_blacklist.concat(['id', 'class']);
-      ref = element.attributes;
-      for (l = 0, len1 = ref.length; l < len1; l++) {
-        a = ref[l];
-        if (this.notInList(a.nodeName, blacklist) && this.notInList(a.nodeName, whitelist)) {
-          result.push("[" + a.nodeName + "=" + (this.sanitizeAttribute(a.nodeValue)) + "]");
+      for (l = 0, len1 = attributes.length; l < len1; l++) {
+        a = attributes[l];
+        if (!this.inList(a.nodeName, blacklist) && !this.inList(a.nodeName, whitelist)) {
+          append_attr(a);
         }
       }
       return result;

@@ -102,7 +102,7 @@ class CssSelectorGenerator
       id? and
       # ...not be empty
       (id isnt '') and
-      @notInList id, id_blacklist
+      not @inList id, id_blacklist
     )
       sanitized_id = prefix + "##{@sanitizeItem id}"
       # ID must match single element
@@ -111,10 +111,10 @@ class CssSelectorGenerator
 
     null
 
-  notInList: (item, list) ->
-    return not list.find (x) ->
+  inList: (item, list) ->
+    return list.some (x) ->
       return x == item if typeof(x) == 'string'
-      return x.exec item
+      return x.test item
 
   getClassSelectors: (element) ->
     result = []
@@ -126,20 +126,30 @@ class CssSelectorGenerator
       class_string = class_string.replace /^\s|\s$/g, ''
       if class_string isnt ''
         for item in class_string.split /\s+/
-          if @notInList item, @options.class_blacklist
+          if not @inList item, @options.class_blacklist
             result.push ".#{@sanitizeItem item}"
     result
 
   getAttributeSelectors: (element) ->
     result = []
+    attributes = element.attributes
+
+    append_attr = (attr_node) =>
+      result.push "[#{attr_node.nodeName}=\
+          #{@sanitizeAttribute attr_node.nodeValue}]"
+
     whitelist = @options.attribute_whitelist
-    for attr in whitelist
-      if element.hasAttribute attr
-        result.push "[#{attr}=#{@sanitizeAttribute element.getAttribute(attr)}]"
+    for a in attributes
+      if @inList(a.nodeName, whitelist)
+        append_attr a
+
+
     blacklist = @options.attribute_blacklist.concat(['id', 'class'])
-    for a in element.attributes
-      if @notInList(a.nodeName, blacklist) and @notInList(a.nodeName, whitelist)
-        result.push "[#{a.nodeName}=#{@sanitizeAttribute a.nodeValue}]"
+    for a in attributes
+      if not @inList(a.nodeName, blacklist) and
+          not @inList(a.nodeName, whitelist)
+        append_attr a
+
     result
 
   getNthChildSelector: (element) ->
