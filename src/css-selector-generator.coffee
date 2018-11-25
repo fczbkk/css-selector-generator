@@ -10,8 +10,9 @@ class CssSelectorGenerator
     id_blacklist: [],
     id_whitelist: [],
     class_blacklist: [],
-    class_whitelist: []
-    root_node: null
+    class_whitelist: [],
+    root_node: null,
+    get_options: null
 
   nthSelectors:
     child: 0
@@ -285,6 +286,7 @@ class CssSelectorGenerator
 
     parents = @getParents element
     for item in parents
+      @setOptions(@options.get_options item) if @options.get_options
       selector = @getUniqueSelector item
       if selector?
         selectors.unshift selector

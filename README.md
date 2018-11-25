@@ -128,6 +128,13 @@ default: `false`
 
 If set to `true`, attribute selector values will be quoted and escaped when needed.
 
+### get_options
+
+default: `null`
+
+If set to a function that takes an element as a parameter, calls the function to get options specific to element which are
+merged into existing options.
+
 ## Bug reports, feature requests and contact
 
 If you found any bugs, if you have feature requests or any questions, please, either [file an issue on GitHub][1] or send me an e-mail at [riki@fczbkk.com][2]

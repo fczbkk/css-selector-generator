@@ -12,7 +12,8 @@
       id_whitelist: [],
       class_blacklist: [],
       class_whitelist: [],
-      root_node: null
+      root_node: null,
+      get_options: null
     };
 
     CssSelectorGenerator.prototype.nthSelectors = {
@@ -348,6 +349,9 @@
       parents = this.getParents(element);
       for (k = 0, len = parents.length; k < len; k++) {
         item = parents[k];
+        if (this.options.get_options) {
+          this.setOptions(this.options.get_options(item));
+        }
         selector = this.getUniqueSelector(item);
         if (selector != null) {
           selectors.unshift(selector);

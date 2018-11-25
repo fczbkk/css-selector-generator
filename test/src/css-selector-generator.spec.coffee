@@ -569,6 +569,16 @@ describe 'CSS Selector Generator', ->
 
   describe 'unique selector', ->
 
+    it 'override options per element', ->
+      elm = root.querySelector '#linkZero'
+      x.setOptions selectors:[ 'nthtype' ]
+      result = x.getSelector elm
+      expect(result).toBe 'a:nth-of-type(7)'
+      x.setOptions get_options: (elm) ->
+        return selectors:[ 'id' ]
+      result = x.getSelector elm
+      expect(result).toBe '#linkZero'
+
     it 'should consider given document root to find unique selector', ->
       root.innerHTML = "
         <ul id='ul1'>
