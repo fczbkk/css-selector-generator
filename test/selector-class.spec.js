@@ -1,0 +1,75 @@
+import {assert} from 'chai';
+import {getClassSelectors} from '../src/selectors';
+
+describe('selector - class', function () {
+
+  let root;
+
+  beforeEach(function () {
+    root = document.body.appendChild(document.createElement('div'));
+  });
+
+  afterEach(function () {
+    root.parentNode.removeChild(root);
+  });
+
+  it('should generate class selectors', function () {
+    root.innerHTML = '<div class="aaa bbb ccc"></div>';
+    const result = getClassSelectors(root.firstChild);
+    assert.lengthOf(result, 3);
+    assert.include(result, '.aaa');
+    assert.include(result, '.bbb');
+    assert.include(result, '.ccc');
+  });
+
+  it('should return empty list if not set', function () {
+    root.innerHTML = '<div></div>';
+    const result = getClassSelectors(root.firstChild);
+    assert.lengthOf(result, 0);
+  });
+
+  it('should ignore items blacklisted as string', function () {
+    root.innerHTML = '<div class="aaa bbb"></div>';
+    const options = {class_blacklist: ['aaa']};
+    const result = getClassSelectors(root.firstChild, options);
+    assert.lengthOf(result, 1);
+    assert.include(result, '.bbb');
+  });
+
+  it('should ignore items blacklisted as regexp', function () {
+    root.innerHTML = '<div class="aaa bbb"></div>';
+    const options = {class_blacklist: [/a+/]};
+    const result = getClassSelectors(root.firstChild, options);
+    assert.lengthOf(result, 1);
+    assert.include(result, '.bbb');
+  });
+
+  it('should ignore unnecessary whitespace', function () {
+    root.innerHTML = '<div class="   aaa   bbb   ccc   "></div>';
+    const result = getClassSelectors(root.firstChild);
+    assert.lengthOf(result, 3);
+    assert.include(result, '.aaa');
+    assert.include(result, '.bbb');
+    assert.include(result, '.ccc');
+  });
+
+  it('should ignore empty class name', function () {
+    root.innerHTML = '<div class=""></div>';
+    const result = getClassSelectors(root.firstChild);
+    assert.lengthOf(result, 0);
+  });
+
+  it('should ignore class name full of whitespace', function () {
+    root.innerHTML = '<div class="   "></div>';
+    const result = getClassSelectors(root.firstChild);
+    assert.lengthOf(result, 0);
+  });
+
+  it('should sanitize class name', function () {
+    root.innerHTML = '<div class="aaa:bbb"></div>';
+    const result = getClassSelectors(root.firstChild);
+    assert.lengthOf(result, 1);
+    assert.include(result, '.aaa\\3A bbb');
+  });
+
+});

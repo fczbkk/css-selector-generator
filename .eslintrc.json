@@ -1,0 +1,11 @@
+{
+  "extends": "@fczbkk",
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "env": {
+    "es6": true,
+    "browser": true
+  },
+  "root": true
+}

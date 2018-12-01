@@ -4,26 +4,39 @@
   "version": "1.2.0",
   "description": "JavaScript object that creates unique CSS selector for given element.",
   "author": "Riki Fridrich <riki@fczbkk.com> (http://fczbkk.com)",
-  "license": "UNLICENSE",
+  "license": "MIT",
   "main": "build/css-selector-generator.js",
   "scripts": {
-    "test": "grunt dev"
+    "test": "karma start ./tools/karma.conf.js",
+    "dev": "webpack --config ./tools/webpack.dev.js",
+    "build": "webpack --config ./tools/webpack.build.js",
+    "lint": "eslint ./src/**/*.js ./test/**/*.js ./tools/**/*.js",
+    "lint:build": "npm run eslint -- --max-warnings 0"
   },
   "devDependencies": {
-    "coffeelint": "1.15.7",
-    "grunt": "^1.0.3",
-    "grunt-bump": "^0.8.0",
-    "grunt-coffeelint": "^0.0.15",
-    "grunt-contrib-coffee": "^1.0.0",
-    "grunt-contrib-jasmine": "^1.0.3",
-    "grunt-contrib-uglify": "^1.0.1",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-conventional-changelog": "^6.1.0",
-    "load-grunt-tasks": "^3.5.0"
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
+    "@fczbkk/eslint-config": "^1.0.0",
+    "babel-loader": "^8.0.4",
+    "chai": "^4.2.0",
+    "eslint": "^5.9.0",
+    "karma": "^3.1.1",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-mocha": "^1.3.0",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-webpack": "^3.0.5",
+    "mocha": "^5.2.0",
+    "raw-loader": "^0.5.1",
+    "webpack": "^4.26.1",
+    "webpack-cli": "^3.1.2"
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/fczbkk/css-selector-generator.git"
   },
-  "homepage": "https://github.com/fczbkk/css-selector-generator/"
+  "homepage": "https://github.com/fczbkk/css-selector-generator/",
+  "dependencies": {
+    "iselement": "^1.1.4"
+  }
 }
