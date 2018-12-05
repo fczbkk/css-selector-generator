@@ -17,26 +17,20 @@ describe('selector - attribute', function () {
     root.innerHTML = '<div aaa="bbb" ccc="ddd"></div>';
     const result = getAttributeSelectors(root.firstChild);
     assert.lengthOf(result, 2);
-    assert.include(result, '[aaa=\'bbb\']');
+    assert.include(result, "[aaa='bbb']");
     assert.include(result, '[ccc=\'ddd\']');
   });
 
-  it('should ignore blacklist', function () {
-    root.innerHTML = '<div aaa="bbb" ccc="ddd"></div>';
-    const options = {attribute_blacklist: ['aaa']}
-    const result = getAttributeSelectors(root.firstChild, options);
-    assert.lengthOf(result, 1);
-    assert.notInclude(result, '[aaa=\'bbb\']');
-    assert.include(result, '[ccc=\'ddd\']');
+  it('should ignore ID attribute', function () {
+    root.innerHTML = '<div id="aaa"></div>';
+    const result = getAttributeSelectors(root.firstChild);
+    assert.lengthOf(result, 0);
   });
 
-  it('should prioritise whitelist', function () {
-    root.innerHTML = '<div aaa="bbb" ccc="ddd"></div>';
-    const options = {attribute_whitelist: ['ccc']}
-    const result = getAttributeSelectors(root.firstChild, options);
-    assert.lengthOf(result, 2);
-    assert.equal(result[0], '[aaa=\'bbb\']')
-    assert.equal(result[1], '[ccc=\'ddd\']')
+  it('should ignore class attribute', function () {
+    root.innerHTML = '<div class="aaa"></div>';
+    const result = getAttributeSelectors(root.firstChild);
+    assert.lengthOf(result, 0);
   });
 
   it('should sanitize attribute values', function () {

@@ -28,22 +28,6 @@ describe('selector - class', function () {
     assert.lengthOf(result, 0);
   });
 
-  it('should ignore items blacklisted as string', function () {
-    root.innerHTML = '<div class="aaa bbb"></div>';
-    const options = {class_blacklist: ['aaa']};
-    const result = getClassSelectors(root.firstChild, options);
-    assert.lengthOf(result, 1);
-    assert.include(result, '.bbb');
-  });
-
-  it('should ignore items blacklisted as regexp', function () {
-    root.innerHTML = '<div class="aaa bbb"></div>';
-    const options = {class_blacklist: [/a+/]};
-    const result = getClassSelectors(root.firstChild, options);
-    assert.lengthOf(result, 1);
-    assert.include(result, '.bbb');
-  });
-
   it('should ignore unnecessary whitespace', function () {
     root.innerHTML = '<div class="   aaa   bbb   ccc   "></div>';
     const result = getClassSelectors(root.firstChild);

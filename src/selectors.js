@@ -1,86 +1,89 @@
 import isElement from 'iselement';
-import {isBlacklisted, sanitizeSelectorItem, testSelector} from './utilities';
+import {sanitizeSelectorItem, testSelector} from './utilities';
+import {ATTRIBUTE_BLACKLIST, INVALID_ID_RE} from './constants';
+
+/**
+ * @typedef {Array<string>} selectors_list
+ */
+
+/**
+ * @typedef {Object} attribute_node
+ * @param {string} attribute_node.nodeName
+ * @param {string} attribute_node.nodeValue
+ */
 
 /**
  * Get tag selector for an element.
  * @param {Element} element
- * @return {string}
+ * @return {selectors_list}
  */
 export function getTagSelector (element) {
-  return sanitizeSelectorItem(element.tagName.toLowerCase());
+  return [sanitizeSelectorItem(element.tagName.toLowerCase())];
 }
 
-const default_id_blacklist = [
-  // empty or not set
-  /^$/,
-  // containing whitespace
-  /\s/,
-  // beginning with a number
-  /^\d/,
-];
-
-export function getIdSelector (element, {
-  prefix_tag = false,
-  id_blacklist = [],
-} = {}) {
-  const blacklist = [].concat(default_id_blacklist, id_blacklist);
+/**
+ * Get ID selector for an element.
+ * @param {Element} element
+ * @return {selectors_list}
+ */
+export function getIdSelector (element) {
   const id = element.getAttribute('id') || '';
-
-  if (!isBlacklisted(id, blacklist)) {
-    const result_prefix = prefix_tag ? getTagSelector(element) : '';
-    const selector = `${result_prefix}#${sanitizeSelectorItem(id)}`;
-    if (testSelector(element, selector, element.ownerDocument)) {
-      return selector;
-    }
-  }
-
-  return null;
+  const selector = `#${sanitizeSelectorItem(id)}`;
+  return (
+    !INVALID_ID_RE.test(id)
+    && testSelector(element, selector, element.ownerDocument)
+  )
+    ? [selector]
+    : [];
 }
 
-const default_class_blacklist = [
-  // empty or not set
-  /^$/,
-];
-
-export function getClassSelectors (element, {
-  class_blacklist = [],
-} = {}) {
-  const blacklist = [].concat(default_class_blacklist, class_blacklist);
+/**
+ * Get class selectors for an element.
+ * @param {Element} element
+ * @return {selectors_list}
+ */
+export function getClassSelectors (element) {
   return (element.getAttribute('class') || '')
     .trim()
     .split(/\s+/)
-    .filter((item) => !isBlacklisted(item, blacklist))
+    .filter((item) => item !== '')
     .map((item) => `.${sanitizeSelectorItem(item)}`);
 }
 
-const default_attribute_blacklist = [
-  'class',
-  'id',
-];
-
-export function getAttributeSelectors (element, {
-  attribute_blacklist = [],
-  attribute_whitelist = [],
-} = {}) {
-  const blacklist = [].concat(default_attribute_blacklist, attribute_blacklist);
-
-  const attributes_list = new Map();
-
-  [...element.attributes].forEach(({nodeName, nodeValue}) => {
-    if (!blacklist.includes(nodeName)) {
-      attributes_list.set(nodeName, nodeValue);
-    }
-  });
-
-  attribute_whitelist.forEach((key) => {
-    if (element.hasAttribute(key)) {
-      attributes_list.set(key, element.getAttribute(key));
-    }
-  });
-
-  return [...attributes_list].map(([key, value]) => `[${key}='${sanitizeSelectorItem(value)}']`);
+/**
+ * Get attribute selectors for an element.
+ * @param {attribute_node} attribute_node
+ * @return {string}
+ */
+function attributeNodeToSelector ({nodeName, nodeValue}) {
+  return `[${nodeName}='${sanitizeSelectorItem(nodeValue)}']`;
 }
 
+/**
+ * Checks whether attribute should be used as a selector.
+ * @param {attribute_node} attribute_node
+ * @return {boolean}
+ */
+function isValidAttributeNode ({nodeName}) {
+  return !ATTRIBUTE_BLACKLIST.includes(nodeName);
+}
+
+/**
+ * Get attribute selectors for an element.
+ * @param {Element} element
+ * @return {selectors_list}
+ */
+export function getAttributeSelectors (element) {
+  return [...element.attributes]
+    .filter(isValidAttributeNode)
+    .map(attributeNodeToSelector);
+}
+
+/**
+ * Get nth-child selector for an element.
+ * @param {Element} element
+ * @return {selectors_list}
+ */
 export function getNthChildSelector (element) {
   const parent = element.parentNode;
 
@@ -91,11 +94,11 @@ export function getNthChildSelector (element) {
       if (isElement(siblings[i])) {
         counter += 1;
         if (siblings[i] === element) {
-          return `:nth-child(${counter})`;
+          return [`:nth-child(${counter})`];
         }
       }
     }
   }
 
-  return null;
+  return [];
 }

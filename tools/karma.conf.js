@@ -24,5 +24,7 @@ module.exports = (config) => {
     reporters: [
       'mocha',
     ],
+    singleRun: true,
+    autoWatch: false
   });
 };

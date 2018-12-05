@@ -1,5 +1,18 @@
 import isElement from 'iselement';
+import {
+  getAttributeSelectors,
+  getClassSelectors,
+  getIdSelector,
+  getNthChildSelector,
+  getTagSelector,
+} from './selectors';
+import {DEFAULT_OPTIONS} from './constants';
 
+/**
+ * Creates all possible combinations of items in the list.
+ * @param {Array} items
+ * @return {Array}
+ */
 export function getCombinations (items = []) {
   // see the empty first result, will be removed later
   const result = [[]];
@@ -24,10 +37,10 @@ export function getCombinations (items = []) {
  * Check whether element is matched uniquely by selector.
  * @param element
  * @param selector
- * @param root
+ * @param [root]
  * @return {boolean}
  */
-export function testSelector (element, selector, root = document.body) {
+export function testSelector (element, selector, root = document) {
   const result = root.querySelectorAll(selector);
   return (result.length === 1 && result[0] === element);
 }
@@ -38,7 +51,7 @@ export function testSelector (element, selector, root = document.body) {
  * @param {Element} root
  * @return {Array.<Element>}
  */
-export function getParents (element, root = document.body) {
+export function getParents (element, root = document.querySelector(':root')) {
   const result = [];
   let parent = element;
   while (isElement(parent) && parent !== root) {
@@ -100,4 +113,60 @@ export function isBlacklisted (item, blacklist = []) {
  */
 function sanitizeBlacklistItem (item) {
   return (typeof item === 'string') ? new RegExp(item) : item;
+}
+
+export const selectorTypeGetters = {
+  tag: getTagSelector,
+  id: getIdSelector,
+  class: getClassSelectors,
+  attribute: getAttributeSelectors,
+  nthchild: getNthChildSelector,
+};
+
+/**
+ * Returns list of selectors of given type for the element.
+ * @param {Element} element
+ * @param {string} selector_type
+ * @return {Array.<string>} - Always an array, even if the selector only allows single value (e.g. tag).
+ */
+export function getSelectorsByType (element, selector_type) {
+  return (selectorTypeGetters[selector_type] || (() => []))(element);
+}
+
+/**
+ * Tries to generate unique selector for the element within it's parent.
+ * @param {Element} element
+ * @param {css_selector_generator_options} options
+ * @return {string} Either unique selector or "*" if not possible.
+ */
+export function getUniqueSelectorWithinParent (element, options) {
+  const {
+    selectors,
+    combineWithinSelector,
+    include_tag
+  } = options;
+  const candidate_prefix = include_tag ? getTagSelector(element)[0] : '';
+  for (let i = 0; i < selectors.length; i++) {
+    const found_selectors = getSelectorsByType(element, selectors[i]);
+    const candidates = combineWithinSelector
+      ? getCombinations(found_selectors)
+      : found_selectors;
+    for (let j = 0; j < candidates.length; j++) {
+      const candidate = candidate_prefix + candidates[j];
+      if (testSelector(element, candidate, element.parentNode)) {
+        return candidate;
+      }
+    }
+  }
+  return '*';
+}
+
+/**
+ * Makes sure the options object contains all required keys.
+ * @param {Object} [custom_options]
+ * @return {css_selector_generator_options}
+ */
+export function sanitizeOptions (custom_options = {}) {
+  // TODO
+  return Object.assign({}, DEFAULT_OPTIONS, custom_options);
 }
