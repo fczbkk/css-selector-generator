@@ -65,7 +65,9 @@ describe('CssSelectorGenerator', function () {
 
   });
 
-  describe('tag prefix', function () {
+  describe.skip('tag prefix', function () {
+
+    // TODO
 
     it('should prefix tag to each selector', function () {
       root.innerHTML = '<div class="aaa bbb"><div class="aaa"></div></div>';

@@ -9,7 +9,7 @@
   "scripts": {
     "test": "karma start ./tools/karma.conf.js",
     "dev": "npm run test -- --no-single-run --auto-watch",
-    "prebuild": "rimraf ./build",
+    "prebuild": "npm run lint:build && rimraf ./build",
     "build": "webpack --config ./tools/webpack.build.js",
     "lint": "eslint ./src/**/*.js ./test/**/*.js ./tools/**/*.js",
     "lint:build": "npm run eslint -- --max-warnings 0",
@@ -41,6 +41,7 @@
   },
   "homepage": "https://github.com/fczbkk/css-selector-generator/",
   "dependencies": {
+    "cartesian": "^1.0.1",
     "iselement": "^1.1.4"
   }
 }

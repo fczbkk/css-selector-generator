@@ -74,6 +74,7 @@ function isValidAttributeNode ({nodeName}) {
  * @return {selectors_list}
  */
 export function getAttributeSelectors (element) {
+  // TODO add default attributes blacklist (e.g. "ng-*")
   return [...element.attributes]
     .filter(isValidAttributeNode)
     .map(attributeNodeToSelector);
