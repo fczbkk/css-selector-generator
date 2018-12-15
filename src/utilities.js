@@ -105,9 +105,6 @@ export const selectorTypeGetters = {
  */
 export function getSelectorsByType (element, selector_type) {
   return (selectorTypeGetters[selector_type] || (() => []))(element);
-  // TODO whitelist
-  // TODO blacklist
-  // TODO combinations within selector
 }
 
 /**
@@ -128,8 +125,8 @@ export function filterSelectors (list = [], blacklist_re) {
  */
 export function orderSelectors (list = [], whitelist_re) {
   return list.sort((a, b) => {
-    const a_is_whitelisted = whitelist_re.test(a.selector);
-    const b_is_whitelisted = whitelist_re.test(b.selector);
+    const a_is_whitelisted = whitelist_re.test(a);
+    const b_is_whitelisted = whitelist_re.test(b);
     if (a_is_whitelisted && !b_is_whitelisted) {return -1;}
     if (!a_is_whitelisted && b_is_whitelisted) {return 1;}
     return 0;
@@ -170,11 +167,12 @@ export function getUniqueSelectorWithinParent (element, options) {
     ? getCombinations(selectors)
     : selectors.map(item => [item]);
 
+
   // all_selectors = all_selectors.concat(type_selectors);
   const all_selectors = flattenArraay(
     selector_type_combinations
       .map((item) => constructSelectors(item, selectors_by_type))
-      .filter((item) => item !== '')
+      .filter((item) => item !== ''),
   );
 
   for (let i = 0; i < all_selectors.length; i++) {
