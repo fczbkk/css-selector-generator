@@ -6,7 +6,7 @@ import {
   getNthChildSelector,
   getTagSelector,
 } from './selectors';
-import {DEFAULT_OPTIONS} from './constants';
+import {DEFAULT_OPTIONS, SELECTOR_PATTERN} from './constants';
 import cartesian from 'cartesian';
 
 /**
@@ -167,9 +167,7 @@ export function getUniqueSelectorWithinParent (element, options) {
     ? getCombinations(selectors)
     : selectors.map(item => [item]);
 
-
-  // all_selectors = all_selectors.concat(type_selectors);
-  const all_selectors = flattenArraay(
+  const all_selectors = flattenArray(
     selector_type_combinations
       .map((item) => constructSelectors(item, selectors_by_type))
       .filter((item) => item !== ''),
@@ -187,11 +185,14 @@ export function getUniqueSelectorWithinParent (element, options) {
   return '*';
 }
 
-function flattenArraay (input) {
+/**
+ * Converts array of arrays into a flat array.
+ * @param {Array.<Array>} input
+ * @return {Array}
+ */
+function flattenArray (input) {
   return [].concat(...input);
 }
-
-const selector_pattern = ['tag', 'id', 'class', 'attribute', 'nthchild'];
 
 function constructSelectors (selector_types, selectors_by_type) {
   const data = {};
@@ -213,14 +214,19 @@ export function constructSelectorType (selector_type, selectors_data) {
 }
 
 export function constructSelector (selectors_data = {}) {
-  return selector_pattern
+  return SELECTOR_PATTERN
     .map((type) => constructSelectorType(type, selectors_data))
     .join('');
 }
 
 export function convertMatchListToRegExp (list = []) {
   const combined_re = list
-    .map((item) => {return typeof item === 'string' ? item : item.source;})
+    .map((item) => {
+      return (typeof item === 'string')
+        ? item.replace(/[|\\{}()[\]^$+?.]/g, '\\$&')
+          .replace(/\*/g, '.*')
+        : item.source;
+    })
     .join('|');
   return new RegExp(combined_re);
 }

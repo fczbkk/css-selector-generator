@@ -20,9 +20,9 @@ describe('options: whitelist', function () {
   });
 
   it('should understand wildcards', function () {
-    root.innerHTML = '<div class="aaa bbb"></div>';
-    const result = getCssSelector(root.firstChild, {whitelist: ['.*b']});
-    assert.equal(result, '.bbb');
+    root.innerHTML = '<div class="aaa abc"></div>';
+    const result = getCssSelector(root.firstChild, {whitelist: ['.*b*']});
+    assert.equal(result, '.abc');
   });
 
   it('should understand regexp', function () {
