@@ -45,4 +45,10 @@ describe('selector - attribute', function () {
     assert.include(result, '[aaa=\'bbb\\3A ccc\']');
   });
 
+  it('should ignore Angular attributes', function () {
+    root.innerHTML = '<div ng-aaa="bbb"></div>';
+    const result = getAttributeSelectors(root.firstChild);
+    assert.equal(result.length, 0);
+  });
+
 });

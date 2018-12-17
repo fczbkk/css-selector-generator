@@ -1,6 +1,10 @@
 import isElement from 'iselement';
-import {sanitizeSelectorItem, testSelector} from './utilities';
-import {ATTRIBUTE_BLACKLIST, INVALID_ID_RE} from './constants';
+import {
+  convertMatchListToRegExp,
+  sanitizeSelectorItem,
+  testSelector,
+} from './utilities';
+import {INVALID_ID_RE} from './constants';
 
 /**
  * @typedef {Array<string>} selectors_list
@@ -59,13 +63,23 @@ function attributeNodeToSelector ({nodeName, nodeValue}) {
   return `[${nodeName}='${sanitizeSelectorItem(nodeValue)}']`;
 }
 
+// List of attributes to be ignored. These are handled by different selector types.
+export const ATTRIBUTE_BLACKLIST = convertMatchListToRegExp([
+  'class',
+  'id',
+  // Angular attributes
+  'ng-*'
+]);
+
+
 /**
  * Checks whether attribute should be used as a selector.
  * @param {attribute_node} attribute_node
  * @return {boolean}
  */
 function isValidAttributeNode ({nodeName}) {
-  return !ATTRIBUTE_BLACKLIST.includes(nodeName);
+  // TODO add default attributes blacklist (e.g. "ng-*")
+  return !ATTRIBUTE_BLACKLIST.test(nodeName);
 }
 
 /**
@@ -74,7 +88,6 @@ function isValidAttributeNode ({nodeName}) {
  * @return {selectors_list}
  */
 export function getAttributeSelectors (element) {
-  // TODO add default attributes blacklist (e.g. "ng-*")
   return [...element.attributes]
     .filter(isValidAttributeNode)
     .map(attributeNodeToSelector);

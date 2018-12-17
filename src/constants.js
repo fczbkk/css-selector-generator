@@ -18,11 +18,5 @@ export const INVALID_ID_RE = new RegExp([
   '^\\d', // begins with a number
 ].join('|'));
 
-// List of attributes to be ignored. These are handled by different selector types.
-export const ATTRIBUTE_BLACKLIST = [
-  'class',
-  'id',
-];
-
 // Order in which a combined selector is constructed.
 export const SELECTOR_PATTERN = ['tag', 'id', 'class', 'attribute', 'nthchild'];
