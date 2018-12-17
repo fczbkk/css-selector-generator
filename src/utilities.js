@@ -160,7 +160,7 @@ export function getUniqueSelectorWithinParent (element, options) {
 
     selectors_by_type[selector_type] = combineWithinSelector
       ? getCombinations(found_selectors)
-      : found_selectors;
+      : found_selectors.map((item) => [item]);
   }
 
   const selector_type_combinations = combineBetweenSelectors
