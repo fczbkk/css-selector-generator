@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {getNthChildSelector} from '../src/selectors';
+import {getNthChildSelector} from '../src/selector-nth-child';
 
 describe('selector - nth-child', function () {
 

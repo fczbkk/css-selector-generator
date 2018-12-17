@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {getTagSelector} from './../src/selectors';
+import {getTagSelector} from '../src/selector-tag';
 
 describe('selector - tag', function () {
 

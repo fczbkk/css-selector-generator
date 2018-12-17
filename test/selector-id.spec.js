@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {getIdSelector} from '../src/selectors';
+import {getIdSelector} from '../src/selector-id';
 
 describe('selector - ID', function () {
 

@@ -1,11 +1,8 @@
-import {
-  getParents,
-  getUniqueSelectorWithinParent,
-  sanitizeOptions,
-  testSelector,
-} from './utilities';
-import {getFallbackSelector, getNthChildSelector} from './selectors';
+import {getUniqueSelectorWithinParent} from './utilities-selectors';
+import {getFallbackSelector} from './selector-fallback';
 import {DESCENDANT_OPERATOR} from './constants';
+import {sanitizeOptions} from './utilities-options';
+import {getParents, testSelector} from './utilities-dom';
 
 /**
  * Generates unique CSS selector for an element.
@@ -31,6 +28,8 @@ export function getCssSelector (element, custom_options = {}) {
   return getFallbackSelector(element, options.root);
 }
 
+export default getCssSelector;
+
 /**
  * @typedef {Object} css_selector_generator_options
  * @property {Array.<css_selector_type>} [selectors] - List of selector types to use. They will be prioritised by their order.
@@ -39,6 +38,7 @@ export function getCssSelector (element, custom_options = {}) {
  * @property {Element} [root] - Root element inside which the selector will be generated. If not set, the document root will be used.
  * @property {boolean} [combineWithinSelector = true] - If set to `false`, the generator will not test combinations of selectors of single type (e.g. multiple class selectors).
  * @property {boolean} [combineBetweenSelectors = false] - If set to `true`, the generator will try to test combinations of selectors of different types. Warning: Turning this on may cause performance issues.
+ * @property {boolean} [includeTag = false] - If set to `true`, all generated selectors will include the TAG part. Even if tag selector type is not included in `selectors` option.
  */
 
 /**

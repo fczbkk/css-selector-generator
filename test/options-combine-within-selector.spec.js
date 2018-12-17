@@ -20,7 +20,7 @@ describe('options: combineWithinSelector', function () {
     root.innerHTML = html_combined_classnames;
     const result = getCssSelector(
       root.firstChild,
-      {combineWithinSelector: true},
+      {combineWithinSelector: true}
     );
     assert.equal(result, '.aaa.bbb');
   });
@@ -29,7 +29,7 @@ describe('options: combineWithinSelector', function () {
     root.innerHTML = html_combined_classnames;
     const result = getCssSelector(
       root.firstChild,
-      {combineWithinSelector: false},
+      {combineWithinSelector: false}
     );
     assert.notEqual(result, '.aaa.bbb');
     assert.notEqual(result, '.bbb.aaa');

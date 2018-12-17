@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {getCombinations} from '../src/utilities';
+import {getCombinations} from '../src/utilities-data';
 
 describe('utilities - getCombinations', function () {
 

@@ -20,7 +20,7 @@ describe('options: combineBetweenSelectors', function () {
     root.innerHTML = html_non_unique_class_and_tag;
     const result = getCssSelector(
       root.firstChild,
-      {combineBetweenSelectors: true},
+      {combineBetweenSelectors: true}
     );
     assert.equal(result, 'p.aaa');
   });
@@ -29,7 +29,7 @@ describe('options: combineBetweenSelectors', function () {
     root.innerHTML = html_non_unique_class_and_tag;
     const result = getCssSelector(
       root.firstChild,
-      {combineBetweenSelectors: false},
+      {combineBetweenSelectors: false}
     );
     assert.notEqual(result, 'p.aaa');
   });

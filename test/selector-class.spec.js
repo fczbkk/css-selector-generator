@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {getClassSelectors} from '../src/selectors';
+import {getClassSelectors} from '../src/selector-class';
 
 describe('selector - class', function () {
 
