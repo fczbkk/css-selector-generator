@@ -114,7 +114,7 @@ export function getSelectorsByType (element, selector_type) {
  * @return {Array.<string>}
  */
 export function filterSelectors (list = [], blacklist_re) {
-  return list.filter((item) => !blacklist_re.test(item.selector));
+  return list.filter((item) => !blacklist_re.test(item));
 }
 
 /**
@@ -224,7 +224,7 @@ export function convertMatchListToRegExp (list = []) {
     .map((item) => {
       return (typeof item === 'string')
         ? item.replace(/[|\\{}()[\]^$+?.]/g, '\\$&')
-          .replace(/\*/g, '.*')
+          .replace(/\*/g, '.+')
         : item.source;
     })
     .join('|');
