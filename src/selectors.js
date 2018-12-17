@@ -1,10 +1,11 @@
 import isElement from 'iselement';
 import {
   convertMatchListToRegExp,
+  getParents,
   sanitizeSelectorItem,
   testSelector,
 } from './utilities';
-import {INVALID_ID_RE} from './constants';
+import {DESCENDANT_OPERATOR, INVALID_ID_RE, ROOT_SELECTOR} from './constants';
 
 /**
  * @typedef {Array<string>} selectors_list
@@ -115,4 +116,11 @@ export function getNthChildSelector (element) {
   }
 
   return [];
+}
+
+export function getFallbackSelector (element, root) {
+  return getParents(element, root)
+    .map((element) => getNthChildSelector(element)[0])
+    .reverse()
+    .join(DESCENDANT_OPERATOR);
 }

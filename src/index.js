@@ -4,7 +4,7 @@ import {
   sanitizeOptions,
   testSelector,
 } from './utilities';
-import {getNthChildSelector} from './selectors';
+import {getFallbackSelector, getNthChildSelector} from './selectors';
 import {DESCENDANT_OPERATOR} from './constants';
 
 /**
@@ -28,9 +28,7 @@ export function getCssSelector (element, custom_options = {}) {
   }
 
   // use nth-child selector chain to root as fallback
-  return parents
-    .map((element) => getNthChildSelector(element)[0])
-    .join(DESCENDANT_OPERATOR);
+  return getFallbackSelector(element, options.root);
 }
 
 /**

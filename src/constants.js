@@ -20,3 +20,5 @@ export const INVALID_ID_RE = new RegExp([
 
 // Order in which a combined selector is constructed.
 export const SELECTOR_PATTERN = ['tag', 'id', 'class', 'attribute', 'nthchild'];
+
+export const ROOT_SELECTOR = ':root';
