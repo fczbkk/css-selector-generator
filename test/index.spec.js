@@ -65,20 +65,6 @@ describe('CssSelectorGenerator', function () {
 
   });
 
-  describe.skip('tag prefix', function () {
-
-    // TODO
-
-    it('should prefix tag to each selector', function () {
-      root.innerHTML = '<div class="aaa bbb"><div class="aaa"></div></div>';
-      const result = getCssSelector(root.firstChild.firstChild, {
-        include_tag: true
-      });
-      assert.equal(result, 'div.bbb > div.aaa');
-    });
-
-  });
-
   describe('fallback', function () {
 
     it('should use nth-child descendants', function () {

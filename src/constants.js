@@ -3,7 +3,7 @@ export const DESCENDANT_OPERATOR = ' > ';
 export const DEFAULT_OPTIONS = {
   selectors: ['id', 'class', 'tag', 'attribute'],
   // if set to true, always include tag name
-  include_tag: false,
+  includeTag: false,
   whitelist: [],
   blacklist: [],
   root: document.querySelector(':root'),

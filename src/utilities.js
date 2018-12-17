@@ -144,7 +144,7 @@ export function getUniqueSelectorWithinParent (element, options) {
     selectors,
     combineWithinSelector,
     combineBetweenSelectors,
-    // include_tag,
+    includeTag,
     blacklist,
     whitelist,
   } = options;
@@ -154,8 +154,13 @@ export function getUniqueSelectorWithinParent (element, options) {
 
   const selectors_by_type = {};
 
-  for (let i = 0; i < selectors.length; i++) {
-    const selector_type = selectors[i];
+  const selectors_to_get = [...selectors];
+  if (includeTag && !selectors_to_get.includes('tag')) {
+    selectors_to_get.push('tag');
+  }
+
+  for (let i = 0; i < selectors_to_get.length; i++) {
+    const selector_type = selectors_to_get[i];
     const found_selectors = orderSelectors(filterSelectors(getSelectorsByType(element, selector_type), blacklist_re), whitelist_re);
 
     selectors_by_type[selector_type] = combineWithinSelector
@@ -166,6 +171,14 @@ export function getUniqueSelectorWithinParent (element, options) {
   const selector_type_combinations = combineBetweenSelectors
     ? getCombinations(selectors)
     : selectors.map(item => [item]);
+
+  if (includeTag) {
+    selector_type_combinations.forEach((item) => {
+      if (!item.includes('tag')) {
+        item.push('tag')
+      }
+    })
+  }
 
   const all_selectors = flattenArray(
     selector_type_combinations
@@ -179,8 +192,6 @@ export function getUniqueSelectorWithinParent (element, options) {
       return selector;
     }
   }
-
-  // TODO tag prefix should be ignored if tag selector is used
 
   return '*';
 }
