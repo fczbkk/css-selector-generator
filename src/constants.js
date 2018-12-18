@@ -8,7 +8,7 @@ export const DEFAULT_OPTIONS = {
   blacklist: [],
   root: document.querySelector(':root'),
   combineWithinSelector: true,
-  combineBetweenSelectors: false,
+  combineBetweenSelectors: true,
 };
 
 // RegExp that will match invalid patterns that can be used in ID attribute.

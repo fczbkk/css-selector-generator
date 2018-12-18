@@ -36,8 +36,8 @@ export default getCssSelector;
  * @property {Array.<RegExp | string>} [whitelist] - List of selectors that should be prioritised.
  * @property {Array.<RegExp | string>} [blacklist] - List of selectors that should be ignored.
  * @property {Element} [root] - Root element inside which the selector will be generated. If not set, the document root will be used.
- * @property {boolean} [combineWithinSelector = true] - If set to `false`, the generator will not test combinations of selectors of single type (e.g. multiple class selectors).
- * @property {boolean} [combineBetweenSelectors = false] - If set to `true`, the generator will try to test combinations of selectors of different types. Warning: Turning this on may cause performance issues.
+ * @property {boolean} [combineWithinSelector = true] - If set to `true`, the generator will test combinations of selectors of single type (e.g. multiple class selectors).
+ * @property {boolean} [combineBetweenSelectors = true] - If set to `true`, the generator will try to test combinations of selectors of different types (e.g. tag + class name).
  * @property {boolean} [includeTag = false] - If set to `true`, all generated selectors will include the TAG part. Even if tag selector type is not included in `selectors` option.
  */
 
