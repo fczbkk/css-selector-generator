@@ -6,22 +6,17 @@ It also generates shorter selectors and is faster and/or more robust than many o
 
 ## Install
 
-Add the library to your project via NPM...
+Add the library to your project via NPM or Yarn.
 
 ```shell
 npm install css-selector-generator
-```
-
-...or Yarn.
-
-```shell
 yarn add css-selector-generator
 ```
 
 Then include it in your source code:
 
 ```javascript
-import getCssSelector from 'css-selector-generator'
+import getCssSelector from 'css-selector-generator';
 ``` 
 
 ## How to use
@@ -30,13 +25,175 @@ Simplest way to use it is to provide an element reference, without any options.
 
 ```html
 <body>
+	<!-- targetElement -->
 	<div class="myElement"></div>
 </body>
 ```
 
 ```javascript
-getCssSelector(document.body.firstElementChild)
+getCssSelector(targetElement);
 // ".myElement"
+```
+
+Typical example is to create a selector for any element that the user clicks on:
+
+```javascript
+// track every click
+document.body.addEventListener('click', function (event) {
+  // get reference to the element user clicked on
+  const element = event.target;
+  // get unique CSS selector for that element
+  const selector = getCssSelector(element);
+  // do whatever you need to do with that selector
+  console.log('selector', selector);
+});
+```
+
+### Selector types
+
+You can choose which types of selectors do you want to use:
+
+```html
+<body>
+	<!-- targetElement -->
+	<div class="myElement"></div>
+</body>
+```
+
+```javascript
+getCssSelector(targetElement, {selectors: ['class']});
+// ".myElement"
+getCssSelector(targetElement, {selectors: ['tag']});
+// "div"
+```
+
+Order of selector types defines their priority:
+
+```javascript
+getCssSelector(targetElement, {selectors: ['class', 'tag']});
+// ".myElement"
+getCssSelector(targetElement, {selectors: ['tag', 'class']});
+// "div"
+```
+
+### Root element
+
+You can define root element, from which the selector will be created. If root element is not defined, document root will be used:
+
+```html
+<body>
+	<div class="myRootElement">
+		<!-- targetElement -->
+		<div class="myElement"></div>
+	</div>
+</body>
+```
+
+```javascript
+getCssSelector(targetElement)
+// ".myRootElement > .myElement"
+getCssSelector(targetElement, {root: document.querySelector('.myRootElement')});
+// ".myElement"
+```
+
+### Blacklist
+
+If you want to ignore some selectors, you can put them on the blacklist. Blacklist is an array that can contain either regular expressions, or strings. In strings, you can use an asterisk (`*`) as a wildcard that will match any number of any characters.
+
+```html
+<body>
+	<!-- targetElement -->
+	<div class="firstClass secondClass"></div>
+</body>
+```
+
+```javascript
+getCssSelector(targetElement, {blacklist: ['.firstClass']});
+// ".secondClass"
+getCssSelector(targetElement, {blacklist: ['.first*']});
+// ".secondClass"
+getCssSelector(targetElement, {blacklist: [/first/]});
+// ".secondClass"
+```
+
+### Whitelist
+
+Same as `blacklist` option, but instead of ignoring matching selectors, they will be prioritised.
+
+```html
+<body>
+	<!-- targetElement -->
+	<div class="firstClass secondClass"></div>
+</body>
+```
+
+```javascript
+getCssSelector(targetElement, {whitelist: ['.secondClass']});
+// ".secondClass"
+getCssSelector(targetElement, {whitelist: ['.second*']});
+// ".secondClass"
+getCssSelector(targetElement, {whitelist: [/second/]});
+// ".secondClass"
+```
+
+### Combine within selector
+
+If set to `true`, the generator will try to look for combinations of selectors within a single type (usually class names) to get better overall selector.
+
+```html
+<body>
+	<!-- targetElement -->
+	<div class="aaa bbb"></div>
+	<div class="aaa ccc"></div>
+	<div class="bbb ccc"></div>
+</body>
+```
+
+```javascript
+getCssSelector(targetElement, {combineWithinSelector: false});
+// "body > :nth-child(1)" - in this case no single class name is unique
+getCssSelector(targetElement, {combineWithinSelector: true});
+// ".aaa.bbb"
+```
+
+This option is set to `true` by default. It can be set to `false` for performance reasons.
+
+### Combine between selectors
+
+If set to `true`, the generator will try to look for combinations of selectors between various types (e.g. tag name + class name) to get better overall selector.
+
+```html
+<body>
+	<!-- targetElement -->
+	<div class="aaa"></div>
+	<div class="bbb"></div>
+	<p class="aaa"></div>
+</body>
+```
+
+```javascript
+getCssSelector(targetElement, {combineBetweenSelectors: false});
+// "body > :nth-child(1)" - in this case no single class name or tag name is unique
+getCssSelector(targetElement, {combineBetweenSelectors: true});
+// "div.aaa"
+```
+
+This option is set to `true` by default. It can be set to `false` for performance reasons.
+
+### Include tag
+
+This option will add tag selector type to every selector:
+
+```html
+<body>
+	<!-- targetElement -->
+	<div class="myElement"></div>
+</body>
+```
+
+```javascript
+getCssSelector(targetElement, {includeTag: true});
+// "div.myElement"
 ```
 
 ## Documentation
@@ -82,7 +239,21 @@ Type: (`"id"` \| `"class"` \| `"tag"` \| `"attribute"` \| `"nthchild"`)
 
 ## Migrate from v1 to v2
 
-TODO
+Instead of creating a class and then calling the `getSelector()` method, now you just call a function `getCssSelector()` and provide it with element reference and options:
+
+```javascript
+// v1
+const mySelectorGenerator = new CssSelectorGenerator({/* custom options */});
+mySelectorGenerator.getSelector(elementReference);
+
+// v2
+getCssSelector(elementReference, {/* custom options */});
+```
+
+- Options `id_blacklist`, `class_blacklist` and `attribute_blacklist` are replaced with single `blacklist` option, which is now applied to all selector types.
+- Option `attribute_whitelist` is replaced with `whitelist` option, which is now applied to all selector types.
+- Option `prefix_tag` is renamed to `includeTag`.
+- Option `quote_attribute_when_needed` is removed. The attribute selectors are quoted automatically.
 
 ## Bug reports, feature requests and contact
 
