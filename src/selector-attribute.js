@@ -1,4 +1,3 @@
-// List of attributes to be ignored. These are handled by different selector types.
 import {sanitizeSelectorItem} from './utilities-selectors';
 import {convertMatchListToRegExp} from './utilities-data';
 
@@ -7,6 +6,14 @@ import {convertMatchListToRegExp} from './utilities-data';
  * @param {string} attribute_node.nodeName
  * @param {string} attribute_node.nodeValue
  */
+
+// List of attributes to be ignored. These are handled by different selector types.
+export const ATTRIBUTE_BLACKLIST = convertMatchListToRegExp([
+  'class',
+  'id',
+  // Angular attributes
+  'ng-*',
+]);
 
 /**
  * Get attribute selectors for an element.
@@ -17,20 +24,12 @@ function attributeNodeToSelector ({nodeName, nodeValue}) {
   return `[${nodeName}='${sanitizeSelectorItem(nodeValue)}']`;
 }
 
-export const ATTRIBUTE_BLACKLIST = convertMatchListToRegExp([
-  'class',
-  'id',
-  // Angular attributes
-  'ng-*',
-]);
-
 /**
  * Checks whether attribute should be used as a selector.
  * @param {attribute_node} attribute_node
  * @return {boolean}
  */
 function isValidAttributeNode ({nodeName}) {
-  // TODO add default attributes blacklist (e.g. "ng-*")
   return !ATTRIBUTE_BLACKLIST.test(nodeName);
 }
 

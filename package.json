@@ -5,7 +5,7 @@
   "description": "JavaScript object that creates unique CSS selector for given element.",
   "author": "Riki Fridrich <riki@fczbkk.com> (http://fczbkk.com)",
   "license": "MIT",
-  "main": "build/css-selector-generator.js",
+  "main": "build/index.js",
   "scripts": {
     "test": "karma start ./tools/karma.conf.js",
     "dev": "npm run test -- --no-single-run --auto-watch",
@@ -13,7 +13,10 @@
     "build": "webpack --config ./tools/webpack.build.js",
     "lint": "eslint ./src/**/*.js ./test/**/*.js ./tools/**/*.js",
     "lint:build": "npm run eslint -- --max-warnings 0",
-    "doc": "documentation readme ./src/index.js -s 'Documentation' --shallow"
+    "doc": "documentation readme ./src/index.js -s 'Documentation' --shallow",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "postversion": "git push && git push --tags && npm publish --access=public",
+    "version": "npm run build && npm run docs && npm run changelog && git add -A"
   },
   "devDependencies": {
     "@babel/core": "^7.1.6",
@@ -21,6 +24,7 @@
     "@fczbkk/eslint-config": "^1.0.0",
     "babel-loader": "^8.0.4",
     "chai": "^4.2.0",
+    "conventional-changelog-cli": "^2.0.11",
     "documentation": "^8.1.2",
     "eslint": "^5.9.0",
     "karma": "^3.1.1",
