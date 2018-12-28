@@ -19,4 +19,11 @@ export const INVALID_ID_RE = new RegExp([
 ].join('|'));
 
 // Order in which a combined selector is constructed.
-export const SELECTOR_PATTERN = ['tag', 'id', 'class', 'attribute', 'nthchild'];
+export const SELECTOR_PATTERN = [
+  'nthoftype',
+  'tag',
+  'id',
+  'class',
+  'attribute',
+  'nthchild'
+];

@@ -17,7 +17,7 @@ Then include it in your source code:
 
 ```javascript
 import getCssSelector from 'css-selector-generator';
-``` 
+```
 
 ## How to use
 
@@ -229,13 +229,13 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 -   `whitelist` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;([RegExp](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp) \| [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String))>?** List of selectors that should be prioritised.
 -   `blacklist` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;([RegExp](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp) \| [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String))>?** List of selectors that should be ignored.
 -   `root` **[Element](https://developer.mozilla.org/docs/Web/API/Element)?** Root element inside which the selector will be generated. If not set, the document root will be used.
--   `combineWithinSelector` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** If set to `false`, the generator will not test combinations of selectors of single type (e.g. multiple class selectors).
--   `combineBetweenSelectors` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** If set to `true`, the generator will try to test combinations of selectors of different types. Warning: Turning this on may cause performance issues.
+-   `combineWithinSelector` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** If set to `true`, the generator will test combinations of selectors of single type (e.g. multiple class selectors).
+-   `combineBetweenSelectors` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** If set to `true`, the generator will try to test combinations of selectors of different types (e.g. tag + class name).
 -   `includeTag` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** If set to `true`, all generated selectors will include the TAG part. Even if tag selector type is not included in `selectors` option.
 
 ### css_selector_type
 
-Type: (`"id"` \| `"class"` \| `"tag"` \| `"attribute"` \| `"nthchild"`)
+Type: (`"id"` \| `"class"` \| `"tag"` \| `"attribute"` \| `"nthchild"` \| `"nthoftype"`)
 
 ## Migrate from v1 to v2
 
@@ -250,10 +250,10 @@ mySelectorGenerator.getSelector(elementReference);
 getCssSelector(elementReference, {/* custom options */});
 ```
 
-- Options `id_blacklist`, `class_blacklist` and `attribute_blacklist` are replaced with single `blacklist` option, which is now applied to all selector types.
-- Option `attribute_whitelist` is replaced with `whitelist` option, which is now applied to all selector types.
-- Option `prefix_tag` is renamed to `includeTag`.
-- Option `quote_attribute_when_needed` is removed. The attribute selectors are quoted automatically.
+-   Options `id_blacklist`, `class_blacklist` and `attribute_blacklist` are replaced with single `blacklist` option, which is now applied to all selector types.
+-   Option `attribute_whitelist` is replaced with `whitelist` option, which is now applied to all selector types.
+-   Option `prefix_tag` is renamed to `includeTag`.
+-   Option `quote_attribute_when_needed` is removed. The attribute selectors are quoted automatically.
 
 ## Bug reports, feature requests and contact
 

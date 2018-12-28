@@ -15,11 +15,15 @@ describe('selector - nth-child', function () {
 
   it('should generate nth-child selector', function () {
     root.innerHTML = '<div></div><div></div>';
-    assert.equal(getNthChildSelector(root.lastChild), ':nth-child(2)');
+    const result = getNthChildSelector(root.lastChild);
+    assert.equal(result.length, 1);
+    assert.equal(result[0], ':nth-child(2)');
   });
 
   it('should generate for BODY', function () {
-    assert.equal(getNthChildSelector(document.body), ':nth-child(2)');
+    const result = getNthChildSelector(document.body);
+    assert.equal(result.length, 1);
+    assert.equal(result[0], ':nth-child(2)');
   });
 
 });

@@ -42,5 +42,5 @@ export default getCssSelector;
  */
 
 /**
- * @typedef {'id' | 'class' | 'tag' | 'attribute' | 'nthchild'} css_selector_type
+ * @typedef {'id' | 'class' | 'tag' | 'attribute' | 'nthchild' | 'nthoftype'} css_selector_type
  */

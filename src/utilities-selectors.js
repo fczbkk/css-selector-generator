@@ -11,6 +11,7 @@ import {getTagSelector} from './selector-tag';
 import {getIdSelector} from './selector-id';
 import {getClassSelectors} from './selector-class';
 import {getAttributeSelectors} from './selector-attribute';
+import {getNthOfTypeSelector} from './selector-nth-of-type';
 
 export const ESCAPED_COLON = ':'
   .charCodeAt(0)
@@ -47,6 +48,7 @@ export const SELECTOR_TYPE_GETTERS = {
   class: getClassSelectors,
   attribute: getAttributeSelectors,
   nthchild: getNthChildSelector,
+  nthoftype: getNthOfTypeSelector,
 };
 
 /**
@@ -162,7 +164,7 @@ export function getSelectorsToGet (options) {
  * @return {Array.<string>}
  */
 function addTagTypeIfNeeded (list) {
-  return list.includes('tag')
+  return (list.includes('tag') || list.includes('nthoftype'))
     ? [...list]
     : [...list, 'tag'];
 }
