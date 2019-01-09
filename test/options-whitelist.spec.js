@@ -37,6 +37,15 @@ describe('options: whitelist', function () {
     assert.equal(result, '.bbb');
   });
 
+  it('should include whitelisted even if matched by blacklist', function () {
+    root.innerHTML = '<div class="aaa"></div>';
+    const result = getCssSelector(root.firstChild, {
+      whitelist: ['.aaa'],
+      blacklist: ['.aaa']
+    });
+    assert.equal(result, '.aaa');
+  });
+
   // TODO
   it.skip('should prioritise regardless of selector type', function () {
     root.innerHTML = '<p class="aaa"></p>';

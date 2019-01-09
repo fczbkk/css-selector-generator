@@ -65,10 +65,14 @@ export function getSelectorsByType (element, selector_type) {
  * Remove blacklisted selectors from list.
  * @param {Array.<string>} list
  * @param {RegExp} blacklist_re
+ * @param {RegExp} whitelist_re
  * @return {Array.<string>}
  */
-export function filterSelectors (list = [], blacklist_re) {
-  return list.filter((item) => !blacklist_re.test(item));
+export function filterSelectors (list = [], blacklist_re, whitelist_re) {
+  return list.filter((item) => (
+    whitelist_re.test(item)
+    || !blacklist_re.test(item)
+  ));
 }
 
 /**
@@ -126,7 +130,8 @@ export function getSelectorsList (element, options) {
 
   const reducer = (data, selector_type) => {
     const selectors_by_type = getSelectorsByType(element, selector_type);
-    const filtered_selectors = filterSelectors(selectors_by_type, blacklist_re);
+    const filtered_selectors =
+      filterSelectors(selectors_by_type, blacklist_re, whitelist_re);
     const found_selectors = orderSelectors(filtered_selectors, whitelist_re);
 
     data[selector_type] = combineWithinSelector

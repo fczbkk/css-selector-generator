@@ -49,6 +49,9 @@ export function wildcardToRegExp (input) {
  * @return {RegExp}
  */
 export function convertMatchListToRegExp (list = []) {
+  if (list.length === 0) {
+    return new RegExp('.^');
+  }
   const combined_re = list
     .map((item) => {
       return (typeof item === 'string')
