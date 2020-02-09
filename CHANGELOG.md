@@ -1,3 +1,17 @@
+# [2.0.0](https://github.com/fczbkk/css-selector-generator/compare/v1.2.0...v2.0.0) (2020-02-09)
+
+
+### Bug Fixes
+
+* whitelist takes precedence over blacklist ([a3b5dcd](https://github.com/fczbkk/css-selector-generator/commit/a3b5dcd1a74a83ea709e986defcd6b90316ef1dc))
+
+
+### Features
+
+* add nth-of-type selector type ([e8c5e01](https://github.com/fczbkk/css-selector-generator/commit/e8c5e0113c8911c258ff9e404f44237387bf9cae))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/fczbkk/css-selector-generator/compare/v1.1.0...v1.2.0) (2018-11-13)
 
