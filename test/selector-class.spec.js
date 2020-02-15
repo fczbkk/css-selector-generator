@@ -57,10 +57,10 @@ describe('selector - class', function () {
   });
 
   it('should ignore class names that start with a number', function () {
-    root.innerHTML = '<div class="1 1a a1"></div>'
-    const result = getClassSelectors(root.firstChild)
-    assert.lengthOf(result, 1)
+    root.innerHTML = '<div class="1 1a a1"></div>';
+    const result = getClassSelectors(root.firstChild);
+    assert.lengthOf(result, 1);
     assert.include(result, '.a1');
-  })
+  });
 
 });

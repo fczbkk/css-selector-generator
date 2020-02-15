@@ -1,5 +1,5 @@
 import {sanitizeSelectorItem} from './utilities-selectors';
-import { INVALID_CLASS_RE } from './constants'
+import {INVALID_CLASS_RE} from './constants';
 
 /**
  * Get class selectors for an element.
