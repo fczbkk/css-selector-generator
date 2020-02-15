@@ -1,3 +1,12 @@
+## [2.0.1](https://github.com/fczbkk/css-selector-generator/compare/v2.0.0...v2.0.1) (2020-02-15)
+
+
+### Bug Fixes
+
+* ignore class names not suitable for selectors ([ea0015d](https://github.com/fczbkk/css-selector-generator/commit/ea0015db2575d0df18b428ac97403ac7c6e1a2e2)), closes [#37](https://github.com/fczbkk/css-selector-generator/issues/37)
+
+
+
 # [2.0.0](https://github.com/fczbkk/css-selector-generator/compare/v1.2.0...v2.0.0) (2020-02-09)
 
 
