@@ -1,3 +1,12 @@
+# [2.1.0](https://github.com/fczbkk/css-selector-generator/compare/v2.0.1...v2.1.0) (2020-06-11)
+
+
+### Features
+
+* add support for virtual environments ([514027e](https://github.com/fczbkk/css-selector-generator/commit/514027e394ce0586e1699233b9f2e82c1c14e8b2)), closes [#40](https://github.com/fczbkk/css-selector-generator/issues/40)
+
+
+
 ## [2.0.1](https://github.com/fczbkk/css-selector-generator/compare/v2.0.0...v2.0.1) (2020-02-15)
 
 
