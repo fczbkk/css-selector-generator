@@ -1,12 +1,27 @@
 export const DESCENDANT_OPERATOR = ' > ';
 
+/**
+ * Constructs default options with proper root node for given element.
+ * @see {@link getRootNode} for further info
+ * @param {Element} element
+ * @returns {Object}
+ */
+export function constructDefaultOptions (element) {
+  return Object.assign(
+    {},
+    DEFAULT_OPTIONS,
+    {
+      root: element.ownerDocument.querySelector(':root'),
+    }
+  );
+}
+
 export const DEFAULT_OPTIONS = {
   selectors: ['id', 'class', 'tag', 'attribute'],
   // if set to true, always include tag name
   includeTag: false,
   whitelist: [],
   blacklist: [],
-  root: document.querySelector(':root'),
   combineWithinSelector: true,
   combineBetweenSelectors: true,
 };
@@ -31,5 +46,5 @@ export const SELECTOR_PATTERN = [
   'id',
   'class',
   'attribute',
-  'nthchild'
+  'nthchild',
 ];

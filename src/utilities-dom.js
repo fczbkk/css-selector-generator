@@ -18,7 +18,7 @@ export function testSelector (element, selector, root = document) {
  * @param {Element} root
  * @return {Array.<Element>}
  */
-export function getParents (element, root = document.querySelector(':root')) {
+export function getParents (element, root = getRootNode(element)) {
   const result = [];
   let parent = element;
   while (isElement(parent) && parent !== root) {
@@ -26,4 +26,13 @@ export function getParents (element, root = document.querySelector(':root')) {
     parent = parent.parentElement;
   }
   return result;
+}
+
+/**
+ * Returns root node for given element. This needs to be used because of document-less environments, e.g. jsdom.
+ * @param {Element} element
+ * @returns {Element}
+ */
+export function getRootNode (element) {
+  return element.ownerDocument.querySelector(':root');
 }

@@ -11,7 +11,7 @@ import {getParents, testSelector} from './utilities-dom';
  * @return {string}
  */
 export function getCssSelector (element, custom_options = {}) {
-  const options = sanitizeOptions(custom_options);
+  const options = sanitizeOptions(element, custom_options);
   const parents = getParents(element, options.root);
   const result = [];
 
