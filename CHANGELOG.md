@@ -1,3 +1,12 @@
+## [2.1.1](https://github.com/fczbkk/css-selector-generator/compare/v2.1.0...v2.1.1) (2020-06-18)
+
+
+### Bug Fixes
+
+* ensure element has a parent ([95dc8d6](https://github.com/fczbkk/css-selector-generator/commit/95dc8d67f30cc5bf537a4dd452cf3b6ecb3ac55b)), closes [#19](https://github.com/fczbkk/css-selector-generator/issues/19)
+
+
+
 # [2.1.0](https://github.com/fczbkk/css-selector-generator/compare/v2.0.1...v2.1.0) (2020-06-11)
 
 
