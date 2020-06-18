@@ -40,4 +40,26 @@ describe('selector - nth-of-type', function () {
     assert.equal(result, 'p:nth-of-type(2)');
   });
 
+  it('should not throw for element without parent', function () {
+    const element = document.createElement('div');
+    const fn = function () {
+      getCssSelector(element, {
+        selectors: ['nthoftype'],
+        root,
+      });
+    };
+    assert.doesNotThrow(fn);
+  });
+
+  it('should not throw for element directly in document', function () {
+    const element = document.querySelector('html');
+    const fn = function () {
+      getCssSelector(element, {
+        selectors: ['nthoftype'],
+        root,
+      });
+    };
+    assert.doesNotThrow(fn);
+  });
+
 });
