@@ -1,3 +1,12 @@
+## [2.1.2](https://github.com/fczbkk/css-selector-generator/compare/v2.1.1...v2.1.2) (2020-07-08)
+
+
+### Bug Fixes
+
+* do not crash on parent-less element ([4549378](https://github.com/fczbkk/css-selector-generator/commit/4549378677954eba60afa0c92cd5bb098906d556)), closes [#41](https://github.com/fczbkk/css-selector-generator/issues/41)
+
+
+
 ## [2.1.1](https://github.com/fczbkk/css-selector-generator/compare/v2.1.0...v2.1.1) (2020-06-18)
 
 
