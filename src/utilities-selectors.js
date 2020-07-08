@@ -98,17 +98,18 @@ export function orderSelectors (list = [], whitelist_re) {
  * @return {string} Either unique selector or "*" if not possible.
  */
 export function getUniqueSelectorWithinParent (element, options) {
-  const selectors_list = getSelectorsList(element, options);
-  const type_combinations = getTypeCombinations(selectors_list, options);
-  const all_selectors = flattenArray(type_combinations);
+  if (element.parentNode) {
+    const selectors_list = getSelectorsList(element, options);
+    const type_combinations = getTypeCombinations(selectors_list, options);
+    const all_selectors = flattenArray(type_combinations);
 
-  for (let i = 0; i < all_selectors.length; i++) {
-    const selector = all_selectors[i];
-    if (testSelector(element, selector, element.parentNode)) {
-      return selector;
+    for (let i = 0; i < all_selectors.length; i++) {
+      const selector = all_selectors[i];
+      if (testSelector(element, selector, element.parentNode)) {
+        return selector;
+      }
     }
   }
-
   return '*';
 }
 

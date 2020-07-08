@@ -31,6 +31,16 @@ describe('CssSelectorGenerator', function () {
 
   });
 
+  describe('special scenarios', function () {
+
+    it('should not crash on parent-less element', function () {
+      const element = document.createElement('div');
+      const fn = () => getCssSelector(element);
+      assert.doesNotThrow(fn);
+    });
+
+  });
+
   describe('class selectors', function () {
 
     it('should get class selector', function () {
