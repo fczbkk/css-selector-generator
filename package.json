@@ -6,6 +6,7 @@
   "author": "Riki Fridrich <riki@fczbkk.com> (http://fczbkk.com)",
   "license": "MIT",
   "main": "build/index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "test": "karma start ./tools/karma.conf.js",
     "dev": "npm run test -- --no-single-run --auto-watch",
