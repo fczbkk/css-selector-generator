@@ -131,6 +131,26 @@ getCssSelector(targetElement, {blacklist: [/first/]});
 // ".secondClass"
 ```
 
+You can target selectors of any types using the blacklist.
+
+```javascript
+getCssSelector(
+  targetElement,
+  { blacklist:
+      [
+        // ID selector
+        '#forbiddenId',
+        // class selector
+        '.forbiddenClass',
+        // attribute selector
+        '[forbidden-attribute]',
+        // tag selector
+        'div'
+      ]
+  }
+)
+```
+
 ### Whitelist
 
 Same as `blacklist` option, but instead of ignoring matching selectors, they will be prioritised.
