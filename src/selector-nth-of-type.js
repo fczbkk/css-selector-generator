@@ -9,7 +9,10 @@ export function getNthOfTypeSelector (element) {
   const tag = getTagSelector(element)[0];
   const parentElement = element.parentElement;
   if (parentElement) {
-    const index = [...parentElement.children].filter(node => node.tagName.toLowerCase() === tag).indexOf(element) + 1;
+    const siblings = [...parentElement.children].filter(node => {
+      return node.tagName.toLowerCase() === tag
+    });
+    const index = siblings.indexOf(element) + 1;
     return [`${tag}:nth-of-type(${index})`];
   }
 
