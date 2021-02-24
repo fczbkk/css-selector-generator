@@ -246,10 +246,10 @@ export function constructSelectorType (selector_type, selectors_data) {
  * @return {string}
  */
 export function constructSelector (selector_data = {}) {
-  const pattern = [...SELECTOR_PATTERN]
+  const pattern = [...SELECTOR_PATTERN];
   // Both tag and nthoftype should not be used as they will cause an invalid selector
   if (selector_data['tag'] && selector_data['nthoftype']) {
-    pattern.splice(pattern.indexOf('tag'), 1)
+    pattern.splice(pattern.indexOf('tag'), 1);
   }
 
   return pattern
