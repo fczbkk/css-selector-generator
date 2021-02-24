@@ -110,7 +110,9 @@ export function getUniqueSelectorWithinParent (element, options) {
       }
     }
   }
-  return '*';
+  return options.selectors.includes('nthoftype')
+    ? getNthOfTypeSelector(element)[0]
+    : '*';
 }
 
 /**
