@@ -13,6 +13,19 @@ export function testSelector (element, selector, root = document) {
 }
 
 /**
+ * Check whether element is matched uniquely by selector among root's immediate children. Works similarly to :scope > *.
+ * @param element
+ * @param selector
+ * @param [root]
+ * @return {boolean}
+ */
+export function testSelectorOnChildren (element, selector, root = document) {
+  const result = [...root.querySelectorAll(selector)];
+  const children = result.filter(e => e.parentNode === root)
+  return children.length === 1 && children.includes(element);
+}
+
+/**
  * Find all parent elements of the element.
  * @param {Element} element
  * @param {Element} root

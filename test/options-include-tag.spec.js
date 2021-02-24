@@ -19,7 +19,7 @@ describe('options: includeTag', function () {
       includeTag: true,
       selectors: ['class']
     });
-    assert.equal(result, 'div.bbb > div.aaa');
+    assert.equal(result, 'div.aaa > div.aaa');
   });
 
 });
