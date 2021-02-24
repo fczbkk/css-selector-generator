@@ -52,10 +52,16 @@ document.body.addEventListener('click', function (event) {
 ### Fallback
 `getCssSelector` determines the shortest CSS selector for parent -> child relationship, from the input Element until the Root Element.
 
-If there is no _unique_ selector available for any of these relationships (parent -> child), a fallback of `*` will be used for this relationship.
+If there is no _unique_ selector available for any of these relationships (parent -> child), a fallback of `*` or `:nth-of-type` will be used for this relationship depending on whether `nthoftype` is enabled.
 
+With `nthoftype` disabled:
 ```
 #wrapper > * > div > .text
+```
+
+With `nthoftype` enabled:
+```
+#wrapper > li:nth-of-type(1) > div > .text
 ```
 
 In some cases, this selector may not be unique (e.g. `#wrapper > * > div > *`). In this case, it will fall back to an entire chain of `:nth-child` selectors like:
