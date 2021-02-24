@@ -21,7 +21,7 @@ export function testSelector (element, selector, root = document) {
  */
 export function testSelectorOnChildren (element, selector, root = document) {
   const result = [...root.querySelectorAll(selector)];
-  const children = result.filter(e => e.parentNode === root)
+  const children = result.filter(e => e.parentNode === root);
   return children.length === 1 && children.includes(element);
 }
 
