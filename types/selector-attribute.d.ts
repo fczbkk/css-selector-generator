@@ -3,7 +3,7 @@
  * @param {Element} element
  * @return {selectors_list}
  */
-export function getAttributeSelectors(element: Element): string[];
+export function getAttributeSelectors(element: Element): selectors_list;
 /**
  * @typedef {Object} attribute_node
  * @param {string} attribute_node.nodeName

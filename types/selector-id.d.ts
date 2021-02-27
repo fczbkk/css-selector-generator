@@ -3,4 +3,4 @@
  * @param {Element} element
  * @return {selectors_list}
  */
-export function getIdSelector(element: Element): string[];
+export function getIdSelector(element: Element): selectors_list;

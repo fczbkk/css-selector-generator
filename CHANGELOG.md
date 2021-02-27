@@ -1,3 +1,7 @@
+# [2.2.0](https://github.com/fczbkk/css-selector-generator/compare/v2.1.3...v2.2.0) (2021-02-27)
+
+
+
 ## [2.1.3](https://github.com/fczbkk/css-selector-generator/compare/v2.1.2...v2.1.3) (2021-01-24)
 
 

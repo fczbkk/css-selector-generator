@@ -36,4 +36,4 @@ export type css_selector_generator_options = {
      */
     includeTag?: boolean;
 };
-export type css_selector_type = "id" | "class" | "tag" | "attribute" | "nthoftype" | "nthchild";
+export type css_selector_type = "class" | "id" | "tag" | "attribute" | "nthoftype" | "nthchild";

@@ -3,4 +3,4 @@
  * @param {Element} element
  * @return {selectors_list}
  */
-export function getTagSelector(element: Element): string[];
+export function getTagSelector(element: Element): selectors_list;

@@ -3,4 +3,4 @@
  * @param {Element} element
  * @return {selectors_list}
  */
-export function getNthChildSelector(element: Element): string[];
+export function getNthChildSelector(element: Element): selectors_list;
