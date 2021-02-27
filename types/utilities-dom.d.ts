@@ -7,6 +7,14 @@
  */
 export function testSelector(element: any, selector: any, root?: Document): boolean;
 /**
+ * Check whether element is matched uniquely by selector among root's immediate children. Works similarly to :scope > *.
+ * @param element
+ * @param selector
+ * @param [root]
+ * @return {boolean}
+ */
+export function testSelectorOnChildren(element: any, selector: any, root?: Document): boolean;
+/**
  * Find all parent elements of the element.
  * @param {Element} element
  * @param {Element} root
