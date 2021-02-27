@@ -247,7 +247,7 @@ export function constructSelectorType (selector_type, selectors_data) {
  */
 export function constructSelector (selector_data = {}) {
   const pattern = [...SELECTOR_PATTERN];
-  // Both tag and nthoftype should not be used as they will cause an invalid selector
+  // selector "nthoftype" already contains "tag"
   if (selector_data['tag'] && selector_data['nthoftype']) {
     pattern.splice(pattern.indexOf('tag'), 1);
   }

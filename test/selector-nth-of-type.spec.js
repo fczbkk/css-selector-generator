@@ -21,8 +21,21 @@ describe('selector - nth-of-type', function () {
     assert.equal(result[0], 'p:nth-of-type(2)');
   });
 
-  it('should not throw error if tag and nthoftype used', function () {
-    root.innerHTML = '<ul><li><a></a></li><li><a></a><ul><li></li><li></li></ul></li></ul>';
+  it('should not include tag if nthoftype is used', function () {
+    root.innerHTML = `
+      <ul>
+        <li>
+          <a></a>
+        </li>
+        <li>
+          <a></a>
+          <ul>
+            <li></li>
+            <li></li>
+          </ul>
+        </li>
+      </ul>
+    `;
     const result = getCssSelector(root.querySelector('a'), {
       selectors: ['tag', 'nthoftype'],
       root,
