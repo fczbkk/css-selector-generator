@@ -6,7 +6,7 @@ import {
   flattenArray,
   getCombinations,
 } from './utilities-data';
-import {testSelector} from './utilities-dom';
+import {testSelectorOnChildren} from './utilities-dom';
 import {getTagSelector} from './selector-tag';
 import {getIdSelector} from './selector-id';
 import {getClassSelectors} from './selector-class';
@@ -105,7 +105,7 @@ export function getUniqueSelectorWithinParent (element, options) {
 
     for (let i = 0; i < all_selectors.length; i++) {
       const selector = all_selectors[i];
-      if (testSelector(element, selector, element.parentNode)) {
+      if (testSelectorOnChildren(element, selector, element.parentNode)) {
         return selector;
       }
     }
