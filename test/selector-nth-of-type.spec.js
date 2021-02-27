@@ -1,6 +1,7 @@
 import {assert} from 'chai';
 import {getNthOfTypeSelector} from '../src/selector-nth-of-type';
 import {getCssSelector} from '../src';
+import {constructSelector} from '../src/utilities-selectors.js';
 
 describe('selector - nth-of-type', function () {
 
@@ -22,25 +23,11 @@ describe('selector - nth-of-type', function () {
   });
 
   it('should not include tag if nthoftype is used', function () {
-    root.innerHTML = `
-      <ul>
-        <li>
-          <a></a>
-        </li>
-        <li>
-          <a></a>
-          <ul>
-            <li></li>
-            <li></li>
-          </ul>
-        </li>
-      </ul>
-    `;
-    const result = getCssSelector(root.querySelector('a'), {
-      selectors: ['tag', 'nthoftype'],
-      root,
+    const result = constructSelector({
+      tag: ['div'],
+      nthoftype: ['div:nth-of-type(1)']
     });
-    assert.equal(result, ':nth-child(1) > :nth-child(1) > :nth-child(1)');
+    assert.equal(result, 'div:nth-of-type(1)');
   });
 
   it('should not collide with tag selector', function () {
