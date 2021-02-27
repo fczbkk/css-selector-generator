@@ -30,6 +30,15 @@ describe('selector - nth-of-type', function () {
     assert.equal(result, 'div:nth-of-type(1)');
   });
 
+  it('should ignore nested elements', function () {
+    root.innerHTML = '<ul><li><a></a></li><li><a></a><ul><li><a></a></li></ul></li><li><a id="link2"></a></li></ul>';
+    const result = getCssSelector(root.querySelector('#link2'), {
+      selectors: ['nthoftype'],
+      root,
+    });
+    assert.equal(result, 'li:nth-of-type(3) > a:nth-of-type(1)');
+  });
+
   it('should not collide with tag selector', function () {
     root.innerHTML = '<div></div><p></p><p></p>';
     const result = getCssSelector(root.lastChild, {
