@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import { testSelector } from '../src/utilities-dom.js'
+import {testSelector} from '../src/utilities-dom.js';
 import {getCssSelector} from './../src/index';
 
 describe('CssSelectorGenerator', function () {
@@ -80,12 +80,12 @@ describe('CssSelectorGenerator', function () {
 
     it('should use nth-child descendants', function () {
       root.innerHTML = '<div><div><div></div></div></div>';
-      const needle = root.firstElementChild.firstElementChild.firstElementChild
+      const needle = root.firstElementChild.firstElementChild.firstElementChild;
       const result = getCssSelector(needle, {
         root,
         selectors: []
       });
-      assert.ok(testSelector(needle, result, root))
+      assert.ok(testSelector(needle, result, root));
     });
 
   });
