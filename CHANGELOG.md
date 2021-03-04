@@ -1,3 +1,12 @@
+## [2.2.2](https://github.com/fczbkk/css-selector-generator/compare/v2.2.1...v2.2.2) (2021-03-04)
+
+
+### Bug Fixes
+
+* fallback selector considers entire hierarchy ([2029999](https://github.com/fczbkk/css-selector-generator/commit/2029999d850094aaf55545019e20e05d5c2cfe10))
+
+
+
 ## [2.2.1](https://github.com/fczbkk/css-selector-generator/compare/v2.2.0...v2.2.1) (2021-02-27)
 
 
