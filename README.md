@@ -49,6 +49,18 @@ document.body.addEventListener('click', function (event) {
 });
 ```
 
+### Usage without NPM
+
+If you don't want to use this library with NPM, you can download it directly from the "build" folder and insert it to your HTML document directly. In this case, the library is wrapped in namespace `CssSelectorGenerator`. So the usage would look something like this:
+
+```html
+<!-- link the library -->
+<script src="build/index.js"></script>
+<script>
+	CssSelectorGenerator.getCssSelector(targtElement)
+</script
+```
+
 ### Fallback
 
 `getCssSelector` determines the shortest CSS selector for parent -> child relationship, from the input Element until the Root Element.
