@@ -1,3 +1,12 @@
+## [3.0.1](https://github.com/fczbkk/css-selector-generator/compare/v3.0.0...v3.0.1) (2021-03-20)
+
+
+### Bug Fixes
+
+* add polyfills needed for generator functions ([f0b9d62](https://github.com/fczbkk/css-selector-generator/commit/f0b9d62df69da9b790d727295b247953e544f919))
+
+
+
 # [3.0.0](https://github.com/fczbkk/css-selector-generator/compare/v2.2.2...v3.0.0) (2021-03-20)
 
 
