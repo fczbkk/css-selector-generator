@@ -6,6 +6,7 @@
  */
 export function constructDefaultOptions(element: Element): any;
 export const DESCENDANT_OPERATOR: " > ";
+export const CHILD_OPERATOR: " ";
 export namespace DEFAULT_OPTIONS {
     const selectors: string[];
     const includeTag: boolean;

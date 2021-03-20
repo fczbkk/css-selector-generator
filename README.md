@@ -248,6 +248,7 @@ getCssSelector(targetElement, {includeTag: true});
 
 -   [getCssSelector](#getcssselector)
     -   [Parameters](#parameters)
+-   [updateIdentifiableParent](#updateidentifiableparent)
 -   [css_selector_generator_options](#css_selector_generator_options)
     -   [Properties](#properties)
 -   [css_selector_type](#css_selector_type)
@@ -262,6 +263,12 @@ Generates unique CSS selector for an element.
 -   `custom_options` **[css_selector_generator_options](#css_selector_generator_options)?**  (optional, default `{}`)
 
 Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+### updateIdentifiableParent
+
+Utility function to make subsequent calls shorter.
+
+Returns **{foundElement: [Element](https://developer.mozilla.org/docs/Web/API/Element), selector: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)}** 
 
 ### css_selector_generator_options
 

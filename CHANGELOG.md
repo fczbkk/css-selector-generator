@@ -1,3 +1,12 @@
+# [3.0.0](https://github.com/fczbkk/css-selector-generator/compare/v2.2.2...v3.0.0) (2021-03-20)
+
+
+### Features
+
+* add support for child selectors ([ac44213](https://github.com/fczbkk/css-selector-generator/commit/ac4421317f5250100e3e5c7529336fcf6c73aab4))
+
+
+
 ## [2.2.2](https://github.com/fczbkk/css-selector-generator/compare/v2.2.1...v2.2.2) (2021-03-04)
 
 

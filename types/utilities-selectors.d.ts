@@ -8,7 +8,8 @@ export function sanitizeSelectorItem(input?: string): string;
  * Returns list of selectors of given type for the element.
  * @param {Element} element
  * @param {string} selector_type
- * @return {Array.<string>} - Always an array, even if the selector only allows single value (e.g. tag).
+ * @return {Array.<string>} - Always an array, even if the selector only allows
+ *   single value (e.g. tag).
  */
 export function getSelectorsByType(element: Element, selector_type: string): Array<string>;
 /**
@@ -33,6 +34,14 @@ export function orderSelectors(list: Array<string>, whitelist_re: RegExp): Array
  * @return {string} Either unique selector or "*" if not possible.
  */
 export function getUniqueSelectorWithinParent(element: Element, options: any): string;
+/**
+ * Returns list of unique selectors applicable to given element.
+ * @param {Element} element
+ * @param {Element} root
+ * @param {css_selector_generator_options} options
+ * @returns {Array.<string>}
+ */
+export function getAllSelectors(element: Element, root: Element, options: any): Array<string>;
 /**
  * Creates object containing all selector types and their potential values.
  * @param {Element} element
@@ -80,6 +89,35 @@ export function constructSelectorType(selector_type: string, selectors_data: any
  * @return {string}
  */
 export function constructSelector(selector_data?: any): string;
+/**
+ * Generator of CSS selector candidates for given element, from simplest child selectors to more complex descendant selectors.
+ * @param {Element} element
+ * @param {Element} root
+ * @param {css_selector_generator_options} options
+ * @returns {Generator<string, void, *>}
+ */
+export function generateElementSelectorCandidates(element: Element, root: Element, options: any): Generator<string, void, any>;
+/**
+ * Tries to find an unique CSS selector for element within given parent.
+ * @param {Element} element
+ * @param {Element} root
+ * @param {string} rootSelector
+ * @param {css_selector_generator_options} options
+ * @returns {string|null}
+ */
+export function getSelectorWithinRoot(element: Element, root: Element, rootSelector: string, options: any): string | null;
+/**
+ * Climbs through parents of the element and tries to find the one that is identifiable by unique CSS selector.
+ * @param {Element} element
+ * @param {Element} root
+ * @param {string} rootSelector
+ * @param {css_selector_generator_options} options
+ * @returns {null|{foundElement: Element, selector: string}}
+ */
+export function getClosestIdentifiableParent(element: Element, root: Element, rootSelector: string, options: any): null | {
+    foundElement: Element;
+    selector: string;
+};
 export const ESCAPED_COLON: string;
 export const SPECIAL_CHARACTERS_RE: RegExp;
 export namespace SELECTOR_TYPE_GETTERS {

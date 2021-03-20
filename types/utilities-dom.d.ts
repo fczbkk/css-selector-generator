@@ -22,6 +22,13 @@ export function testSelectorOnChildren(element: any, selector: any, root?: Docum
  */
 export function getParents(element: Element, root?: Element): Array<Element>;
 /**
+ * Generate all parent elements of the element.
+ * @param {Element} element
+ * @param {Element} root
+ * @return {Array.<Element>}
+ */
+export function generateParents(element: Element, root?: Element): Array<Element>;
+/**
  * Returns root node for given element. This needs to be used because of document-less environments, e.g. jsdom.
  * @param {Element} element
  * @returns {Element}
