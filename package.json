@@ -51,6 +51,8 @@
   "dependencies": {
     "@fczbkk/power-set-generator": "^1.0.0",
     "cartesian": "^1.0.1",
-    "iselement": "^1.1.4"
+    "core-js": "^3.9.1",
+    "iselement": "^1.1.4",
+    "regenerator-runtime": "^0.13.7"
   }
 }
