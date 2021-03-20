@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {getCssSelector} from './../src/index';
+import { getCssSelector } from './../src/index'
 import {testSelector} from '../src/utilities-dom';
 import html_code from './html/complex.html';
 

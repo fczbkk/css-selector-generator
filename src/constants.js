@@ -1,4 +1,5 @@
 export const DESCENDANT_OPERATOR = ' > ';
+export const CHILD_OPERATOR = ' ';
 
 /**
  * Constructs default options with proper root node for given element.

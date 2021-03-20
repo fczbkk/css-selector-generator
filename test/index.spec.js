@@ -27,7 +27,7 @@ describe('CssSelectorGenerator', function () {
         '<div id="aaa" class="aaa"><div><div class="aaa"></div></div></div>';
       const element = root.firstChild.firstChild.firstChild;
       const result = getCssSelector(element, {root});
-      assert.equal(result, '#aaa > div > .aaa');
+      assert.equal(result, '#aaa .aaa');
     });
 
   });

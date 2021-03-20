@@ -32,13 +32,21 @@ export function testSelectorOnChildren (element, selector, root = document) {
  * @return {Array.<Element>}
  */
 export function getParents (element, root = getRootNode(element)) {
-  const result = [];
+  return [...generateParents(element, root)]
+}
+
+/**
+ * Generate all parent elements of the element.
+ * @param {Element} element
+ * @param {Element} root
+ * @return {Array.<Element>}
+ */
+export function * generateParents (element, root = getRootNode(element)) {
   let parent = element;
   while (isElement(parent) && parent !== root) {
-    result.push(parent);
+    yield parent
     parent = parent.parentElement;
   }
-  return result;
 }
 
 /**

@@ -1,8 +1,21 @@
-import {getUniqueSelectorWithinParent} from './utilities-selectors';
+import {
+  getAllSelectors, getClosestIdentifiableParent
+} from './utilities-selectors'
 import {getFallbackSelector} from './selector-fallback';
-import {DESCENDANT_OPERATOR} from './constants';
+import { CHILD_OPERATOR, DESCENDANT_OPERATOR } from './constants'
 import {sanitizeOptions} from './utilities-options';
-import {getParents, testSelector} from './utilities-dom';
+
+export function * generateElementSelectorCandidates (element, root, options) {
+  const selectorCandidates = getAllSelectors(element, root, options)
+  for (const selectorCandidate of selectorCandidates) {
+    yield CHILD_OPERATOR + selectorCandidate
+  }
+  if (root === element.parentNode) {
+    for (const selectorCandidate of selectorCandidates) {
+      yield DESCENDANT_OPERATOR + selectorCandidate
+    }
+  }
+}
 
 /**
  * Generates unique CSS selector for an element.
@@ -11,21 +24,24 @@ import {getParents, testSelector} from './utilities-dom';
  * @return {string}
  */
 export function getCssSelector (element, custom_options = {}) {
+  let counter = 0
   const options = sanitizeOptions(element, custom_options);
-  const parents = getParents(element, options.root);
-  const result = [];
+  let partialSelector = ''
+  let currentRoot = options.root
 
-  // try to find optimized selector
-  for (let i = 0; i < parents.length; i++) {
-    result.unshift(getUniqueSelectorWithinParent(parents[i], options));
-    const selector = result.join(DESCENDANT_OPERATOR);
-    if (testSelector(element, selector, options.root)) {
-      return selector;
+  let closestIdentifiableParent = getClosestIdentifiableParent(element, currentRoot, partialSelector, options)
+  while (closestIdentifiableParent) {
+    const {foundElement, selector} = closestIdentifiableParent
+    if (foundElement === element) {
+      return selector
     }
+    currentRoot = foundElement
+    partialSelector = selector
+    closestIdentifiableParent = getClosestIdentifiableParent(element, currentRoot, partialSelector, options)
+    counter++
   }
 
-  // use nth-child selector chain to root as fallback
-  return getFallbackSelector(element, options.root);
+  return getFallbackSelector(element);
 }
 
 export default getCssSelector;

@@ -1,3 +1,4 @@
+import { generateElementSelectorCandidates } from './index.js'
 import {getNthChildSelector} from './selector-nth-child';
 import {SELECTOR_PATTERN} from './constants';
 import cartesian from 'cartesian';
@@ -6,7 +7,11 @@ import {
   flattenArray,
   getCombinations,
 } from './utilities-data';
-import {testSelectorOnChildren} from './utilities-dom';
+import {
+  generateParents,
+  testSelector,
+  testSelectorOnChildren
+} from './utilities-dom'
 import {getTagSelector} from './selector-tag';
 import {getIdSelector} from './selector-id';
 import {getClassSelectors} from './selector-class';
@@ -111,6 +116,27 @@ export function getUniqueSelectorWithinParent (element, options) {
     }
   }
   return '*';
+}
+
+export function getAllSelectors (element, root, options) {
+  const selectors_list = getSelectorsList(element, options);
+  const type_combinations = getTypeCombinations(selectors_list, options);
+  const all_selectors = flattenArray(type_combinations);
+  return [...new Set(all_selectors)];
+}
+
+export function getUniqueChildSelector (element, root = document, options) {
+    const selectors_list = getSelectorsList(element, options);
+    const type_combinations = getTypeCombinations(selectors_list, options);
+    const all_selectors = flattenArray(type_combinations);
+
+    for (let i = 0; i < all_selectors.length; i++) {
+      const selector = all_selectors[i];
+      if (testSelector(element, selector, root)) {
+        return selector;
+      }
+    }
+  return null
 }
 
 /**
@@ -257,3 +283,23 @@ export function constructSelector (selector_data = {}) {
     .join('');
 }
 
+export function getSelectorWithinRoot (element, root, rootSelector = '', options) {
+  const candidatesGenerator = generateElementSelectorCandidates(element, options.root, options)
+  for (const candidateSelector of candidatesGenerator) {
+    const attemptSelector = (rootSelector + candidateSelector).trim()
+    if (testSelector(element, attemptSelector, options.root)) {
+      return attemptSelector
+    }
+  }
+  return null
+}
+
+export function getClosestIdentifiableParent (element, root, rootSelector = '', options) {
+  for (const currentElement of generateParents(element, root)) {
+    const result = getSelectorWithinRoot(currentElement, root, rootSelector, options)
+    if (result) {
+      return {foundElement: currentElement, selector: result}
+    }
+  }
+  return null
+}
