@@ -1,22 +1,25 @@
-import { generateElementSelectorCandidates } from './index.js'
-import {getNthChildSelector} from './selector-nth-child';
-import {SELECTOR_PATTERN} from './constants';
 import cartesian from 'cartesian';
+import {
+  CHILD_OPERATOR,
+  DESCENDANT_OPERATOR,
+  SELECTOR_PATTERN
+} from './constants';
+import {getAttributeSelectors} from './selector-attribute';
+import {getClassSelectors} from './selector-class';
+import {getIdSelector} from './selector-id';
+import {getNthChildSelector} from './selector-nth-child';
+import {getNthOfTypeSelector} from './selector-nth-of-type';
+import {getTagSelector} from './selector-tag';
 import {
   convertMatchListToRegExp,
   flattenArray,
-  getCombinations,
+  getCombinations
 } from './utilities-data';
 import {
   generateParents,
   testSelector,
   testSelectorOnChildren
-} from './utilities-dom'
-import {getTagSelector} from './selector-tag';
-import {getIdSelector} from './selector-id';
-import {getClassSelectors} from './selector-class';
-import {getAttributeSelectors} from './selector-attribute';
-import {getNthOfTypeSelector} from './selector-nth-of-type';
+} from './utilities-dom';
 
 export const ESCAPED_COLON = ':'
   .charCodeAt(0)
@@ -60,7 +63,8 @@ export const SELECTOR_TYPE_GETTERS = {
  * Returns list of selectors of given type for the element.
  * @param {Element} element
  * @param {string} selector_type
- * @return {Array.<string>} - Always an array, even if the selector only allows single value (e.g. tag).
+ * @return {Array.<string>} - Always an array, even if the selector only allows
+ *   single value (e.g. tag).
  */
 export function getSelectorsByType (element, selector_type) {
   return (SELECTOR_TYPE_GETTERS[selector_type] || (() => []))(element);
@@ -118,25 +122,18 @@ export function getUniqueSelectorWithinParent (element, options) {
   return '*';
 }
 
+/**
+ * Returns list of unique selectors applicable to given element.
+ * @param {Element} element
+ * @param {Element} root
+ * @param {css_selector_generator_options} options
+ * @returns {Array.<string>}
+ */
 export function getAllSelectors (element, root, options) {
   const selectors_list = getSelectorsList(element, options);
   const type_combinations = getTypeCombinations(selectors_list, options);
   const all_selectors = flattenArray(type_combinations);
   return [...new Set(all_selectors)];
-}
-
-export function getUniqueChildSelector (element, root = document, options) {
-    const selectors_list = getSelectorsList(element, options);
-    const type_combinations = getTypeCombinations(selectors_list, options);
-    const all_selectors = flattenArray(type_combinations);
-
-    for (let i = 0; i < all_selectors.length; i++) {
-      const selector = all_selectors[i];
-      if (testSelector(element, selector, root)) {
-        return selector;
-      }
-    }
-  return null
 }
 
 /**
@@ -191,7 +188,9 @@ export function getSelectorsToGet (options) {
 }
 
 /**
- * Adds "tag" to a list, if it does not contain it. Used to modify selectors list when includeTag option is enabled to make sure all results contain the TAG part.
+ * Adds "tag" to a list, if it does not contain it. Used to modify selectors
+ * list when includeTag option is enabled to make sure all results contain the
+ * TAG part.
  * @param {Array.<string>} list
  * @return {Array.<string>}
  */
@@ -283,23 +282,70 @@ export function constructSelector (selector_data = {}) {
     .join('');
 }
 
-export function getSelectorWithinRoot (element, root, rootSelector = '', options) {
-  const candidatesGenerator = generateElementSelectorCandidates(element, options.root, options)
-  for (const candidateSelector of candidatesGenerator) {
-    const attemptSelector = (rootSelector + candidateSelector).trim()
-    if (testSelector(element, attemptSelector, options.root)) {
-      return attemptSelector
+/**
+ * Generator of CSS selector candidates for given element, from simplest child selectors to more complex descendant selectors.
+ * @param {Element} element
+ * @param {Element} root
+ * @param {css_selector_generator_options} options
+ * @returns {Generator<string, void, *>}
+ */
+export function *generateElementSelectorCandidates (element, root, options) {
+  const selectorCandidates = getAllSelectors(element, root, options);
+  for (const selectorCandidate of selectorCandidates) {
+    yield CHILD_OPERATOR + selectorCandidate;
+  }
+  if (root === element.parentNode) {
+    for (const selectorCandidate of selectorCandidates) {
+      yield DESCENDANT_OPERATOR + selectorCandidate;
     }
   }
-  return null
 }
 
-export function getClosestIdentifiableParent (element, root, rootSelector = '', options) {
-  for (const currentElement of generateParents(element, root)) {
-    const result = getSelectorWithinRoot(currentElement, root, rootSelector, options)
-    if (result) {
-      return {foundElement: currentElement, selector: result}
+/**
+ * Tries to find an unique CSS selector for element within given parent.
+ * @param {Element} element
+ * @param {Element} root
+ * @param {string} rootSelector
+ * @param {css_selector_generator_options} options
+ * @returns {string|null}
+ */
+export function getSelectorWithinRoot (
+  element,
+  root,
+  rootSelector = '',
+  options
+) {
+  const candidatesGenerator =
+    generateElementSelectorCandidates(element, options.root, options);
+  for (const candidateSelector of candidatesGenerator) {
+    const attemptSelector = (rootSelector + candidateSelector).trim();
+    if (testSelector(element, attemptSelector, options.root)) {
+      return attemptSelector;
     }
   }
-  return null
+  return null;
+}
+
+/**
+ * Climbs through parents of the element and tries to find the one that is identifiable by unique CSS selector.
+ * @param {Element} element
+ * @param {Element} root
+ * @param {string} rootSelector
+ * @param {css_selector_generator_options} options
+ * @returns {null|{foundElement: Element, selector: string}}
+ */
+export function getClosestIdentifiableParent (
+  element,
+  root,
+  rootSelector = '',
+  options
+) {
+  for (const currentElement of generateParents(element, root)) {
+    const result =
+      getSelectorWithinRoot(currentElement, root, rootSelector, options);
+    if (result) {
+      return {foundElement: currentElement, selector: result};
+    }
+  }
+  return null;
 }
