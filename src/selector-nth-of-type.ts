@@ -2,10 +2,8 @@ import {getTagSelector} from './selector-tag';
 
 /**
  * Get nth-of-type selector for an element.
- * @param {Element} element
- * @return {selectors_list}
  */
-export function getNthOfTypeSelector (element) {
+export function getNthOfTypeSelector (element: Element) {
   const tag = getTagSelector(element)[0];
   const parentElement = element.parentElement;
 

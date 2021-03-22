@@ -4,10 +4,8 @@ import {testSelector} from './utilities-dom';
 
 /**
  * Get ID selector for an element.
- * @param {Element} element
- * @return {selectors_list}
  */
-export function getIdSelector (element) {
+export function getIdSelector (element: Element) {
   const id = element.getAttribute('id') || '';
   const selector = `#${sanitizeSelectorItem(id)}`;
   return (

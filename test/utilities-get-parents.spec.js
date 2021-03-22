@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {getParents} from '../src/utilities-dom';
+import {getParents} from '../src/utilities-dom.ts';
 
 describe('utilities - getParents', function () {
 

@@ -1,6 +1,6 @@
 import {assert} from 'chai';
-import {testSelector} from '../src/utilities-dom.js';
-import {getCssSelector} from './../src/index';
+import {testSelector} from '../src/utilities-dom.ts';
+import {getCssSelector} from '../src';
 
 describe('CssSelectorGenerator', function () {
 

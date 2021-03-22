@@ -1,7 +1,7 @@
 import {assert} from 'chai';
-import {getNthOfTypeSelector} from '../src/selector-nth-of-type';
+import {getNthOfTypeSelector} from '../src/selector-nth-of-type.ts';
 import {getCssSelector} from '../src';
-import {constructSelector} from '../src/utilities-selectors.js';
+import {constructSelector} from '../src/utilities-selectors.ts';
 
 describe('selector - nth-of-type', function () {
 

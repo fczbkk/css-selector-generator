@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "./build/",
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es6",
+    "allowJs": true,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "lib": [
+      "ES6",
+      "DOM",
+      "DOM.Iterable"
+    ]
+  }
+}

@@ -8,10 +8,7 @@ module.exports = (config) => {
     preprocessors: {
       '../test/**/*.spec.js': ['webpack'],
     },
-    webpack: {
-      mode: 'development',
-      module: webpack_config.module
-    },
+    webpack: webpack_config,
     webpackMiddleware: {
       stats: 'errors-only',
     },

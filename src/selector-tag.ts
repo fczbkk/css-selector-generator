@@ -2,9 +2,7 @@ import {sanitizeSelectorItem} from './utilities-selectors';
 
 /**
  * Get tag selector for an element.
- * @param {Element} element
- * @return {selectors_list}
  */
-export function getTagSelector (element) {
+export function getTagSelector (element: Element) {
   return [sanitizeSelectorItem(element.tagName.toLowerCase())];
 }

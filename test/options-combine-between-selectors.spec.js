@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {getCssSelector} from '../src/index.js';
+import {getCssSelector} from '../src';
 
 describe('options: combineBetweenSelectors', function () {
 

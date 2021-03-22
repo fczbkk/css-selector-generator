@@ -5,7 +5,7 @@ import isElement from 'iselement';
  * @param {Element} element
  * @return {selectors_list}
  */
-export function getNthChildSelector (element) {
+export function getNthChildSelector (element: Element) {
   const parent = element.parentNode;
 
   if (parent) {
