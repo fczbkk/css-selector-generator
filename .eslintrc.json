@@ -8,6 +8,10 @@
     "browser": true
   },
   "rules": {
+    "semi": [
+      "warn",
+      "never"
+    ],
     "max-len": [
       "warn",
       {

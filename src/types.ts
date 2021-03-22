@@ -1,4 +1,4 @@
-import {VALID_SELECTOR_TYPES} from './constants';
+import {VALID_SELECTOR_TYPES} from './constants'
 
 export type CssSelector = string
 
@@ -6,7 +6,9 @@ export type CssSelectorMatch = RegExp | string
 
 export type CssSelectorType = typeof VALID_SELECTOR_TYPES[number]
 
-export type CssSelectorData = { [key in CssSelectorType]?: Array<string> | Array<Array<string>> }
+export type CssSelectorData = {
+  [key in CssSelectorType]?: Array<string> | Array<Array<string>>
+}
 
 export type CssSelectorGeneratorOptions = {
   // List of selector types to use. They will be prioritised by their order.

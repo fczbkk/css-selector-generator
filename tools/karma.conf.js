@@ -1,4 +1,4 @@
-const webpack_config = require('./webpack.dev');
+const webpack_config = require('./webpack.dev')
 
 module.exports = (config) => {
   config.set({
@@ -23,5 +23,5 @@ module.exports = (config) => {
     ],
     singleRun: true,
     autoWatch: false
-  });
-};
+  })
+}

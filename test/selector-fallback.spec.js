@@ -1,42 +1,42 @@
-import {assert} from 'chai';
-import {getFallbackSelector} from '../src/selector-fallback.ts';
-import {testSelector} from '../src/utilities-dom.ts';
+import {assert} from 'chai'
+import {getFallbackSelector} from '../src/selector-fallback.ts'
+import {testSelector} from '../src/utilities-dom.ts'
 
 describe('selector - fallback', function () {
 
-  let root;
+  let root
 
   beforeEach(function () {
-    root = document.body.appendChild(document.createElement('div'));
-  });
+    root = document.body.appendChild(document.createElement('div'))
+  })
 
   afterEach(function () {
-    root.parentNode.removeChild(root);
-  });
+    root.parentNode.removeChild(root)
+  })
 
   it('should produce simple selector', () => {
-    root.innerHTML = '<div></div>';
-    const needleElement = root.firstChild;
-    const result = getFallbackSelector(needleElement, root);
-    assert.ok(testSelector(needleElement, result, root));
-  });
+    root.innerHTML = '<div></div>'
+    const needleElement = root.firstChild
+    const result = getFallbackSelector(needleElement, root)
+    assert.ok(testSelector(needleElement, result, root))
+  })
 
   it('should produce nested selector', () => {
-    root.innerHTML = '<div><div><div></div></div></div>';
+    root.innerHTML = '<div><div><div></div></div></div>'
     const needleElement = root
       .firstElementChild
       .firstElementChild
-      .firstElementChild;
-    const result = getFallbackSelector(needleElement, root);
-    assert.ok(testSelector(needleElement, result, root));
-  });
+      .firstElementChild
+    const result = getFallbackSelector(needleElement, root)
+    assert.ok(testSelector(needleElement, result, root))
+  })
 
   it('should produce selector beside similar elements', () => {
-    root.innerHTML = '<div><div><div></div></div></div>';
-    const needleElement = root.firstElementChild;
-    const result = getFallbackSelector(needleElement, root);
-    assert.ok(testSelector(needleElement, result, root));
-  });
+    root.innerHTML = '<div><div><div></div></div></div>'
+    const needleElement = root.firstElementChild
+    const result = getFallbackSelector(needleElement, root)
+    assert.ok(testSelector(needleElement, result, root))
+  })
 
   // https://developer.mozilla.org/en-US/docs/Web/API/element/querySelector#the_entire_hierarchy_counts
   it('should consider entire hierarchy', () => {
@@ -49,15 +49,15 @@ describe('selector - fallback', function () {
           </div>
         </div>
       </div>
-    `;
+    `
     const haystackElement = root
       .firstElementChild
-      .firstElementChild;
+      .firstElementChild
     const needleElement = root
       .firstElementChild
       .firstElementChild
-      .firstElementChild;
-    const result = getFallbackSelector(needleElement, haystackElement);
-    assert.ok(testSelector(needleElement, result, haystackElement));
-  });
-});
+      .firstElementChild
+    const result = getFallbackSelector(needleElement, haystackElement)
+    assert.ok(testSelector(needleElement, result, haystackElement))
+  })
+})

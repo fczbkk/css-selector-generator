@@ -1,10 +1,10 @@
-import 'core-js/stable';
-import 'regenerator-runtime/runtime';
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
 
-import {getFallbackSelector} from './selector-fallback';
-import {sanitizeOptions} from './utilities-options';
-import {getClosestIdentifiableParent} from './utilities-selectors';
-import {CssSelector} from './types';
+import {getFallbackSelector} from './selector-fallback'
+import {sanitizeOptions} from './utilities-options'
+import {getClosestIdentifiableParent} from './utilities-selectors'
+import {CssSelector} from './types'
 
 /**
  * Generates unique CSS selector for an element.
@@ -13,9 +13,9 @@ export function getCssSelector (
   element: Element,
   custom_options = {}
 ): CssSelector {
-  const options = sanitizeOptions(element, custom_options);
-  let partialSelector = '';
-  let currentRoot = options.root;
+  const options = sanitizeOptions(element, custom_options)
+  let partialSelector = ''
+  let currentRoot = options.root
 
   /**
    * Utility function to make subsequent calls shorter.
@@ -26,24 +26,24 @@ export function getCssSelector (
       currentRoot,
       partialSelector,
       options
-    );
+    )
   }
 
-  let closestIdentifiableParent = updateIdentifiableParent();
+  let closestIdentifiableParent = updateIdentifiableParent()
   while (closestIdentifiableParent) {
     const {
       foundElement,
       selector
-    } = closestIdentifiableParent;
+    } = closestIdentifiableParent
     if (foundElement === element) {
-      return selector;
+      return selector
     }
-    currentRoot = foundElement;
-    partialSelector = selector;
-    closestIdentifiableParent = updateIdentifiableParent();
+    currentRoot = foundElement
+    partialSelector = selector
+    closestIdentifiableParent = updateIdentifiableParent()
   }
 
-  return getFallbackSelector(element);
+  return getFallbackSelector(element)
 }
 
-export default getCssSelector;
+export default getCssSelector
