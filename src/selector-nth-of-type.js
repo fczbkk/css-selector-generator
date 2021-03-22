@@ -8,14 +8,12 @@ import {getTagSelector} from './selector-tag';
 export function getNthOfTypeSelector (element) {
   const tag = getTagSelector(element)[0];
   const parentElement = element.parentElement;
-
   if (parentElement) {
-    const siblings = parentElement.querySelectorAll(tag);
-    for (let i = 0; i < siblings.length; i++) {
-      if (siblings[i] === element) {
-        return [`${tag}:nth-of-type(${i + 1})`];
-      }
-    }
+    const siblings = [...parentElement.children].filter(node => {
+      return node.tagName.toLowerCase() === tag
+    });
+    const index = siblings.indexOf(element) + 1;
+    return [`${tag}:nth-of-type(${index})`];
   }
 
   return [];
