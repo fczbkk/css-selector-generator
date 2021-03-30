@@ -54,7 +54,7 @@
   },
   "homepage": "https://github.com/fczbkk/css-selector-generator/",
   "dependencies": {
-    "@fczbkk/power-set-generator": "^1.0.0",
+    "@fczbkk/power-set-generator": "^1.0.2",
     "cartesian": "^1.0.1",
     "core-js": "^3.9.1",
     "iselement": "^1.1.4",
