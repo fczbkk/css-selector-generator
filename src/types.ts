@@ -1,10 +1,14 @@
 import {VALID_SELECTOR_TYPES} from './constants'
 
 export type CssSelector = string
+export type CssSelectors = Array<CssSelector>
 
 export type CssSelectorMatch = RegExp | string
 
 export type CssSelectorType = typeof VALID_SELECTOR_TYPES[number]
+export type CssSelectorTypes = Array<CssSelectorType>
+
+export type CssSelectorsByType = Record<CssSelectorType, CssSelectors>
 
 export type CssSelectorData = {
   [key in CssSelectorType]?: Array<string> | Array<Array<string>>
