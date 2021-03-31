@@ -44,7 +44,7 @@ export function sanitizeSelectorTypes (input: unknown): Array<CssSelectorType> {
  * Checks whether provided value is of type RegExp.
  */
 export function isRegExp (input: unknown): input is RegExp {
-  return Object.prototype.toString.call(input) === '[object RegExp]'
+  return input instanceof RegExp
 }
 
 /**
