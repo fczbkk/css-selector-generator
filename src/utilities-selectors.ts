@@ -1,30 +1,28 @@
-import cartesian from 'cartesian'
+import cartesian from 'cartesian';
 import {
   CHILD_OPERATOR,
   DESCENDANT_OPERATOR,
   SELECTOR_PATTERN
-} from './constants'
-import {getAttributeSelectors} from './selector-attribute'
-import {getClassSelectors} from './selector-class'
-import {getIdSelector} from './selector-id'
-import {getNthChildSelector} from './selector-nth-child'
-import {getNthOfTypeSelector} from './selector-nth-of-type'
-import {getTagSelector} from './selector-tag'
+} from './constants';
+import {getAttributeSelectors} from './selector-attribute';
+import {getClassSelectors} from './selector-class';
+import {getIdSelector} from './selector-id';
+import {getNthChildSelector} from './selector-nth-child';
+import {getNthOfTypeSelector} from './selector-nth-of-type';
+import {getTagSelector} from './selector-tag';
 import {
   convertMatchListToRegExp,
   flattenArray,
   getCombinations
-} from './utilities-data'
-import {
-  generateParents,
-  testSelector
-} from './utilities-dom'
+} from './utilities-data';
+import {generateParents, testSelector} from './utilities-dom';
 import {
   CssSelector,
   CssSelectorData,
   CssSelectorGeneratorOptions,
-  CssSelectorType
-} from './types'
+  CssSelectorType,
+  IdentifiableParent
+} from './types';
 
 export const ESCAPED_COLON = ':'
   .charCodeAt(0)
@@ -309,10 +307,6 @@ export function getSelectorWithinRoot (
   }
   return null
 }
-
-export type IdentifiableParent =
-  null
-  | { foundElement: Element, selector: CssSelector }
 
 /**
  * Climbs through parents of the element and tries to find the one that is identifiable by unique CSS selector.

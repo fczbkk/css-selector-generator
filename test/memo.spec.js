@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import {createMemo} from '../src/memo'
 
-describe('memo', () => {
+describe('Memo', () => {
 
   let root
 

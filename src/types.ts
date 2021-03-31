@@ -1,4 +1,4 @@
-import {VALID_SELECTOR_TYPES} from './constants'
+import {VALID_SELECTOR_TYPES} from './constants';
 
 export type CssSelector = string
 export type CssSelectors = Array<CssSelector>
@@ -30,3 +30,7 @@ export type CssSelectorGeneratorOptions = {
   // If set to `true`, all generated selectors will include the TAG part. Even if tag selector type is not included in `selectors` option.
   includeTag: boolean
 }
+
+export type IdentifiableParent =
+  null
+  | { foundElement: Element, selector: CssSelector }
