@@ -1,4 +1,4 @@
-import {VALID_SELECTOR_TYPES} from './constants';
+import {VALID_SELECTOR_TYPES} from './constants'
 
 export type CssSelector = string
 export type CssSelectors = Array<CssSelector>

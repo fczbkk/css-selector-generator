@@ -1,28 +1,28 @@
-import cartesian from 'cartesian';
+import cartesian from 'cartesian'
 import {
   CHILD_OPERATOR,
   DESCENDANT_OPERATOR,
   SELECTOR_PATTERN
-} from './constants';
-import {getAttributeSelectors} from './selector-attribute';
-import {getClassSelectors} from './selector-class';
-import {getIdSelector} from './selector-id';
-import {getNthChildSelector} from './selector-nth-child';
-import {getNthOfTypeSelector} from './selector-nth-of-type';
-import {getTagSelector} from './selector-tag';
+} from './constants'
+import {getAttributeSelectors} from './selector-attribute'
+import {getClassSelectors} from './selector-class'
+import {getIdSelector} from './selector-id'
+import {getNthChildSelector} from './selector-nth-child'
+import {getNthOfTypeSelector} from './selector-nth-of-type'
+import {getTagSelector} from './selector-tag'
 import {
   convertMatchListToRegExp,
   flattenArray,
   getCombinations
-} from './utilities-data';
-import {generateParents, testSelector} from './utilities-dom';
+} from './utilities-data'
+import {generateParents, testSelector} from './utilities-dom'
 import {
   CssSelector,
   CssSelectorData,
   CssSelectorGeneratorOptions,
   CssSelectorType,
   IdentifiableParent
-} from './types';
+} from './types'
 
 export const ESCAPED_COLON = ':'
   .charCodeAt(0)
