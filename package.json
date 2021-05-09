@@ -18,7 +18,7 @@
     "lint:build": "npm run lint:ts -- --max-warnings 0 && npm run lint:js -- --max-warnings 0",
     "doc": "npm run doc:readme && npm run doc:types",
     "doc:readme": "documentation readme src/index.ts -s 'Documentation' --shallow",
-    "doc:types": "tsc ./src/*.js --declaration --allowJs --emitDeclarationOnly --outDir types",
+    "doc:types": "tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --downlevelIteration --outDir types",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "postversion": "git push && git push --tags && npm publish --access=public",
     "version": "npm run build && npm run doc && npm run changelog && git add -A"
