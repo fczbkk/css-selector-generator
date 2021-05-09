@@ -11,6 +11,7 @@
       "ES6",
       "DOM",
       "DOM.Iterable"
-    ]
+    ],
+    "declaration": true
   }
 }

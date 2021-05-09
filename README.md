@@ -249,9 +249,6 @@ getCssSelector(targetElement, {includeTag: true});
 -   [getCssSelector](#getcssselector)
     -   [Parameters](#parameters)
 -   [updateIdentifiableParent](#updateidentifiableparent)
--   [css_selector_generator_options](#css_selector_generator_options)
-    -   [Properties](#properties)
--   [css_selector_type](#css_selector_type)
 
 ### getCssSelector
 
@@ -260,33 +257,13 @@ Generates unique CSS selector for an element.
 #### Parameters
 
 -   `element` **[Element](https://developer.mozilla.org/docs/Web/API/Element)** 
--   `custom_options` **[css_selector_generator_options](#css_selector_generator_options)?**  (optional, default `{}`)
+-   `custom_options`   (optional, default `{}`)
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+Returns **CssSelector** 
 
 ### updateIdentifiableParent
 
 Utility function to make subsequent calls shorter.
-
-Returns **{foundElement: [Element](https://developer.mozilla.org/docs/Web/API/Element), selector: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)}** 
-
-### css_selector_generator_options
-
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-
-#### Properties
-
--   `selectors` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[css_selector_type](#css_selector_type)>?** List of selector types to use. They will be prioritised by their order.
--   `whitelist` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;([RegExp](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp) \| [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String))>?** List of selectors that should be prioritised.
--   `blacklist` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;([RegExp](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp) \| [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String))>?** List of selectors that should be ignored.
--   `root` **[Element](https://developer.mozilla.org/docs/Web/API/Element)?** Root element inside which the selector will be generated. If not set, the document root will be used.
--   `combineWithinSelector` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** If set to `true`, the generator will test combinations of selectors of single type (e.g. multiple class selectors).
--   `combineBetweenSelectors` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** If set to `true`, the generator will try to test combinations of selectors of different types (e.g. tag + class name).
--   `includeTag` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** If set to `true`, all generated selectors will include the TAG part. Even if tag selector type is not included in `selectors` option.
-
-### css_selector_type
-
-Type: (`"id"` \| `"class"` \| `"tag"` \| `"attribute"` \| `"nthchild"` \| `"nthoftype"`)
 
 ## Migrate from v1 to v2
 
