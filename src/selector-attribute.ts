@@ -31,7 +31,7 @@ function isValidAttributeNode ({nodeName}: Node) {
  * Get attribute selectors for an element.
  */
 export function getAttributeSelectors (element: Element): Array<CssSelector> {
-  return [...element.attributes]
+  return Array.from(element.attributes)
     .filter(isValidAttributeNode)
     .map(attributeNodeToSelector)
 }
