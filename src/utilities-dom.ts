@@ -20,21 +20,13 @@ export function getParents (
   element: Element,
   root = getRootNode(element)
 ): Array<Element> {
-  return [...generateParents(element, root)]
-}
-
-/**
- * Generate all parent elements of the element.
- */
-export function *generateParents (
-  element: Element,
-  root: ParentNode = getRootNode(element)
-): IterableIterator<Element> {
+  const result = []
   let parent = element
   while (isElement(parent) && parent !== root) {
-    yield parent
+    result.push(parent)
     parent = parent.parentElement
   }
+  return result
 }
 
 /**

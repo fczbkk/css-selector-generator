@@ -24,29 +24,29 @@
     "version": "npm run build && npm run doc && npm run changelog && git add -A"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.17",
-    "@babel/preset-env": "^7.12.17",
+    "@babel/core": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
     "@fczbkk/eslint-config": "^1.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.18.0",
-    "@typescript-eslint/parser": "^4.18.0",
+    "@typescript-eslint/eslint-plugin": "^4.29.1",
+    "@typescript-eslint/parser": "^4.29.1",
     "babel-loader": "^8.2.2",
-    "chai": "^4.3.0",
+    "chai": "^4.3.4",
     "conventional-changelog-cli": "^2.1.1",
-    "documentation": "^13.1.1",
-    "eslint": "^7.20.0",
-    "karma": "^6.1.1",
+    "documentation": "^13.2.5",
+    "eslint": "^7.32.0",
+    "karma": "^6.3.4",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^3.1.0",
     "karma-mocha": "^2.0.1",
     "karma-mocha-reporter": "^2.2.5",
     "karma-webpack": "^5.0.0",
-    "mocha": "^8.3.0",
+    "mocha": "^9.0.3",
     "raw-loader": "^4.0.2",
     "rimraf": "^3.0.2",
-    "ts-loader": "^8.0.18",
-    "typescript": "^4.2.3",
-    "webpack": "^5.23.0",
-    "webpack-cli": "^4.5.0"
+    "ts-loader": "^9.2.5",
+    "typescript": "^4.3.5",
+    "webpack": "^5.50.0",
+    "webpack-cli": "^4.7.2"
   },
   "repository": {
     "type": "git",
@@ -54,10 +54,7 @@
   },
   "homepage": "https://github.com/fczbkk/css-selector-generator/",
   "dependencies": {
-    "@fczbkk/power-set-generator": "^1.0.2",
     "cartesian": "^1.0.1",
-    "core-js": "^3.9.1",
-    "iselement": "^1.1.4",
-    "regenerator-runtime": "^0.13.7"
+    "iselement": "^1.1.4"
   }
 }

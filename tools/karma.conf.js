@@ -21,6 +21,9 @@ module.exports = (config) => {
     reporters: [
       'mocha',
     ],
+    client: {
+      captureConsole: true
+    },
     singleRun: true,
     autoWatch: false
   })

@@ -1,8 +1,12 @@
 import {CssSelectorTypes, IdentifiableParent} from './types'
 import {createMemo, MemoizedSelectorGetter} from './memo'
-import {generateParents, getRootNode, testSelector} from './utilities-dom'
-import powerSetGenerator from '@fczbkk/power-set-generator'
+import {
+  getParents,
+  getRootNode,
+  testSelector
+} from './utilities-dom'
 import {constructSelector} from './utilities-selectors'
+import {getPowerSet} from './utilities-powerset'
 
 /**
  * Tries to find identifiable parent using provided selector types. Prefers simpler selectors by order in which they are provided, instead of closeness to the element.
@@ -13,8 +17,8 @@ export function getIdentifiableParent (
   root: ParentNode = getRootNode(element),
   getSelectorData: MemoizedSelectorGetter = createMemo()
 ): IdentifiableParent {
-  for (const currentSelectorTypes of powerSetGenerator(selectorTypes)) {
-    for (const currentElement of generateParents(element, root)) {
+  for (const currentSelectorTypes of getPowerSet(selectorTypes)) {
+    for (const currentElement of getParents(element, root)) {
       const selectorData = getSelectorData(currentElement, currentSelectorTypes)
       const selector = constructSelector(selectorData)
       if (selector !== '') {

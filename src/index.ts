@@ -1,6 +1,3 @@
-import 'core-js/stable'
-import 'regenerator-runtime/runtime'
-
 import {getFallbackSelector} from './selector-fallback'
 import {sanitizeOptions} from './utilities-options'
 import {getClosestIdentifiableParent} from './utilities-selectors'

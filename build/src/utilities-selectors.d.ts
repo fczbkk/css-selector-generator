@@ -65,9 +65,8 @@ export declare function constructSelectorType(selector_type: CssSelectorType, se
 export declare function constructSelector(selectorData?: CssSelectorData): CssSelector;
 /**
  * Generator of CSS selector candidates for given element, from simplest child selectors to more complex descendant selectors.
- * @returns {Generator<string, void, *>}
  */
-export declare function generateElementSelectorCandidates(element: Element, root: ParentNode, options: CssSelectorGeneratorOptions): IterableIterator<CssSelector>;
+export declare function getElementSelectorCandidates(element: Element, root: ParentNode, options: CssSelectorGeneratorOptions): Array<CssSelector>;
 /**
  * Tries to find an unique CSS selector for element within given parent.
  */

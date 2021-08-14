@@ -1,5 +1,3 @@
-import 'core-js/stable';
-import 'regenerator-runtime/runtime';
 import { CssSelector } from './types';
 /**
  * Generates unique CSS selector for an element.

@@ -15,7 +15,7 @@ import {
   flattenArray,
   getCombinations
 } from './utilities-data'
-import {generateParents, testSelector} from './utilities-dom'
+import {getParents, testSelector} from './utilities-dom'
 import {
   CssSelector,
   CssSelectorData,
@@ -198,11 +198,9 @@ export function combineSelectorTypes (
     ? getCombinations(selectors)
     : selectors.map(item => [item])
 
-  const result = includeTag
+  return includeTag
     ? combinations.map(addTagTypeIfNeeded)
     : combinations
-
-  return result
 }
 
 /**
@@ -212,12 +210,11 @@ export function getTypeCombinations (
   selectors_list: CssSelectorData,
   options: CssSelectorGeneratorOptions
 ): Array<Array<CssSelector>> {
-  const result = combineSelectorTypes(options)
+  return combineSelectorTypes(options)
     .map((item) => {
       return constructSelectors(item, selectors_list)
     })
     .filter((item) => item.length > 0)
-  return result
 }
 
 /**
@@ -270,22 +267,23 @@ export function constructSelector (
 
 /**
  * Generator of CSS selector candidates for given element, from simplest child selectors to more complex descendant selectors.
- * @returns {Generator<string, void, *>}
  */
-export function *generateElementSelectorCandidates (
+export function getElementSelectorCandidates (
   element: Element,
   root: ParentNode,
   options: CssSelectorGeneratorOptions
-): IterableIterator<CssSelector> {
+): Array<CssSelector> {
+  const result = []
   const selectorCandidates = getAllSelectors(element, root, options)
   for (const selectorCandidate of selectorCandidates) {
-    yield CHILD_OPERATOR + selectorCandidate
+    result.push(CHILD_OPERATOR + selectorCandidate)
   }
   if (root === element.parentNode) {
     for (const selectorCandidate of selectorCandidates) {
-      yield DESCENDANT_OPERATOR + selectorCandidate
+      result.push(DESCENDANT_OPERATOR + selectorCandidate)
     }
   }
+  return result
 }
 
 /**
@@ -297,9 +295,9 @@ export function getSelectorWithinRoot (
   rootSelector: CssSelector = '',
   options: CssSelectorGeneratorOptions
 ): (null | CssSelector) {
-  const candidatesGenerator =
-    generateElementSelectorCandidates(element, options.root, options)
-  for (const candidateSelector of candidatesGenerator) {
+  const selectorCandidates =
+    getElementSelectorCandidates(element, options.root, options)
+  for (const candidateSelector of selectorCandidates) {
     const attemptSelector = (rootSelector + candidateSelector).trim()
     if (testSelector(element, attemptSelector, options.root)) {
       return attemptSelector
@@ -317,7 +315,7 @@ export function getClosestIdentifiableParent (
   rootSelector: CssSelector = '',
   options: CssSelectorGeneratorOptions
 ): IdentifiableParent {
-  for (const currentElement of generateParents(element, root)) {
+  for (const currentElement of getParents(element, root)) {
     const result =
       getSelectorWithinRoot(currentElement, root, rootSelector, options)
     if (result) {
