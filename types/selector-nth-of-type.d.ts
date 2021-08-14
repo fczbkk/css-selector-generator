@@ -1,6 +1,5 @@
+import { CssSelector } from './types';
 /**
  * Get nth-of-type selector for an element.
- * @param {Element} element
- * @return {selectors_list}
  */
-export function getNthOfTypeSelector(element: Element): selectors_list;
+export declare function getNthOfTypeSelector(element: Element): Array<CssSelector>;

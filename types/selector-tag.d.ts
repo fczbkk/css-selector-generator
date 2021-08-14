@@ -1,6 +1,5 @@
+import { CssSelector } from './types';
 /**
  * Get tag selector for an element.
- * @param {Element} element
- * @return {selectors_list}
  */
-export function getTagSelector(element: Element): selectors_list;
+export declare function getTagSelector(element: Element): Array<CssSelector>;

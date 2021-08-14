@@ -1,6 +1,5 @@
+import { CssSelector } from './types';
 /**
  * Get class selectors for an element.
- * @param {Element} element
- * @return {selectors_list}
  */
-export function getClassSelectors(element: Element): selectors_list;
+export declare function getClassSelectors(element: Element): Array<CssSelector>;

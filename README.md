@@ -65,7 +65,7 @@ If you don't want to use this library with NPM, you can download it directly fro
 
 `getCssSelector` determines the shortest CSS selector for parent -> child relationship, from the input Element until the Root Element.
 
-If there is no _unique_ selector available for any of these relationships (parent -> child), a fallback of `*` will be used for this relationship.
+If there is no *unique* selector available for any of these relationships (parent -> child), a fallback of `*` will be used for this relationship.
 
     #wrapper > * > div > .text
 
@@ -246,9 +246,9 @@ getCssSelector(targetElement, {includeTag: true});
 
 #### Table of Contents
 
--   [getCssSelector](#getcssselector)
-    -   [Parameters](#parameters)
--   [updateIdentifiableParent](#updateidentifiableparent)
+*   [getCssSelector](#getcssselector)
+    *   [Parameters](#parameters)
+*   [updateIdentifiableParent](#updateidentifiableparent)
 
 ### getCssSelector
 
@@ -256,8 +256,8 @@ Generates unique CSS selector for an element.
 
 #### Parameters
 
--   `element` **[Element](https://developer.mozilla.org/docs/Web/API/Element)** 
--   `custom_options`   (optional, default `{}`)
+*   `element` **[Element](https://developer.mozilla.org/docs/Web/API/Element)** 
+*   `custom_options`   (optional, default `{}`)
 
 Returns **CssSelector** 
 
@@ -278,10 +278,10 @@ mySelectorGenerator.getSelector(elementReference);
 getCssSelector(elementReference, {/* custom options */});
 ```
 
--   Options `id_blacklist`, `class_blacklist` and `attribute_blacklist` are replaced with single `blacklist` option, which is now applied to all selector types.
--   Option `attribute_whitelist` is replaced with `whitelist` option, which is now applied to all selector types.
--   Option `prefix_tag` is renamed to `includeTag`.
--   Option `quote_attribute_when_needed` is removed. The attribute selectors are quoted automatically.
+*   Options `id_blacklist`, `class_blacklist` and `attribute_blacklist` are replaced with single `blacklist` option, which is now applied to all selector types.
+*   Option `attribute_whitelist` is replaced with `whitelist` option, which is now applied to all selector types.
+*   Option `prefix_tag` is renamed to `includeTag`.
+*   Option `quote_attribute_when_needed` is removed. The attribute selectors are quoted automatically.
 
 ## Bug reports, feature requests and contact
 
