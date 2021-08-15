@@ -67,7 +67,7 @@ export function getSelectorsByType (
   element: Element,
   selector_type: CssSelectorType
 ): Array<CssSelector> {
-  return (SELECTOR_TYPE_GETTERS[selector_type] || (() => []))(element)
+  return (SELECTOR_TYPE_GETTERS[selector_type] || ((): Array<CssSelector> => []))(element)
 }
 
 /**

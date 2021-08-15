@@ -63,4 +63,12 @@ describe('selector - class', function () {
     assert.include(result, '.a1')
   })
 
+  it('should generate class selectors for multiple elements', () => {
+    root.innerHTML = `
+      <div class="aaa bbb"></div>
+      <div class="bbb ccc"></div>
+    `
+    const result = getClassSelectors([...root.querySelectorAll('div')])
+    assert.sameMembers(result, ['.bbb'])
+  })
 })
