@@ -1,6 +1,6 @@
 import {assert} from 'chai'
 import {getFallbackSelector} from '../src/selector-fallback.ts'
-import {testSelector} from '../src/utilities-dom.ts'
+import {testMultiSelector, testSelector} from '../src/utilities-dom.ts'
 
 describe('selector - fallback', function () {
 
@@ -17,7 +17,7 @@ describe('selector - fallback', function () {
   it('should produce simple selector', () => {
     root.innerHTML = '<div></div>'
     const needleElement = root.firstChild
-    const result = getFallbackSelector(needleElement, root)
+    const result = getFallbackSelector(needleElement)
     assert.ok(testSelector(needleElement, result, root))
   })
 
@@ -27,14 +27,14 @@ describe('selector - fallback', function () {
       .firstElementChild
       .firstElementChild
       .firstElementChild
-    const result = getFallbackSelector(needleElement, root)
+    const result = getFallbackSelector(needleElement)
     assert.ok(testSelector(needleElement, result, root))
   })
 
   it('should produce selector beside similar elements', () => {
     root.innerHTML = '<div><div><div></div></div></div>'
     const needleElement = root.firstElementChild
-    const result = getFallbackSelector(needleElement, root)
+    const result = getFallbackSelector(needleElement)
     assert.ok(testSelector(needleElement, result, root))
   })
 
@@ -57,7 +57,21 @@ describe('selector - fallback', function () {
       .firstElementChild
       .firstElementChild
       .firstElementChild
-    const result = getFallbackSelector(needleElement, haystackElement)
+    const result = getFallbackSelector(needleElement)
     assert.ok(testSelector(needleElement, result, haystackElement))
+  })
+
+  it('should produce selector for multiple elements', () => {
+    root.innerHTML = `
+      <div></div>
+      <div></div>
+      <div></div>
+    `
+    const needleElements = [...root.querySelectorAll('div')]
+    const result = getFallbackSelector(needleElements)
+    console.log('x', result)
+    needleElements.forEach((element) => {
+      assert.ok(testMultiSelector(element, result, root))
+    })
   })
 })

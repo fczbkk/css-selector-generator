@@ -1,5 +1,6 @@
 export const DESCENDANT_OPERATOR = ' > '
 export const CHILD_OPERATOR = ' '
+export const SELECTOR_SEPARATOR = ', '
 
 // RegExp that will match invalid patterns that can be used in ID attribute.
 export const INVALID_ID_RE = new RegExp([

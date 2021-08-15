@@ -34,3 +34,5 @@ export type CssSelectorGeneratorOptions = {
 export type IdentifiableParent =
   null
   | { foundElement: Element, selector: CssSelector }
+
+export type SelectorNeedle = Element | Array<Element>

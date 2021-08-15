@@ -21,8 +21,8 @@ import {
   CssSelectorData,
   CssSelectorGeneratorOptions,
   CssSelectorType,
-  IdentifiableParent
-} from './types'
+  IdentifiableParent, SelectorNeedle
+} from './types';
 
 export const ESCAPED_COLON = ':'
   .charCodeAt(0)
@@ -326,4 +326,8 @@ export function getClosestIdentifiableParent (
     }
   }
   return null
+}
+
+export function sanitizeSelectorNeedle (needle: SelectorNeedle) {
+  return Array.isArray(needle) ? needle : [needle]
 }

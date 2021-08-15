@@ -13,6 +13,15 @@ export function testSelector (
   return (result.length === 1 && result[0] === element)
 }
 
+export function testMultiSelector (
+  element: Element,
+  selector: CssSelector,
+  root: ParentNode = document
+): boolean {
+  const result = [...root.querySelectorAll(selector)]
+  return result.includes(element)
+}
+
 /**
  * Find all parent elements of the element.
  */
