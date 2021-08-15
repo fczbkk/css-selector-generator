@@ -9,7 +9,7 @@ export function getElementNthChildSelector (element: Element): CssSelector[] {
   const parent = element.parentNode
 
   if (parent) {
-    const siblings = [...parent.childNodes].filter(isElement)
+    const siblings = Array.from(parent.childNodes).filter(isElement)
     const elementIndex = siblings.indexOf(element)
     if (elementIndex > -1) {
       return [`:nth-child(${elementIndex + 1})`]

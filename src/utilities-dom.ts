@@ -10,7 +10,7 @@ export function testSelector (
   selector: CssSelector,
   root: ParentNode = document
 ): boolean {
-  const result = [...root.querySelectorAll(selector)]
+  const result = Array.from(root.querySelectorAll(selector))
   return (
     result.length === elements.length
     && elements.every((element) => result.includes(element))
@@ -25,7 +25,7 @@ export function testMultiSelector (
   selector: CssSelector,
   root: ParentNode = document
 ): boolean {
-  const result = [...root.querySelectorAll(selector)]
+  const result = Array.from(root.querySelectorAll(selector))
   return result.includes(element)
 }
 
