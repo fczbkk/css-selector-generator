@@ -19,7 +19,7 @@ describe('options: combineWithinSelector', function () {
   it('should combine selectors when enabled', function () {
     root.innerHTML = html_combined_classnames
     const result = getCssSelector(
-      root.firstChild,
+      root.firstElementChild,
       {combineWithinSelector: true}
     )
     assert.equal(result, '.aaa.bbb')
@@ -28,7 +28,7 @@ describe('options: combineWithinSelector', function () {
   it('should not combine selectors when disabled', function () {
     root.innerHTML = html_combined_classnames
     const result = getCssSelector(
-      root.firstChild,
+      root.firstElementChild,
       {combineWithinSelector: false}
     )
     assert.notEqual(result, '.aaa.bbb')

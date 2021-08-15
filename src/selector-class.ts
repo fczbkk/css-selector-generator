@@ -1,9 +1,6 @@
-import {
-  sanitizeSelectorItem,
-  sanitizeSelectorNeedle
-} from './utilities-selectors';
+import {sanitizeSelectorItem} from './utilities-selectors';
 import {INVALID_CLASS_RE} from './constants'
-import {CssSelector, SelectorNeedle} from './types';
+import {CssSelector} from './types';
 import {getIntersection} from './utilities-data';
 
 /**
@@ -20,8 +17,7 @@ export function getElementClassSelectors (element: Element): Array<CssSelector> 
 /**
  * Get class selectors matching all elements.
  */
-export function getClassSelectors (needle: SelectorNeedle): Array<CssSelector> {
-  const elements = sanitizeSelectorNeedle(needle)
+export function getClassSelectors (elements: Element[]): Array<CssSelector> {
   const elementSelectors = elements.map(getElementClassSelectors)
   return getIntersection(elementSelectors)
 }

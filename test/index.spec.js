@@ -18,14 +18,14 @@ describe('CssSelectorGenerator', function () {
 
     it('should get shallow selector', function () {
       root.innerHTML = '<div class="aaa"></div>'
-      const result = getCssSelector(root.firstChild, {root})
+      const result = getCssSelector(root.firstElementChild, {root})
       assert.equal(result, '.aaa')
     })
 
     it('should get deep selector', function () {
       root.innerHTML =
         '<div id="aaa" class="aaa"><div><div class="aaa"></div></div></div>'
-      const element = root.firstChild.firstChild.firstChild
+      const element = root.firstElementChild.firstChild.firstChild
       const result = getCssSelector(element, {root})
       assert.equal(result, '#aaa .aaa')
     })
@@ -46,7 +46,7 @@ describe('CssSelectorGenerator', function () {
 
     it('should get class selector', function () {
       root.innerHTML = '<div class="aaa"></div>'
-      const result = getCssSelector(root.firstChild, {
+      const result = getCssSelector(root.firstElementChild, {
         selectors: ['class'],
         root,
       })
@@ -55,7 +55,7 @@ describe('CssSelectorGenerator', function () {
 
     it('should use single unique class', function () {
       root.innerHTML = '<div class="aaa bbb"></div><div class="aaa ccc"></div>'
-      const result = getCssSelector(root.firstChild, {
+      const result = getCssSelector(root.firstElementChild, {
         selectors: ['class'],
         root,
       })
@@ -67,7 +67,7 @@ describe('CssSelectorGenerator', function () {
         + '<div class="aaa bbb"></div>'
         + '<div class="aaa ccc"></div>'
         + '<div class="bbb ccc"></div>'
-      const result = getCssSelector(root.firstChild, {
+      const result = getCssSelector(root.firstElementChild, {
         selectors: ['class'],
         root,
       })
@@ -80,12 +80,12 @@ describe('CssSelectorGenerator', function () {
 
     it('should use nth-child descendants', function () {
       root.innerHTML = '<div><div><div></div></div></div>'
-      const needle = root.firstElementChild.firstElementChild.firstElementChild
-      const result = getCssSelector(needle, {
+      const element = root.firstElementChild.firstElementChild.firstElementChild
+      const result = getCssSelector(element, {
         root,
         selectors: []
       })
-      assert.ok(testSelector(needle, result, root))
+      assert.ok(testSelector([element], result, root))
     })
 
   })

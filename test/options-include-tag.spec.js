@@ -15,7 +15,7 @@ describe('options: includeTag', function () {
 
   it('should prefix tag to each selector', function () {
     root.innerHTML = '<div class="aaa bbb"><div class="aaa"></div></div>'
-    const result = getCssSelector(root.firstChild.firstChild, {
+    const result = getCssSelector(root.firstElementChild.firstChild, {
       includeTag: true,
       selectors: ['class']
     })

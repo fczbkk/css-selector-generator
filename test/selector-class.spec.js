@@ -15,7 +15,7 @@ describe('selector - class', function () {
 
   it('should generate class selectors', function () {
     root.innerHTML = '<div class="aaa bbb ccc"></div>'
-    const result = getClassSelectors(root.firstChild)
+    const result = getClassSelectors([root.firstElementChild])
     assert.lengthOf(result, 3)
     assert.include(result, '.aaa')
     assert.include(result, '.bbb')
@@ -24,13 +24,13 @@ describe('selector - class', function () {
 
   it('should return empty list if not set', function () {
     root.innerHTML = '<div></div>'
-    const result = getClassSelectors(root.firstChild)
+    const result = getClassSelectors([root.firstElementChild])
     assert.lengthOf(result, 0)
   })
 
   it('should ignore unnecessary whitespace', function () {
     root.innerHTML = '<div class="   aaa   bbb   ccc   "></div>'
-    const result = getClassSelectors(root.firstChild)
+    const result = getClassSelectors([root.firstElementChild])
     assert.lengthOf(result, 3)
     assert.include(result, '.aaa')
     assert.include(result, '.bbb')
@@ -39,26 +39,26 @@ describe('selector - class', function () {
 
   it('should ignore empty class name', function () {
     root.innerHTML = '<div class=""></div>'
-    const result = getClassSelectors(root.firstChild)
+    const result = getClassSelectors([root.firstElementChild])
     assert.lengthOf(result, 0)
   })
 
   it('should ignore class name full of whitespace', function () {
     root.innerHTML = '<div class="   "></div>'
-    const result = getClassSelectors(root.firstChild)
+    const result = getClassSelectors([root.firstElementChild])
     assert.lengthOf(result, 0)
   })
 
   it('should sanitize class name', function () {
     root.innerHTML = '<div class="aaa:bbb"></div>'
-    const result = getClassSelectors(root.firstChild)
+    const result = getClassSelectors([root.firstElementChild])
     assert.lengthOf(result, 1)
     assert.include(result, '.aaa\\3A bbb')
   })
 
   it('should ignore class names that start with a number', function () {
     root.innerHTML = '<div class="1 1a a1"></div>'
-    const result = getClassSelectors(root.firstChild)
+    const result = getClassSelectors([root.firstElementChild])
     assert.lengthOf(result, 1)
     assert.include(result, '.a1')
   })

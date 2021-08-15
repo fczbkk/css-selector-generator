@@ -1,14 +1,12 @@
 import {
-  sanitizeSelectorItem,
-  sanitizeSelectorNeedle
+  sanitizeSelectorItem
 } from './utilities-selectors';
 import {CssSelector, SelectorNeedle} from './types';
 
 /**
  * Get tag selector for an element.
  */
-export function getTagSelector (needle: SelectorNeedle): Array<CssSelector> {
-  const elements = sanitizeSelectorNeedle(needle)
+export function getTagSelector (elements: Element[]): Array<CssSelector> {
   const selectors = [...new Set(elements.map((element) => {
     return sanitizeSelectorItem(element.tagName.toLowerCase())
   }))]

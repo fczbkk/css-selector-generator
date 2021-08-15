@@ -16,7 +16,7 @@ describe('utilities - getParents', function () {
   it('should get parents of an element', function () {
     root.innerHTML = '<div><ul><li></li></ul></div>'
     const element = root.querySelector('li')
-    const result = getParents(element, root)
+    const result = getParents([element], root)
     assert.lengthOf(result, 3)
     assert.equal(result[0].tagName, 'LI')
     assert.equal(result[1].tagName, 'UL')
@@ -25,13 +25,13 @@ describe('utilities - getParents', function () {
 
   it('should return path for parent-less element', function () {
     const element = document.createElement('div')
-    const result = getParents(element, root)
+    const result = getParents([element], root)
     assert.lengthOf(result, 1)
   })
 
   it('should return empty array if element is invalid', function () {
     const element = 'xxx'
-    const result = getParents(element, root)
+    const result = getParents([element], root)
     assert.lengthOf(result, 0)
   })
 

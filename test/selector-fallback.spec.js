@@ -16,9 +16,9 @@ describe('selector - fallback', function () {
 
   it('should produce simple selector', () => {
     root.innerHTML = '<div></div>'
-    const needleElement = root.firstChild
-    const result = getFallbackSelector(needleElement)
-    assert.ok(testSelector(needleElement, result, root))
+    const needleElement = root.firstElementChild
+    const result = getFallbackSelector([needleElement])
+    assert.ok(testSelector([needleElement], result, root))
   })
 
   it('should produce nested selector', () => {
@@ -27,15 +27,15 @@ describe('selector - fallback', function () {
       .firstElementChild
       .firstElementChild
       .firstElementChild
-    const result = getFallbackSelector(needleElement)
-    assert.ok(testSelector(needleElement, result, root))
+    const result = getFallbackSelector([needleElement])
+    assert.ok(testSelector([needleElement], result, root))
   })
 
   it('should produce selector beside similar elements', () => {
     root.innerHTML = '<div><div><div></div></div></div>'
     const needleElement = root.firstElementChild
-    const result = getFallbackSelector(needleElement)
-    assert.ok(testSelector(needleElement, result, root))
+    const result = getFallbackSelector([needleElement])
+    assert.ok(testSelector([needleElement], result, root))
   })
 
   // https://developer.mozilla.org/en-US/docs/Web/API/element/querySelector#the_entire_hierarchy_counts
@@ -57,8 +57,8 @@ describe('selector - fallback', function () {
       .firstElementChild
       .firstElementChild
       .firstElementChild
-    const result = getFallbackSelector(needleElement)
-    assert.ok(testSelector(needleElement, result, haystackElement))
+    const result = getFallbackSelector([needleElement])
+    assert.ok(testSelector([needleElement], result, haystackElement))
   })
 
   it('should produce selector for multiple elements', () => {

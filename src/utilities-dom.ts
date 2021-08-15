@@ -7,11 +7,10 @@ import {sanitizeSelectorNeedle} from './utilities-selectors';
  * Check whether element is matched uniquely by selector.
  */
 export function testSelector (
-  needle: SelectorNeedle,
+  elements: Element[],
   selector: CssSelector,
   root: ParentNode = document
 ): boolean {
-  const elements = sanitizeSelectorNeedle(needle)
   const result = [...root.querySelectorAll(selector)]
   return (
     result.length === elements.length
@@ -45,10 +44,9 @@ export function getElementParents (
  * Find all parent elements of the element.
  */
 export function getParents (
-  needle: SelectorNeedle,
+  elements: Element[],
   root?: ParentNode
-): Array<Element> {
-  const elements = sanitizeSelectorNeedle(needle)
+): Element[] {
   root = root ?? getRootNode(elements[0])
   return getIntersection(elements.map((element) => getElementParents(element, root)))
 }

@@ -1,13 +1,12 @@
 import {getTagSelector} from './selector-tag'
-import {CssSelector, SelectorNeedle} from './types';
-import {sanitizeSelectorNeedle} from './utilities-selectors';
+import {CssSelector} from './types';
 import {getIntersection} from './utilities-data';
 
 /**
  * Get nth-of-type selector for an element.
  */
 export function getElementNthOfTypeSelector (element: Element): Array<CssSelector> {
-  const tag = getTagSelector(element)[0]
+  const tag = getTagSelector([element])[0]
   const parentElement = element.parentElement
 
   if (parentElement) {
@@ -24,7 +23,6 @@ export function getElementNthOfTypeSelector (element: Element): Array<CssSelecto
 /**
  * Get Nth-of-type selector matching all elements.
  */
-export function getNthOfTypeSelector (needle: SelectorNeedle): Array<CssSelector> {
-  const elements = sanitizeSelectorNeedle(needle)
+export function getNthOfTypeSelector (elements: Element[]): Array<CssSelector> {
   return getIntersection(elements.map(getElementNthOfTypeSelector))
 }

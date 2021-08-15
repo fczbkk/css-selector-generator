@@ -15,9 +15,9 @@ describe('selector - nth-of-type', function () {
     root.parentNode.removeChild(root)
   })
 
-  it('should generate nth-child selector', function () {
+  it('should generate nth-of-type selector', function () {
     root.innerHTML = '<div></div><p></p><p></p>'
-    const result = getNthOfTypeSelector(root.lastChild)
+    const result = getNthOfTypeSelector([root.lastElementChild])
     assert.equal(result.length, 1)
     assert.equal(result[0], 'p:nth-of-type(2)')
   })

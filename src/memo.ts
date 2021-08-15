@@ -7,34 +7,34 @@ import {
 import {SELECTOR_TYPE_GETTERS} from './utilities-selectors'
 
 export type MemoSelectorData = Map<CssSelectorType, CssSelectors>
-export type MemoElementData = Map<Element, MemoSelectorData>
+export type MemoElementData = Map<Element[], MemoSelectorData>
 export type MemoizedSelectorGetter =
-  (element: Element, selectorTypes: CssSelectorTypes) => CssSelectorsByType
+  (elements: Element[], selectorTypes: CssSelectorTypes) => CssSelectorsByType
 
 /**
  * Returns memoized data for element, creates new record in memo if necessary.
  */
 function getElementData (
-  element: Element,
+  elements: Element[],
   memo: MemoElementData = new Map()
 ): MemoSelectorData {
-  if (!memo.get(element)) {
-    memo.set(element, new Map())
+  if (!memo.get(elements)) {
+    memo.set(elements, new Map())
   }
-  return memo.get(element)
+  return memo.get(elements)
 }
 
 /**
  * Returns selector data of given type for element. Generates selector data if necessary.
  */
 function getSelectorData (
-  element: Element,
+  elements: Element[],
   selectorType: CssSelectorType,
   memo: MemoElementData = new Map()
 ) {
-  const elementData = getElementData(element, memo)
+  const elementData = getElementData(elements, memo)
   if (!elementData.get(selectorType)) {
-    elementData.set(selectorType, getSelectors(element, selectorType))
+    elementData.set(selectorType, getSelectors(elements, selectorType))
   }
   return elementData.get(selectorType)
 }
@@ -43,10 +43,10 @@ function getSelectorData (
  * Returns selector data of given type for element.
  */
 function getSelectors (
-  element: Element,
+  elements: Element[],
   selectorType: CssSelectorType
 ): CssSelectors {
-  return SELECTOR_TYPE_GETTERS[selectorType](element)
+  return SELECTOR_TYPE_GETTERS[selectorType](elements)
 }
 
 /**
@@ -56,12 +56,12 @@ export function createMemo (
   memo: MemoElementData = new Map()
 ): MemoizedSelectorGetter {
   return function (
-    element: Element,
+    elements: Element[],
     selectors: CssSelectorTypes
   ): CssSelectorsByType {
     const result = {} as CssSelectorsByType
     selectors.forEach((selectorType) => {
-      result[selectorType] = getSelectorData(element, selectorType, memo)
+      result[selectorType] = getSelectorData(elements, selectorType, memo)
     })
     return result
   }

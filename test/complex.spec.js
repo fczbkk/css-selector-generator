@@ -19,7 +19,7 @@ describe('complex test', function () {
     root.innerHTML = html_code;
     [...root.querySelectorAll('*')].forEach((element) => {
       const selector = getCssSelector(element)
-      assert.ok(testSelector(element, selector), selector)
+      assert.ok(testSelector([element], selector), selector)
     })
   })
 

@@ -65,17 +65,14 @@ export const SELECTOR_TYPE_GETTERS = {
  * Returns list of selectors of given type for the element.
  */
 export function getSelectorsByType (
-  needle: SelectorNeedle,
+  elements: Element[],
   selector_type: CssSelectorType
 ): Array<CssSelector> {
-  const elements = sanitizeSelectorNeedle(needle)
-  return getIntersection(elements.map((element) => {
-    const getter = (
-      SELECTOR_TYPE_GETTERS[selector_type]
-      ?? ((): Array<CssSelector> => [])
-    )
-    return getter(element)
-  }))
+  const getter = (
+    SELECTOR_TYPE_GETTERS[selector_type]
+    ?? ((): Array<CssSelector> => [])
+  )
+  return getter(elements)
 }
 
 /**
@@ -116,11 +113,10 @@ export function orderSelectors (
  * Returns list of unique selectors applicable to given element.
  */
 export function getAllSelectors (
-  needle: SelectorNeedle,
+  elements: Element[],
   root: ParentNode,
   options: CssSelectorGeneratorOptions
 ): Array<CssSelector> {
-  const elements = sanitizeSelectorNeedle(needle)
   const selectors_list = getSelectorsList(elements, options)
   const type_combinations = getTypeCombinations(selectors_list, options)
   const all_selectors = flattenArray(type_combinations) as Array<CssSelector>
@@ -131,10 +127,9 @@ export function getAllSelectors (
  * Creates object containing all selector types and their potential values.
  */
 export function getSelectorsList (
-  needle: SelectorNeedle,
+  elements: Element[],
   options: CssSelectorGeneratorOptions
 ): CssSelectorData {
-  const elements = sanitizeSelectorNeedle(needle)
   const {
     blacklist,
     whitelist,
@@ -279,11 +274,10 @@ export function constructSelector (
  * Generator of CSS selector candidates for given element, from simplest child selectors to more complex descendant selectors.
  */
 export function getElementSelectorCandidates (
-  needle: SelectorNeedle,
+  elements: Element[],
   root: ParentNode,
   options: CssSelectorGeneratorOptions
 ): Array<CssSelector> {
-  const elements = sanitizeSelectorNeedle(needle)
   const result = []
   const selectorCandidates = getAllSelectors(elements, root, options)
   for (const selectorCandidate of selectorCandidates) {
@@ -302,12 +296,11 @@ export function getElementSelectorCandidates (
  * Tries to find an unique CSS selector for element within given parent.
  */
 export function getSelectorWithinRoot (
-  needle: SelectorNeedle,
+  elements: Element[],
   root: ParentNode,
   rootSelector: CssSelector = '',
   options: CssSelectorGeneratorOptions
 ): (null | CssSelector) {
-  const elements = sanitizeSelectorNeedle(needle)
   const selectorCandidates =
     getElementSelectorCandidates(elements, options.root, options)
   for (const candidateSelector of selectorCandidates) {
@@ -323,13 +316,11 @@ export function getSelectorWithinRoot (
  * Climbs through parents of the element and tries to find the one that is identifiable by unique CSS selector.
  */
 export function getClosestIdentifiableParent (
-  needle: SelectorNeedle,
+  elements: Element[],
   root: ParentNode,
   rootSelector: CssSelector = '',
   options: CssSelectorGeneratorOptions
 ): IdentifiableParent {
-  const elements = sanitizeSelectorNeedle(needle)
-
   if (elements.length === 0) {
     return null
   }

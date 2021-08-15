@@ -25,7 +25,7 @@ describe('Memo', () => {
     root.innerHTML = '<div data-target></div>'
     const element = getTargetElement()
     const getElementSelectors = createMemo()
-    const result = getElementSelectors(element, ['tag'])
+    const result = getElementSelectors([element], ['tag'])
     assert.deepEqual(result, {tag: ['div']})
   })
 

@@ -15,16 +15,16 @@ describe('selector - tag', function () {
 
   it('should generate tag selector', function () {
     root.innerHTML = '<div></div>'
-    const element = root.firstChild
-    const selector = getTagSelector(element)
+    const element = root.firstElementChild
+    const selector = getTagSelector([element])
     assert.sameMembers(selector, ['div'])
     assert.equal(root.querySelector(selector), element)
   })
 
   it('should generate selector for namespaced element', function () {
     root.innerHTML = '<aaa:bbb></aaa:bbb>'
-    const element = root.firstChild
-    const selector = getTagSelector(element)
+    const element = root.firstElementChild
+    const selector = getTagSelector([element])
     assert.equal(selector, 'aaa\\3A bbb')
     assert.equal(root.querySelector(selector), element)
   })

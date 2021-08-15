@@ -19,7 +19,7 @@ describe('options: combineBetweenSelectors', function () {
   it('should combine selectors when enabled', function () {
     root.innerHTML = html_non_unique_class_and_tag
     const result = getCssSelector(
-      root.firstChild,
+      root.firstElementChild,
       {combineBetweenSelectors: true}
     )
     assert.equal(result, 'p.aaa')
@@ -28,7 +28,7 @@ describe('options: combineBetweenSelectors', function () {
   it('should not combine selectors when disabled', function () {
     root.innerHTML = html_non_unique_class_and_tag
     const result = getCssSelector(
-      root.firstChild,
+      root.firstElementChild,
       {combineBetweenSelectors: false}
     )
     assert.notEqual(result, 'p.aaa')

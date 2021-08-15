@@ -35,4 +35,4 @@ export type IdentifiableParent =
   null
   | { foundElements: Element[], selector: CssSelector }
 
-export type SelectorNeedle = Element | Array<Element>
+export type SelectorNeedle = Element | Element[]
