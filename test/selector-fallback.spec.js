@@ -69,7 +69,6 @@ describe('selector - fallback', function () {
     `
     const needleElements = [...root.querySelectorAll('div')]
     const result = getFallbackSelector(needleElements)
-    console.log('x', result)
     needleElements.forEach((element) => {
       assert.ok(testMultiSelector(element, result, root))
     })
