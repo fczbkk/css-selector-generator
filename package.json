@@ -16,9 +16,7 @@
     "lint:ts": "eslint ./src/**/*.ts --config ./.eslintrc-typescript.json",
     "lint:js": "eslint ./test/**/*.js ./tools/**/*.js --config ./.eslintrc.json",
     "lint:build": "npm run lint:ts -- --max-warnings 0 && npm run lint:js -- --max-warnings 0",
-    "doc": "npm run doc:readme && npm run doc:types",
-    "doc:readme": "documentation readme src/index.ts -s 'Documentation' --shallow",
-    "doc:types": "tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --downlevelIteration --outDir types",
+    "doc": "tsc ./src/*.ts --declaration --allowJs --emitDeclarationOnly --downlevelIteration --outDir types",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "postversion": "git push && git push --tags && npm publish --access=public",
     "version": "npm run build && npm run doc && npm run changelog && git add -A"
@@ -32,7 +30,6 @@
     "babel-loader": "^8.2.2",
     "chai": "^4.3.4",
     "conventional-changelog-cli": "^2.1.1",
-    "documentation": "^13.2.5",
     "eslint": "^7.32.0",
     "karma": "^6.3.4",
     "karma-chai": "^0.1.0",
