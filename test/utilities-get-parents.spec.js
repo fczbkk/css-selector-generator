@@ -35,4 +35,21 @@ describe('utilities - getParents', function () {
     assert.lengthOf(result, 0)
   })
 
+  it('should find common parents for multiple elements', () => {
+    root.innerHTML = `
+      <div>
+        <ul>
+          <li></li>
+        </ul>
+        <ul>
+          <li></li>
+        </ul>
+      </div>
+    `
+    const elements = [...root.querySelectorAll('li')]
+    const result = getParents(elements, root)
+    assert.lengthOf(result, 1)
+    assert.equal(result[0].tagName, 'DIV')
+  })
+
 })

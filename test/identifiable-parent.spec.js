@@ -40,7 +40,7 @@ describe('Identifiable Parent', () => {
     )
     const parentElement = root.querySelector('[data-parent]')
     assert.deepEqual(result, {
-      foundElement: parentElement,
+      foundElements: [parentElement],
       selector: '#mockParent'
     })
   })
@@ -60,7 +60,7 @@ describe('Identifiable Parent', () => {
     )
     const parentElement = root.querySelector('[data-parent]')
     assert.deepEqual(result, {
-      foundElement: parentElement,
+      foundElements: [parentElement],
       selector: '.mockParent'
     })
   })

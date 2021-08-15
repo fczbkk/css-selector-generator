@@ -24,7 +24,7 @@ export function getIdentifiableParent (
       if (selector !== '') {
         if (testSelector(currentElement, selector, root)) {
           return {
-            foundElement: currentElement,
+            foundElements: [currentElement],
             selector
           }
         }

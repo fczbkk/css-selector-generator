@@ -90,4 +90,32 @@ describe('CssSelectorGenerator', function () {
 
   })
 
+  describe('multiple elements', () => {
+
+    it('should get single selector matching multiple elements', () => {
+      root.innerHTML = `
+        <div class="aaa bbb"></div>
+        <span class="bbb ccc"></span>
+      `
+      const elements = [...root.querySelectorAll('.bbb')]
+      const result = getCssSelector(elements)
+      assert.equal(result, '.bbb')
+    })
+
+    it('should get combined selector matching multiple elements', () => {
+      root.innerHTML = '<a></a><span></span>'
+      const elements = [root.children[0], root.children[1]]
+      const result = getCssSelector(elements)
+      assert.equal(result, 'a, span')
+    })
+
+    it('should get fallback selectors for multiple elements', () => {
+      root.innerHTML = '<div></div><div></div><div></div>'
+      const elements = [root.children[0], root.children[1]]
+      const result = getCssSelector(elements)
+      assert.ok(testSelector(elements, result))
+    })
+
+  })
+
 })
