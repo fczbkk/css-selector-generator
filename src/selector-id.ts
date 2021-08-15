@@ -1,7 +1,7 @@
-import {sanitizeSelectorItem} from './utilities-selectors';
+import {sanitizeSelectorItem} from './utilities-selectors'
 import {INVALID_ID_RE} from './constants'
 import {testSelector} from './utilities-dom'
-import {CssSelector, SelectorNeedle} from './types';
+import {CssSelector} from './types'
 
 /**
  * Get ID selector for an element.

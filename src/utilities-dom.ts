@@ -1,6 +1,6 @@
 import isElement from 'iselement'
-import {CssSelector} from './types';
-import {getIntersection} from './utilities-data';
+import {CssSelector} from './types'
+import {getIntersection} from './utilities-data'
 
 /**
  * Check whether element is matched uniquely by selector.
@@ -17,6 +17,9 @@ export function testSelector (
   )
 }
 
+/**
+ * Test whether selector targets element. It does not have to be a unique match.
+ */
 export function testMultiSelector (
   element: Element,
   selector: CssSelector,
@@ -26,6 +29,9 @@ export function testMultiSelector (
   return result.includes(element)
 }
 
+/**
+ * Find all parents of a single element.
+ */
 export function getElementParents (
   element: Element,
   root: ParentNode
@@ -40,14 +46,16 @@ export function getElementParents (
 }
 
 /**
- * Find all parent elements of the element.
+ * Find all common parents of elements.
  */
 export function getParents (
   elements: Element[],
   root?: ParentNode
 ): Element[] {
   root = root ?? getRootNode(elements[0])
-  return getIntersection(elements.map((element) => getElementParents(element, root)))
+  return getIntersection(
+    elements.map((element) => getElementParents(element, root))
+  )
 }
 
 /**

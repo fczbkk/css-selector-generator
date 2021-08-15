@@ -33,7 +33,10 @@ describe('options: whitelist', function () {
 
   it('should work with multiple items', function () {
     root.innerHTML = '<div class="aaa bbb"></div>'
-    const result = getCssSelector(root.firstElementChild, {whitelist: [/x/, /b/]})
+    const result = getCssSelector(
+      root.firstElementChild,
+      {whitelist: [/x/, /b/]}
+    )
     assert.equal(result, '.bbb')
   })
 

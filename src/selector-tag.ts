@@ -1,7 +1,7 @@
 import {
   sanitizeSelectorItem
-} from './utilities-selectors';
-import {CssSelector, SelectorNeedle} from './types';
+} from './utilities-selectors'
+import {CssSelector} from './types'
 
 /**
  * Get tag selector for an element.

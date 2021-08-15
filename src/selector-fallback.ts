@@ -1,9 +1,12 @@
 import {getParents} from './utilities-dom'
 import {getNthChildSelector} from './selector-nth-child'
-import {DESCENDANT_OPERATOR, SELECTOR_SEPARATOR} from './constants';
-import {CssSelector} from './types';
+import {DESCENDANT_OPERATOR, SELECTOR_SEPARATOR} from './constants'
+import {CssSelector} from './types'
 
-export function constructFallbackSelector (element: Element): CssSelector {
+/**
+ * Creates fallback selector for single element.
+ */
+export function getElementFallbackSelector (element: Element): CssSelector {
   const selectors = getParents([element])
     .map((element) => getNthChildSelector([element])[0])
     .reverse()
@@ -11,8 +14,8 @@ export function constructFallbackSelector (element: Element): CssSelector {
 }
 
 /**
- * Creates chain of :nth-child selectors from root to the element.
+ * Creates chain of :nth-child selectors from root to the elements.
  */
 export function getFallbackSelector (elements: Element[]): CssSelector {
-  return elements.map(constructFallbackSelector).join(SELECTOR_SEPARATOR)
+  return elements.map(getElementFallbackSelector).join(SELECTOR_SEPARATOR)
 }

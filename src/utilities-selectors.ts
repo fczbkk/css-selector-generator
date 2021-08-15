@@ -13,17 +13,17 @@ import {getTagSelector} from './selector-tag'
 import {
   convertMatchListToRegExp,
   flattenArray,
-  getCombinations, getIntersection
-} from './utilities-data';
+  getCombinations
+} from './utilities-data'
 import {getParents, testSelector} from './utilities-dom'
 import {
   CssSelector,
   CssSelectorData,
   CssSelectorGeneratorOptions,
   CssSelectorType,
-  IdentifiableParent, SelectorNeedle
-} from './types';
-import isElement from 'iselement';
+  IdentifiableParent
+} from './types'
+import isElement from 'iselement'
 
 export const ESCAPED_COLON = ':'
   .charCodeAt(0)
@@ -344,6 +344,10 @@ export function getClosestIdentifiableParent (
   return null
 }
 
+/**
+ * Converts input into list of elements, removing duplicates and non-elements.
+ */
 export function sanitizeSelectorNeedle (needle: unknown): Element[] {
-  return [...new Set((Array.isArray(needle) ? needle : [needle]).filter(isElement))]
+  const elements = (Array.isArray(needle) ? needle : [needle]).filter(isElement)
+  return [...new Set(elements)]
 }

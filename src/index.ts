@@ -3,10 +3,10 @@ import {sanitizeOptions} from './utilities-options'
 import {
   getClosestIdentifiableParent,
   sanitizeSelectorNeedle
-} from './utilities-selectors';
+} from './utilities-selectors'
 import {CssSelector} from './types'
-import {testSelector} from './utilities-dom';
-import {SELECTOR_SEPARATOR} from './constants';
+import {testSelector} from './utilities-dom'
+import {SELECTOR_SEPARATOR} from './constants'
 
 /**
  * Generates unique CSS selector for an element.

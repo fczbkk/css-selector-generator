@@ -33,7 +33,10 @@ describe('options: blacklist', function () {
 
   it('should work with multiple items', function () {
     root.innerHTML = '<div class="aaa bbb"></div>'
-    const result = getCssSelector(root.firstElementChild, {blacklist: [/x/, /a/]})
+    const result = getCssSelector(
+      root.firstElementChild,
+      {blacklist: [/x/, /a/]}
+    )
     assert.equal(result, '.bbb')
   })
 

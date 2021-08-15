@@ -1,12 +1,12 @@
-import {sanitizeSelectorItem} from './utilities-selectors';
+import {sanitizeSelectorItem} from './utilities-selectors'
 import {INVALID_CLASS_RE} from './constants'
-import {CssSelector} from './types';
-import {getIntersection} from './utilities-data';
+import {CssSelector} from './types'
+import {getIntersection} from './utilities-data'
 
 /**
  * Get class selectors for an element.
  */
-export function getElementClassSelectors (element: Element): Array<CssSelector> {
+export function getElementClassSelectors (element: Element): CssSelector[] {
   return (element.getAttribute('class') || '')
     .trim()
     .split(/\s+/)
@@ -17,7 +17,7 @@ export function getElementClassSelectors (element: Element): Array<CssSelector> 
 /**
  * Get class selectors matching all elements.
  */
-export function getClassSelectors (elements: Element[]): Array<CssSelector> {
+export function getClassSelectors (elements: Element[]): CssSelector[] {
   const elementSelectors = elements.map(getElementClassSelectors)
   return getIntersection(elementSelectors)
 }

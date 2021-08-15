@@ -1,11 +1,11 @@
 import isElement from 'iselement'
-import {CssSelector} from './types';
-import {getIntersection} from './utilities-data';
+import {CssSelector} from './types'
+import {getIntersection} from './utilities-data'
 
 /**
  * Get nth-child selector for an element.
  */
-export function getElementNthChildSelector (element: Element): Array<CssSelector> {
+export function getElementNthChildSelector (element: Element): CssSelector[] {
   const parent = element.parentNode
 
   if (parent) {
@@ -22,6 +22,6 @@ export function getElementNthChildSelector (element: Element): Array<CssSelector
 /**
  * Get nth-child selector matching all elements.
  */
-export function getNthChildSelector(elements: Element[]): Array<CssSelector> {
+export function getNthChildSelector (elements: Element[]): CssSelector[] {
   return getIntersection(elements.map(getElementNthChildSelector))
 }
