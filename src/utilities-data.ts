@@ -24,6 +24,19 @@ export function getCombinations<T> (
 }
 
 /**
+ * Creates array containing only items included in all input arrays.
+ */
+export function getIntersection<T> (items: Array<Array<T>> = []): Array<T> {
+  const [firstItem = [], ...otherItems] = items
+  if (otherItems.length === 0) {
+    return firstItem
+  }
+  return (otherItems).reduce((accumulator, currentValue) => {
+    return accumulator.filter((item) => currentValue.includes(item))
+  }, firstItem)
+}
+
+/**
  * Converts array of arrays into a flat array.
  */
 export function flattenArray<T> (input: Array<Array<T>>): Array<T> {

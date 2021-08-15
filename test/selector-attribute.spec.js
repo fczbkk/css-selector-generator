@@ -51,4 +51,18 @@ describe('selector - attribute', function () {
     assert.equal(result.length, 0)
   })
 
+  it('should generate attribute selectors for multiple elements', function () {
+    root.innerHTML = `
+      <div aaa="bbb" ccc="ddd"></div>
+      <div aaa="bbb"></div>
+      <div xxx="yyy"></div>
+    `
+    const elements = root.querySelectorAll('div')
+    const withIntersection = getAttributeSelectors([elements[0], elements[1]])
+    const noIntersection = getAttributeSelectors([elements[0], elements[2]])
+    assert.sameMembers(withIntersection, ["[aaa='bbb']"])
+    assert.sameMembers(noIntersection, [])
+  })
+
+
 })

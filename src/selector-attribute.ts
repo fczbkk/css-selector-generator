@@ -1,6 +1,9 @@
-import {sanitizeSelectorItem} from './utilities-selectors'
-import {convertMatchListToRegExp} from './utilities-data'
-import {CssSelector} from './types'
+import {
+  sanitizeSelectorItem,
+  sanitizeSelectorNeedle
+} from './utilities-selectors';
+import {convertMatchListToRegExp, getIntersection} from './utilities-data';
+import {CssSelector, SelectorNeedle} from './types';
 
 // List of attributes to be ignored. These are handled by different selector types.
 export const ATTRIBUTE_BLACKLIST = convertMatchListToRegExp([
@@ -13,7 +16,7 @@ export const ATTRIBUTE_BLACKLIST = convertMatchListToRegExp([
 /**
  * Get attribute selectors for an element.
  */
-function attributeNodeToSelector ({
+export function attributeNodeToSelector ({
   nodeName,
   nodeValue
 }: Node) {
@@ -23,15 +26,24 @@ function attributeNodeToSelector ({
 /**
  * Checks whether attribute should be used as a selector.
  */
-function isValidAttributeNode ({nodeName}: Node) {
+export function isValidAttributeNode ({nodeName}: Node) {
   return !ATTRIBUTE_BLACKLIST.test(nodeName)
 }
 
 /**
  * Get attribute selectors for an element.
  */
-export function getAttributeSelectors (element: Element): Array<CssSelector> {
+export function getElementAttributeSelectors (element: Element): Array<CssSelector> {
   return Array.from(element.attributes)
     .filter(isValidAttributeNode)
     .map(attributeNodeToSelector)
+}
+
+/**
+ * Get attribute selectors matching all elements.
+ */
+export function getAttributeSelectors (needle: SelectorNeedle): Array<CssSelector> {
+  const elements = sanitizeSelectorNeedle(needle)
+  const elementSelectors = elements.map(getElementAttributeSelectors)
+  return getIntersection(elementSelectors)
 }
