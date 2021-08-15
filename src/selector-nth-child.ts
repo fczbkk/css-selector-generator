@@ -8,15 +8,10 @@ export function getNthChildSelector (element: Element): Array<CssSelector> {
   const parent = element.parentNode
 
   if (parent) {
-    let counter = 0
-    const siblings = parent.childNodes
-    for (let i = 0; i < siblings.length; i++) {
-      if (isElement(siblings[i])) {
-        counter += 1
-        if (siblings[i] === element) {
-          return [`:nth-child(${counter})`]
-        }
-      }
+    const siblings = [...parent.childNodes].filter(isElement)
+    const elementIndex = siblings.indexOf(element)
+    if (elementIndex > -1) {
+      return [`:nth-child(${elementIndex + 1})`]
     }
   }
 

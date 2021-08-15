@@ -9,11 +9,10 @@ export function getNthOfTypeSelector (element: Element): Array<CssSelector> {
   const parentElement = element.parentElement
 
   if (parentElement) {
-    const siblings = parentElement.querySelectorAll(tag)
-    for (let i = 0; i < siblings.length; i++) {
-      if (siblings[i] === element) {
-        return [`${tag}:nth-of-type(${i + 1})`]
-      }
+    const siblings = [...parentElement.querySelectorAll(tag)]
+    const elementIndex = siblings.indexOf(element)
+    if (elementIndex > -1) {
+      return [`${tag}:nth-of-type(${elementIndex + 1})`]
     }
   }
 
