@@ -1,4 +1,4 @@
-const webpack_config = require('./webpack.dev');
+const webpack_config = require('./webpack.dev')
 
 module.exports = (config) => {
   config.set({
@@ -8,10 +8,7 @@ module.exports = (config) => {
     preprocessors: {
       '../test/**/*.spec.js': ['webpack'],
     },
-    webpack: {
-      mode: 'development',
-      module: webpack_config.module
-    },
+    webpack: webpack_config,
     webpackMiddleware: {
       stats: 'errors-only',
     },
@@ -24,7 +21,10 @@ module.exports = (config) => {
     reporters: [
       'mocha',
     ],
+    client: {
+      captureConsole: true
+    },
     singleRun: true,
     autoWatch: false
-  });
-};
+  })
+}

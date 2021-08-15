@@ -1,3 +1,15 @@
+# [3.1.0](https://github.com/fczbkk/css-selector-generator/compare/v3.0.1...v3.1.0) (2021-08-14)
+
+
+### Features
+
+* add identifiableParent ([0b80751](https://github.com/fczbkk/css-selector-generator/commit/0b80751cb747af90536eace339864f541e892010))
+* add memorization interface ([3daac7c](https://github.com/fczbkk/css-selector-generator/commit/3daac7c892f9b573f49e5bac19555cadbc324d83))
+* add memorization interface ([9262b41](https://github.com/fczbkk/css-selector-generator/commit/9262b410b1175fc9c04d4f2b6004446a6957f958))
+* remove generators ([9391eb7](https://github.com/fczbkk/css-selector-generator/commit/9391eb7a4091382cda8a798895a9bace9c8677ab))
+
+
+
 ## [3.0.1](https://github.com/fczbkk/css-selector-generator/compare/v3.0.0...v3.0.1) (2021-03-20)
 
 

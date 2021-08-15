@@ -1,38 +1,38 @@
-import {assert} from 'chai';
-import {getCssSelector} from '../src/index.js';
+import {assert} from 'chai'
+import {getCssSelector} from '../src'
 
 describe('options: combineWithinSelector', function () {
 
-  let root;
+  let root
   const html_combined_classnames = '<div class="aaa bbb"></div>'
     + '<div class="aaa"></div>'
-    + '<div class="bbb"></div>';
+    + '<div class="bbb"></div>'
 
   beforeEach(function () {
-    root = document.body.appendChild(document.createElement('div'));
-  });
+    root = document.body.appendChild(document.createElement('div'))
+  })
 
   afterEach(function () {
-    root.parentNode.removeChild(root);
-  });
+    root.parentNode.removeChild(root)
+  })
 
   it('should combine selectors when enabled', function () {
-    root.innerHTML = html_combined_classnames;
+    root.innerHTML = html_combined_classnames
     const result = getCssSelector(
       root.firstChild,
       {combineWithinSelector: true}
-    );
-    assert.equal(result, '.aaa.bbb');
-  });
+    )
+    assert.equal(result, '.aaa.bbb')
+  })
 
   it('should not combine selectors when disabled', function () {
-    root.innerHTML = html_combined_classnames;
+    root.innerHTML = html_combined_classnames
     const result = getCssSelector(
       root.firstChild,
       {combineWithinSelector: false}
-    );
-    assert.notEqual(result, '.aaa.bbb');
-    assert.notEqual(result, '.bbb.aaa');
-  });
+    )
+    assert.notEqual(result, '.aaa.bbb')
+    assert.notEqual(result, '.bbb.aaa')
+  })
 
-});
+})
