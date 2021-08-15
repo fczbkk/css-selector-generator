@@ -64,4 +64,12 @@ describe('selector - ID', function () {
     assert.deepEqual(getIdSelector(root.firstChild), [])
   })
 
+  it('should always return empty result for multiple elements', () => {
+    root.innerHTML = `
+      <div id="aaa"></div>
+      <div id="bbb"></div>
+    `
+    const elements = [...root.querySelectorAll('div')]
+    assert.sameMembers(getIdSelector(elements), [])
+  })
 })

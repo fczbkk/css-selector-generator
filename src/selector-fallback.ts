@@ -12,7 +12,7 @@ export function constructFallbackSelector (element: Element): CssSelector {
 }
 
 /**
- * Creates chain if :nth-child selectors from root to the element.
+ * Creates chain of :nth-child selectors from root to the element.
  */
 export function getFallbackSelector (needle: SelectorNeedle): CssSelector {
   const elements = sanitizeSelectorNeedle(needle)
