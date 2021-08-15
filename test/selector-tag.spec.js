@@ -17,7 +17,7 @@ describe('selector - tag', function () {
     root.innerHTML = '<div></div>'
     const element = root.firstChild
     const selector = getTagSelector(element)
-    assert.equal(selector, 'div')
+    assert.sameMembers(selector, ['div'])
     assert.equal(root.querySelector(selector), element)
   })
 
@@ -27,6 +27,13 @@ describe('selector - tag', function () {
     const selector = getTagSelector(element)
     assert.equal(selector, 'aaa\\3A bbb')
     assert.equal(root.querySelector(selector), element)
+  })
+
+  it('should generate tag selector for multiple elements', () => {
+    root.innerHTML = '<div></div><div></div>'
+    const elements = [...root.querySelectorAll('div')]
+    const result = getTagSelector(elements)
+    assert.sameMembers(result, ['div'])
   })
 
 })
