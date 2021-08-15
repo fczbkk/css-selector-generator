@@ -1,10 +1,12 @@
 import isElement from 'iselement'
-import {CssSelector} from './types'
+import {CssSelector, SelectorNeedle} from './types';
+import {sanitizeSelectorNeedle} from './utilities-selectors';
+import {getIntersection} from './utilities-data';
 
 /**
  * Get nth-child selector for an element.
  */
-export function getNthChildSelector (element: Element): Array<CssSelector> {
+export function getElementNthChildSelector (element: Element): Array<CssSelector> {
   const parent = element.parentNode
 
   if (parent) {
@@ -16,4 +18,12 @@ export function getNthChildSelector (element: Element): Array<CssSelector> {
   }
 
   return []
+}
+
+/**
+ * Get nth-child selector matching all elements.
+ */
+export function getNthChildSelector(needle: SelectorNeedle): Array<CssSelector> {
+  const elements = sanitizeSelectorNeedle(needle)
+  return getIntersection(elements.map(getElementNthChildSelector))
 }

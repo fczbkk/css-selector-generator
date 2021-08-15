@@ -26,4 +26,14 @@ describe('selector - nth-child', function () {
     assert.equal(result[0], ':nth-child(2)')
   })
 
+  it('should generate nth-child selector for multiple elements', () => {
+    root.innerHTML = `
+      <div><span></span></div>
+      <div><span></span></div>
+    `
+    const elements = [...root.querySelectorAll('span')]
+    const result = getNthChildSelector(elements)
+    assert.sameMembers(result, [':nth-child(1)'])
+  })
+
 })
