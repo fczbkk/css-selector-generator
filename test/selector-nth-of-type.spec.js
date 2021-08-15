@@ -71,4 +71,14 @@ describe('selector - nth-of-type', function () {
     assert.doesNotThrow(fn)
   })
 
+  it('should generate nth-of-type selector for multiple elements', () => {
+    root.innerHTML = `
+      <div><div></div><span></span></div>
+      <div><span></span></div>
+    `
+    const elements = [...root.querySelectorAll('span')]
+    const result = getNthOfTypeSelector(elements)
+    assert.sameMembers(result, ['span:nth-of-type(1)'])
+  })
+
 })
