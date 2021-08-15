@@ -1,3 +1,19 @@
+# [3.2.0](https://github.com/fczbkk/css-selector-generator/compare/v3.1.0...v3.2.0) (2021-08-15)
+
+
+### Features
+
+* add multi element support ([3f42092](https://github.com/fczbkk/css-selector-generator/commit/3f420923c6309ab4bdec10102bf5ecd846eccc29))
+* multi elements support for attribute ([a273c02](https://github.com/fczbkk/css-selector-generator/commit/a273c02d95664835b67a7bce6eef1f592395448c))
+* multi elements support for class ([ad367df](https://github.com/fczbkk/css-selector-generator/commit/ad367df3c7788b651cfe61292428ca8cf72901de))
+* multi elements support for fallback ([991531d](https://github.com/fczbkk/css-selector-generator/commit/991531d02419eeb8d499761127c813128985667b))
+* multi elements support for id ([403cb59](https://github.com/fczbkk/css-selector-generator/commit/403cb59cc28cb64a78eb6b08ef674ae7b602f24d))
+* multi elements support for nth-child ([74443c2](https://github.com/fczbkk/css-selector-generator/commit/74443c2c1c96720c63407392d6cd3970c662e264))
+* multi elements support for nth-of-type ([f481ca6](https://github.com/fczbkk/css-selector-generator/commit/f481ca6c23c4cd0f2bd0044a0531fa4111e7fc89))
+* multi elements support for tag ([df4ec59](https://github.com/fczbkk/css-selector-generator/commit/df4ec5953d3d918c4bedd85f720f19130ba848d8))
+
+
+
 # [3.1.0](https://github.com/fczbkk/css-selector-generator/compare/v3.0.1...v3.1.0) (2021-08-14)
 
 

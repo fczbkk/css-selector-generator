@@ -1,5 +1,9 @@
 import { CssSelector } from './types';
 /**
- * Creates chain if :nth-child selectors from root to the element.
+ * Creates fallback selector for single element.
  */
-export declare function getFallbackSelector(element: Element): CssSelector;
+export declare function getElementFallbackSelector(element: Element): CssSelector;
+/**
+ * Creates chain of :nth-child selectors from root to the elements.
+ */
+export declare function getFallbackSelector(elements: Element[]): CssSelector;

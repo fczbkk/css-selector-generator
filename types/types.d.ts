@@ -18,6 +18,7 @@ export declare type CssSelectorGeneratorOptions = {
     includeTag: boolean;
 };
 export declare type IdentifiableParent = null | {
-    foundElement: Element;
+    foundElements: Element[];
     selector: CssSelector;
 };
+export declare type SelectorNeedle = Element | Element[];

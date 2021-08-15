@@ -4,6 +4,10 @@ import { CssSelectorMatch } from './types';
  */
 export declare function getCombinations<T>(items?: Array<T>): Array<Array<T>>;
 /**
+ * Creates array containing only items included in all input arrays.
+ */
+export declare function getIntersection<T>(items?: Array<Array<T>>): Array<T>;
+/**
  * Converts array of arrays into a flat array.
  */
 export declare function flattenArray<T>(input: Array<Array<T>>): Array<T>;

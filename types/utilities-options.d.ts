@@ -9,11 +9,6 @@ export declare const DEFAULT_OPTIONS: {
     root: Document;
 };
 /**
- * Constructs default options with proper root node for given element.
- * @see {@link getRootNode} for further info
- */
-export declare function constructDefaultOptions(element: Element): Record<string, unknown>;
-/**
  * Makes sure returned value is a list containing only valid selector types.
  * @param input
  */

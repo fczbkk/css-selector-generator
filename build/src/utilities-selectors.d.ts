@@ -22,7 +22,7 @@ export declare const SELECTOR_TYPE_GETTERS: {
 /**
  * Returns list of selectors of given type for the element.
  */
-export declare function getSelectorsByType(element: Element, selector_type: CssSelectorType): Array<CssSelector>;
+export declare function getSelectorsByType(elements: Element[], selector_type: CssSelectorType): Array<CssSelector>;
 /**
  * Remove blacklisted selectors from list.
  */
@@ -34,11 +34,11 @@ export declare function orderSelectors(list: Array<CssSelector>, whitelist_re: R
 /**
  * Returns list of unique selectors applicable to given element.
  */
-export declare function getAllSelectors(element: Element, root: ParentNode, options: CssSelectorGeneratorOptions): Array<CssSelector>;
+export declare function getAllSelectors(elements: Element[], root: ParentNode, options: CssSelectorGeneratorOptions): Array<CssSelector>;
 /**
  * Creates object containing all selector types and their potential values.
  */
-export declare function getSelectorsList(element: Element, options: CssSelectorGeneratorOptions): CssSelectorData;
+export declare function getSelectorsList(elements: Element[], options: CssSelectorGeneratorOptions): CssSelectorData;
 /**
  * Creates list of selector types that we will need to generate the selector.
  */
@@ -66,12 +66,16 @@ export declare function constructSelector(selectorData?: CssSelectorData): CssSe
 /**
  * Generator of CSS selector candidates for given element, from simplest child selectors to more complex descendant selectors.
  */
-export declare function getElementSelectorCandidates(element: Element, root: ParentNode, options: CssSelectorGeneratorOptions): Array<CssSelector>;
+export declare function getElementSelectorCandidates(elements: Element[], root: ParentNode, options: CssSelectorGeneratorOptions): Array<CssSelector>;
 /**
  * Tries to find an unique CSS selector for element within given parent.
  */
-export declare function getSelectorWithinRoot(element: Element, root: ParentNode, rootSelector: CssSelector, options: CssSelectorGeneratorOptions): (null | CssSelector);
+export declare function getSelectorWithinRoot(elements: Element[], root: ParentNode, rootSelector: CssSelector, options: CssSelectorGeneratorOptions): (null | CssSelector);
 /**
  * Climbs through parents of the element and tries to find the one that is identifiable by unique CSS selector.
  */
-export declare function getClosestIdentifiableParent(element: Element, root: ParentNode, rootSelector: CssSelector, options: CssSelectorGeneratorOptions): IdentifiableParent;
+export declare function getClosestIdentifiableParent(elements: Element[], root: ParentNode, rootSelector: CssSelector, options: CssSelectorGeneratorOptions): IdentifiableParent;
+/**
+ * Converts input into list of elements, removing duplicates and non-elements.
+ */
+export declare function sanitizeSelectorNeedle(needle: unknown): Element[];
