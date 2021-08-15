@@ -17,19 +17,6 @@ export const DEFAULT_OPTIONS = {
 }
 
 /**
- * Constructs default options with proper root node for given element.
- * @see {@link getRootNode} for further info
- */
-export function constructDefaultOptions (
-  element: Element
-): Record<string, unknown> {
-  return {
-    ...DEFAULT_OPTIONS,
-    root: element.ownerDocument.querySelector(':root')
-  }
-}
-
-/**
  * Makes sure returned value is a list containing only valid selector types.
  * @param input
  */
