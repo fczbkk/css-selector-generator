@@ -1,7 +1,6 @@
 import isElement from 'iselement'
-import {CssSelector, SelectorNeedle} from './types';
+import {CssSelector} from './types';
 import {getIntersection} from './utilities-data';
-import {sanitizeSelectorNeedle} from './utilities-selectors';
 
 /**
  * Check whether element is matched uniquely by selector.
