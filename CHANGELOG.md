@@ -1,3 +1,12 @@
+## [3.2.1](https://github.com/fczbkk/css-selector-generator/compare/v3.2.0...v3.2.1) (2021-08-18)
+
+
+### Bug Fixes
+
+* do not throw on descendant selector in root ([96ed377](https://github.com/fczbkk/css-selector-generator/commit/96ed377f99152b63cb9f9aaea727cc346604b9d4)), closes [#65](https://github.com/fczbkk/css-selector-generator/issues/65)
+
+
+
 # [3.2.0](https://github.com/fczbkk/css-selector-generator/compare/v3.1.0...v3.2.0) (2021-08-15)
 
 
