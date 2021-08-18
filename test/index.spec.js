@@ -40,6 +40,14 @@ describe('CssSelectorGenerator', function () {
       assert.doesNotThrow(fn)
     })
 
+    it('should not throw on descendant selector within root', () => {
+      root.innerHTML = '<div><span></span><span></span></div>'
+      const selectorTarget = root.querySelector('div span')
+      const selectorRoot = root.querySelector('div')
+      const fn = () => getCssSelector(selectorTarget, {root: selectorRoot})
+      assert.doesNotThrow(fn)
+    })
+
   })
 
   describe('class selectors', function () {

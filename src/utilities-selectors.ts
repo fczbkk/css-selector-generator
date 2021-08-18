@@ -284,7 +284,10 @@ export function getElementSelectorCandidates (
     result.push(CHILD_OPERATOR + selectorCandidate)
   }
 
-  if (elements.every((element) => element.parentNode === root)) {
+  if (elements.every((element) => (
+    element.parentNode === root
+    && element.parentNode !== options.root
+  ))) {
     for (const selectorCandidate of selectorCandidates) {
       result.push(DESCENDANT_OPERATOR + selectorCandidate)
     }
