@@ -23,8 +23,8 @@
   },
   "devDependencies": {
     "@fczbkk/eslint-config": "^1.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.29.1",
-    "@typescript-eslint/parser": "^4.29.1",
+    "@typescript-eslint/eslint-plugin": "^4.29.2",
+    "@typescript-eslint/parser": "^4.29.2",
     "chai": "^4.3.4",
     "conventional-changelog-cli": "^2.1.1",
     "eslint": "^7.32.0",
@@ -39,8 +39,8 @@
     "rimraf": "^3.0.2",
     "ts-loader": "^9.2.5",
     "typescript": "^4.3.5",
-    "webpack": "^5.50.0",
-    "webpack-cli": "^4.7.2"
+    "webpack": "^5.51.1",
+    "webpack-cli": "^4.8.0"
   },
   "repository": {
     "type": "git",
