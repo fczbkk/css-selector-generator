@@ -22,12 +22,9 @@
     "version": "npm run build && npm run doc && npm run changelog && git add -A"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.0",
-    "@babel/preset-env": "^7.15.0",
     "@fczbkk/eslint-config": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^4.29.1",
     "@typescript-eslint/parser": "^4.29.1",
-    "babel-loader": "^8.2.2",
     "chai": "^4.3.4",
     "conventional-changelog-cli": "^2.1.1",
     "eslint": "^7.32.0",
