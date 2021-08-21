@@ -61,6 +61,11 @@ If you don't want to use this library with NPM, you can download it directly fro
 </script
 ```
 
+### Usage with virtual DOM (e.g. JSDOM)
+
+If you want to use this library with Node, usually for testing, don't require it directly into the Node process. It will not work, because there's no `window` object and there are no elements to select. Instead, you have to add the library to the virtual `window` object. Here are instructions how to do it in JSDOM, other libraries will work in a similar way:
+https://github.com/jsdom/jsdom/wiki/Don't-stuff-jsdom-globals-onto-the-Node-global
+
 ### Multi-element selector
 
 This library also allows you to create selector targeting multiple elements at once. You do that by calling the same function, but you provide an array of elements instead of single element:
