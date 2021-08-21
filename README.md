@@ -107,6 +107,17 @@ In some cases, this selector may not be unique (e.g. `#wrapper > * > div > *`). 
 
     ":nth-child(2) > :nth-child(4) > :nth-child(1) > :nth-child(12)"
 
+## Options
+
+- [`selectors`](#selector-types)
+- [`root`](#root-element)
+- [`blacklist`](#blacklist)
+- [`combineWithinSelector`](#combine-within-selector)
+- [`combineBetweenSelectors`](#combine-between-selectors)
+- [`includeTag`](#include-tag)
+- [`maxCombinations`](#max-combinations)
+- [`maxCandidates`](#max-candidates)
+
 ### Selector types
 
 You can choose which types of selectors do you want to use:
@@ -133,6 +144,15 @@ getCssSelector(targetElement, {selectors: ['class', 'tag']});
 getCssSelector(targetElement, {selectors: ['tag', 'class']});
 // "div"
 ```
+
+Valid selector types are:
+
+- `id`
+- `class`
+- `tag`
+- `attribute`
+- `nthchild`
+- `nthoftype`
 
 ### Root element
 
@@ -272,6 +292,26 @@ This option will add tag selector type to every selector:
 ```javascript
 getCssSelector(targetElement, {includeTag: true});
 // "div.myElement"
+```
+
+### Max combinations
+
+This is a performance optimization option that can help when trying to find a CSS selector within elements that contain large numbers of class names (e.g. because of frameworks that create atomic styles) or other attributes.
+
+In such case, the number of possible combinations between class names can be too large (it grows exponentially) and can significantly slow down selector generation. In reality, if the selector is not found within first few combinations, it usually won't be found within the rest of combinations.
+
+```javascript
+getCssSelector(targetElement, {maxCombinations: 100});
+```
+
+### Max candidates
+
+Performance optimization option, similar to `maxCombinations`. This does limit a total number of selector candidates for each element.
+
+You should use it in cases, when there are not too many class names and attributes, but they are numerous enough to produce large number of combinations between them. 
+
+```javascript
+getCssSelector(targetElement, {maxCandidates: 100});
 ```
 
 ## Bug reports, feature requests and contact

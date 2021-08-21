@@ -28,7 +28,11 @@ export type CssSelectorGeneratorOptions = {
   // If set to `true`, the generator will try to test combinations of selectors of different types (e.g. tag + class name).
   combineBetweenSelectors: boolean,
   // If set to `true`, all generated selectors will include the TAG part. Even if tag selector type is not included in `selectors` option.
-  includeTag: boolean
+  includeTag: boolean,
+  // Maximum number of combinations of a selector type. This is handy for performance reasons, e.g. when elements have too many classnames.
+  maxCombinations: number,
+  // Maximum number of selector candidates to be tested for each element. This is handy for performance reasons, e.g. when elements can produce large number of combinations of various types of selectors.
+  maxCandidates: number
 }
 
 export type IdentifiableParent =

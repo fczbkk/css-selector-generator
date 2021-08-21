@@ -48,6 +48,19 @@ describe('CssSelectorGenerator', function () {
       assert.doesNotThrow(fn)
     })
 
+    it('should not timeout on element producing too many combinations', () => {
+      const classNames = Array(100)
+        .fill('')
+        .map((_, index) => `class${index}`)
+        .join(' ')
+      root.innerHTML = `<div class="${classNames}"></div>`
+      const start = Date.now()
+      getCssSelector(root.firstElementChild, {maxCombinations: 100})
+      const end = Date.now()
+
+      assert.isBelow(end - start, 100)
+    })
+
   })
 
   describe('class selectors', function () {

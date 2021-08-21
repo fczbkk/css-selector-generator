@@ -13,7 +13,9 @@ export const DEFAULT_OPTIONS = {
   blacklist: [] as Array<CssSelectorMatch>,
   combineWithinSelector: true,
   combineBetweenSelectors: true,
-  root: document
+  root: document,
+  maxCombinations: Number.POSITIVE_INFINITY,
+  maxCandidates: Number.POSITIVE_INFINITY
 }
 
 /**
@@ -82,6 +84,10 @@ export function sanitizeRoot (input: unknown, element: Element): ParentNode {
     : element.ownerDocument.querySelector(':root')
 }
 
+export function sanitizeMaxNumber (input?: unknown): number {
+  return typeof input === 'number' ? input : Number.POSITIVE_INFINITY
+}
+
 /**
  * Makes sure the options object contains all required keys.
  */
@@ -101,6 +107,8 @@ export function sanitizeOptions (
     root: sanitizeRoot(options.root, element),
     combineWithinSelector: !!options.combineWithinSelector,
     combineBetweenSelectors: !!options.combineBetweenSelectors,
-    includeTag: !!options.includeTag
+    includeTag: !!options.includeTag,
+    maxCombinations: sanitizeMaxNumber(options.maxCombinations),
+    maxCandidates: sanitizeMaxNumber(options.maxCandidates)
   }
 }

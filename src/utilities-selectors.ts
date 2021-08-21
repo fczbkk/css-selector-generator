@@ -12,8 +12,7 @@ import {getNthOfTypeSelector} from './selector-nth-of-type'
 import {getTagSelector} from './selector-tag'
 import {
   convertMatchListToRegExp,
-  flattenArray,
-  getCombinations
+  flattenArray
 } from './utilities-data'
 import {getParents, testSelector} from './utilities-dom'
 import {
@@ -24,6 +23,7 @@ import {
   IdentifiableParent
 } from './types'
 import isElement from 'iselement'
+import {getPowerSet} from './utilities-powerset';
 
 export const ESCAPED_COLON = ':'
   .charCodeAt(0)
@@ -133,7 +133,8 @@ export function getSelectorsList (
   const {
     blacklist,
     whitelist,
-    combineWithinSelector
+    combineWithinSelector,
+    maxCombinations
   } = options
 
   const blacklist_re = convertMatchListToRegExp(blacklist)
@@ -146,7 +147,7 @@ export function getSelectorsList (
     const found_selectors = orderSelectors(filtered_selectors, whitelist_re)
 
     data[selector_type] = combineWithinSelector
-      ? getCombinations(found_selectors)
+      ? getPowerSet(found_selectors, {maxResults: maxCombinations})
       : found_selectors.map((item) => [item])
 
     return data
@@ -196,11 +197,12 @@ export function combineSelectorTypes (
   const {
     selectors,
     combineBetweenSelectors,
-    includeTag
+    includeTag,
+    maxCandidates
   } = options
 
   const combinations = combineBetweenSelectors
-    ? getCombinations(selectors)
+    ? getPowerSet(selectors, {maxResults: maxCandidates})
     : selectors.map(item => [item])
 
   return includeTag
