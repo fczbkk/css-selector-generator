@@ -1,3 +1,12 @@
+# [3.3.0](https://github.com/fczbkk/css-selector-generator/compare/v3.2.1...v3.3.0) (2021-08-21)
+
+
+### Features
+
+* maxCombinatios and maxCandidates options ([b65858c](https://github.com/fczbkk/css-selector-generator/commit/b65858c5977081a41572f795dbd85bdafba1103c))
+
+
+
 ## [3.2.1](https://github.com/fczbkk/css-selector-generator/compare/v3.2.0...v3.2.1) (2021-08-18)
 
 

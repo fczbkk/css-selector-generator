@@ -1,9 +1,5 @@
 import { CssSelectorMatch } from './types';
 /**
- * Creates all possible combinations of items in the list.
- */
-export declare function getCombinations<T>(items?: Array<T>): Array<Array<T>>;
-/**
  * Creates array containing only items included in all input arrays.
  */
 export declare function getIntersection<T>(items?: Array<Array<T>>): Array<T>;

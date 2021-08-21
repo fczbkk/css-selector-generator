@@ -16,6 +16,8 @@ export declare type CssSelectorGeneratorOptions = {
     combineWithinSelector: boolean;
     combineBetweenSelectors: boolean;
     includeTag: boolean;
+    maxCombinations: number;
+    maxCandidates: number;
 };
 export declare type IdentifiableParent = null | {
     foundElements: Element[];

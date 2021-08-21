@@ -7,6 +7,8 @@ export declare const DEFAULT_OPTIONS: {
     combineWithinSelector: boolean;
     combineBetweenSelectors: boolean;
     root: Document;
+    maxCombinations: number;
+    maxCandidates: number;
 };
 /**
  * Makes sure returned value is a list containing only valid selector types.
@@ -38,6 +40,10 @@ export declare function isParentNode(input: unknown): input is ParentNode;
  * Makes sure that the root node in options is valid.
  */
 export declare function sanitizeRoot(input: unknown, element: Element): ParentNode;
+/**
+ * Makes sure that the output is a number, usable as `maxResults` option in powerset generator.
+ */
+export declare function sanitizeMaxNumber(input?: unknown): number;
 /**
  * Makes sure the options object contains all required keys.
  */
