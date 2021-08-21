@@ -23,7 +23,7 @@ import {
   IdentifiableParent
 } from './types'
 import isElement from 'iselement'
-import {getPowerSet} from './utilities-powerset';
+import {getPowerSet} from './utilities-powerset'
 
 export const ESCAPED_COLON = ':'
   .charCodeAt(0)

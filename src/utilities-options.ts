@@ -84,6 +84,9 @@ export function sanitizeRoot (input: unknown, element: Element): ParentNode {
     : element.ownerDocument.querySelector(':root')
 }
 
+/**
+ * Makes sure that the output is a number, usable as `maxResults` option in powerset generator.
+ */
 export function sanitizeMaxNumber (input?: unknown): number {
   return typeof input === 'number' ? input : Number.POSITIVE_INFINITY
 }
