@@ -1,6 +1,6 @@
-import {sanitizeSelectorItem} from './utilities-selectors'
-import {convertMatchListToRegExp, getIntersection} from './utilities-data'
-import {CssSelector} from './types'
+import {sanitizeSelectorItem} from './utilities-selectors';
+import {convertMatchListToRegExp, getIntersection} from './utilities-data';
+import {CssSelector} from './types';
 
 // List of attributes to be ignored. These are handled by different selector types.
 export const ATTRIBUTE_BLACKLIST = convertMatchListToRegExp([
@@ -8,7 +8,7 @@ export const ATTRIBUTE_BLACKLIST = convertMatchListToRegExp([
   'id',
   // Angular attributes
   'ng-*'
-])
+]);
 
 /**
  * Get simplified attribute selector for an element.
@@ -16,7 +16,7 @@ export const ATTRIBUTE_BLACKLIST = convertMatchListToRegExp([
 export function attributeNodeToSimplifiedSelector ({
   nodeName
 }: Node): CssSelector {
-  return `[${nodeName}]`
+  return `[${nodeName}]`;
 }
 
 /**
@@ -26,14 +26,14 @@ export function attributeNodeToSelector ({
   nodeName,
   nodeValue
 }: Node): CssSelector {
-  return `[${nodeName}='${sanitizeSelectorItem(nodeValue)}']`
+  return `[${nodeName}='${sanitizeSelectorItem(nodeValue)}']`;
 }
 
 /**
  * Checks whether attribute should be used as a selector.
  */
 export function isValidAttributeNode ({nodeName}: Node): boolean {
-  return !ATTRIBUTE_BLACKLIST.test(nodeName)
+  return !ATTRIBUTE_BLACKLIST.test(nodeName);
 }
 
 /**
@@ -41,11 +41,11 @@ export function isValidAttributeNode ({nodeName}: Node): boolean {
  */
 export function getElementAttributeSelectors (element: Element): CssSelector[] {
   const validAttributes = Array.from(element.attributes)
-    .filter(isValidAttributeNode)
-    return [
-      ...validAttributes.map(attributeNodeToSimplifiedSelector),
-      ...validAttributes.map(attributeNodeToSelector)
-    ]
+    .filter(isValidAttributeNode);
+  return [
+    ...validAttributes.map(attributeNodeToSimplifiedSelector),
+    ...validAttributes.map(attributeNodeToSelector)
+  ];
 
 }
 
@@ -53,6 +53,6 @@ export function getElementAttributeSelectors (element: Element): CssSelector[] {
  * Get attribute selectors matching all elements.
  */
 export function getAttributeSelectors (elements: Element[]): CssSelector[] {
-  const elementSelectors = elements.map(getElementAttributeSelectors)
-  return getIntersection(elementSelectors)
+  const elementSelectors = elements.map(getElementAttributeSelectors);
+  return getIntersection(elementSelectors);
 }
