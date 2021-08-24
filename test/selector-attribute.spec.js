@@ -92,4 +92,13 @@ describe('selector - attribute', function () {
     assert.equal(result, "[aaa='bbb']")
   })
 
+  it('should use simplified selector for multiple elements', () => {
+    root.innerHTML = `
+      <div aaa="bbb"></div>
+      <div aaa="ccc"></div>
+    `
+    const result = getCssSelector(Array.from(root.children))
+    assert.equal(result, '[aaa]')
+  })
+
 })
