@@ -1,4 +1,5 @@
 import {assert} from 'chai'
+import getCssSelector from '../src'
 import {getAttributeSelectors} from '../src/selector-attribute.ts'
 
 describe('selector - attribute', function () {
@@ -16,9 +17,18 @@ describe('selector - attribute', function () {
   it('should generate attribute selectors', function () {
     root.innerHTML = '<div aaa="bbb" ccc="ddd"></div>'
     const result = getAttributeSelectors([root.firstElementChild])
-    assert.lengthOf(result, 2)
-    assert.include(result, "[aaa='bbb']")
-    assert.include(result, '[ccc=\'ddd\']')
+    assert.sameMembers(result, [
+      '[aaa]',
+      "[aaa='bbb']",
+      '[ccc]',
+      "[ccc='ddd']"
+    ])
+  })
+
+  it('should put simplified selector before full selector', () => {
+    root.innerHTML = '<div aaa="bbb"></div>'
+    const result = getAttributeSelectors([root.firstElementChild])
+    assert.sameOrderedMembers(result, ['[aaa]', "[aaa='bbb']"])
   })
 
   it('should ignore ID attribute', function () {
@@ -60,9 +70,26 @@ describe('selector - attribute', function () {
     const elements = root.querySelectorAll('div')
     const withIntersection = getAttributeSelectors([elements[0], elements[1]])
     const noIntersection = getAttributeSelectors([elements[0], elements[2]])
-    assert.sameMembers(withIntersection, ["[aaa='bbb']"])
+    assert.sameMembers(withIntersection, ['[aaa]', "[aaa='bbb']"])
     assert.sameMembers(noIntersection, [])
   })
 
+  it('should prefer simplified selector if possible', () => {
+    root.innerHTML = `
+      <div aaa="bbb"></div>
+      <div ccc="ddd"></div>
+    `
+    const result = getCssSelector(root.firstElementChild)
+    assert.equal(result, '[aaa]')
+  })
+
+  it('should use full selector', () => {
+    root.innerHTML = `
+      <div aaa="bbb"></div>
+      <div aaa="ccc"></div>
+    `
+    const result = getCssSelector(root.firstElementChild)
+    assert.equal(result, "[aaa='bbb']")
+  })
 
 })

@@ -11,7 +11,16 @@ export const ATTRIBUTE_BLACKLIST = convertMatchListToRegExp([
 ])
 
 /**
- * Get attribute selectors for an element.
+ * Get simplified attribute selector for an element.
+ */
+export function attributeNodeToSimplifiedSelector ({
+  nodeName
+}: Node): CssSelector {
+  return `[${nodeName}]`
+}
+
+/**
+ * Get attribute selector for an element.
  */
 export function attributeNodeToSelector ({
   nodeName,
@@ -31,9 +40,13 @@ export function isValidAttributeNode ({nodeName}: Node): boolean {
  * Get attribute selectors for an element.
  */
 export function getElementAttributeSelectors (element: Element): CssSelector[] {
-  return Array.from(element.attributes)
+  const validAttributes = Array.from(element.attributes)
     .filter(isValidAttributeNode)
-    .map(attributeNodeToSelector)
+    return [
+      ...validAttributes.map(attributeNodeToSimplifiedSelector),
+      ...validAttributes.map(attributeNodeToSelector)
+    ]
+
 }
 
 /**
