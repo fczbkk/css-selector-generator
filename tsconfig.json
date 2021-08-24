@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": "./build/",
     "noImplicitAny": true,
     "module": "es6",
     "target": "es6",
@@ -11,7 +10,6 @@
       "ES6",
       "DOM",
       "DOM.Iterable"
-    ],
-    "declaration": true
+    ]
   }
 }
