@@ -1,3 +1,12 @@
+# [3.4.0](https://github.com/fczbkk/css-selector-generator/compare/v3.3.0...v3.4.0) (2021-08-24)
+
+
+### Features
+
+* simplified attribute selectors ([ed826eb](https://github.com/fczbkk/css-selector-generator/commit/ed826eb79578b14b4af2c6c99844991e82e7f65e)), closes [#77](https://github.com/fczbkk/css-selector-generator/issues/77)
+
+
+
 # [3.3.0](https://github.com/fczbkk/css-selector-generator/compare/v3.2.1...v3.3.0) (2021-08-21)
 
 
