@@ -2,7 +2,7 @@ import cartesian from 'cartesian'
 import {
   CHILD_OPERATOR,
   DESCENDANT_OPERATOR,
-  SELECTOR_PATTERN
+  SELECTOR_PATTERN,
 } from './constants'
 import {getAttributeSelectors} from './selector-attribute'
 import {getClassSelectors} from './selector-class'
@@ -12,7 +12,7 @@ import {getNthOfTypeSelector} from './selector-nth-of-type'
 import {getTagSelector} from './selector-tag'
 import {
   convertMatchListToRegExp,
-  flattenArray
+  flattenArray,
 } from './utilities-data'
 import {getParents, testSelector} from './utilities-dom'
 import {
@@ -20,7 +20,7 @@ import {
   CssSelectorData,
   CssSelectorGeneratorOptions,
   CssSelectorType,
-  IdentifiableParent
+  IdentifiableParent,
 } from './types'
 import isElement from 'iselement'
 import {getPowerSet} from './utilities-powerset'
@@ -58,7 +58,7 @@ export const SELECTOR_TYPE_GETTERS = {
   class: getClassSelectors,
   attribute: getAttributeSelectors,
   nthchild: getNthChildSelector,
-  nthoftype: getNthOfTypeSelector
+  nthoftype: getNthOfTypeSelector,
 }
 
 /**
@@ -66,7 +66,7 @@ export const SELECTOR_TYPE_GETTERS = {
  */
 export function getSelectorsByType (
   elements: Element[],
-  selector_type: CssSelectorType
+  selector_type: CssSelectorType,
 ): Array<CssSelector> {
   const getter = (
     SELECTOR_TYPE_GETTERS[selector_type]
@@ -81,7 +81,7 @@ export function getSelectorsByType (
 export function filterSelectors (
   list: Array<CssSelector> = [],
   blacklist_re: RegExp,
-  whitelist_re: RegExp
+  whitelist_re: RegExp,
 ): Array<CssSelector> {
   return list.filter((item) => (
     whitelist_re.test(item)
@@ -94,7 +94,7 @@ export function filterSelectors (
  */
 export function orderSelectors (
   list: Array<CssSelector> = [],
-  whitelist_re: RegExp
+  whitelist_re: RegExp,
 ): Array<CssSelector> {
   return list.sort((a, b) => {
     const a_is_whitelisted = whitelist_re.test(a)
@@ -115,7 +115,7 @@ export function orderSelectors (
 export function getAllSelectors (
   elements: Element[],
   root: ParentNode,
-  options: CssSelectorGeneratorOptions
+  options: CssSelectorGeneratorOptions,
 ): Array<CssSelector> {
   const selectors_list = getSelectorsList(elements, options)
   const type_combinations = getTypeCombinations(selectors_list, options)
@@ -128,13 +128,13 @@ export function getAllSelectors (
  */
 export function getSelectorsList (
   elements: Element[],
-  options: CssSelectorGeneratorOptions
+  options: CssSelectorGeneratorOptions,
 ): CssSelectorData {
   const {
     blacklist,
     whitelist,
     combineWithinSelector,
-    maxCombinations
+    maxCombinations,
   } = options
 
   const blacklist_re = convertMatchListToRegExp(blacklist)
@@ -161,11 +161,11 @@ export function getSelectorsList (
  * Creates list of selector types that we will need to generate the selector.
  */
 export function getSelectorsToGet (
-  options: CssSelectorGeneratorOptions
+  options: CssSelectorGeneratorOptions,
 ): Array<CssSelectorType> {
   const {
     selectors,
-    includeTag
+    includeTag,
   } = options
 
   const selectors_to_get = [].concat(selectors)
@@ -181,7 +181,7 @@ export function getSelectorsToGet (
  * TAG part.
  */
 function addTagTypeIfNeeded (
-  list: Array<CssSelectorType>
+  list: Array<CssSelectorType>,
 ): Array<CssSelectorType> {
   return (list.includes('tag') || list.includes('nthoftype'))
     ? [...list]
@@ -192,13 +192,13 @@ function addTagTypeIfNeeded (
  * Generates list of possible selector type combinations.
  */
 export function combineSelectorTypes (
-  options: CssSelectorGeneratorOptions
+  options: CssSelectorGeneratorOptions,
 ): Array<Array<CssSelectorType>> {
   const {
     selectors,
     combineBetweenSelectors,
     includeTag,
-    maxCandidates
+    maxCandidates,
   } = options
 
   const combinations = combineBetweenSelectors
@@ -215,7 +215,7 @@ export function combineSelectorTypes (
  */
 export function getTypeCombinations (
   selectors_list: CssSelectorData,
-  options: CssSelectorGeneratorOptions
+  options: CssSelectorGeneratorOptions,
 ): Array<Array<CssSelector>> {
   return combineSelectorTypes(options)
     .map((item) => {
@@ -229,7 +229,7 @@ export function getTypeCombinations (
  */
 export function constructSelectors (
   selector_types: Array<CssSelectorType>,
-  selectors_by_type: CssSelectorData
+  selectors_by_type: CssSelectorData,
 ): Array<CssSelector> {
   const data: CssSelectorData = {}
   selector_types.forEach((selector_type) => {
@@ -248,7 +248,7 @@ export function constructSelectors (
  */
 export function constructSelectorType (
   selector_type: CssSelectorType,
-  selectors_data: CssSelectorData
+  selectors_data: CssSelectorData,
 ): CssSelector {
   return (selectors_data[selector_type])
     ? selectors_data[selector_type].join('')
@@ -259,7 +259,7 @@ export function constructSelectorType (
  * Converts selector data object to a selector.
  */
 export function constructSelector (
-  selectorData: CssSelectorData = {}
+  selectorData: CssSelectorData = {},
 ): CssSelector {
   const pattern = [...SELECTOR_PATTERN]
   // selector "nthoftype" already contains "tag"
@@ -273,28 +273,32 @@ export function constructSelector (
 }
 
 /**
- * Generator of CSS selector candidates for given element, from simplest child selectors to more complex descendant selectors.
+ * Generates combinations of child and descendant selectors within root selector.
  */
-export function getElementSelectorCandidates (
-  elements: Element[],
-  root: ParentNode,
-  options: CssSelectorGeneratorOptions
-): Array<CssSelector> {
-  const result = []
-  const selectorCandidates = getAllSelectors(elements, root, options)
-  for (const selectorCandidate of selectorCandidates) {
-    result.push(CHILD_OPERATOR + selectorCandidate)
-  }
+function generateCandidateCombinations (
+  selectors: CssSelector[],
+  rootSelector: CssSelector
+): CssSelector[] {
+  return [
+    ...selectors.map(
+      (selector) => rootSelector + CHILD_OPERATOR + selector
+    ),
+    ...selectors.map(
+      (selector) => rootSelector + DESCENDANT_OPERATOR + selector
+    ),
+  ]
+}
 
-  if (elements.every((element) => (
-    element.parentNode === root
-    && element.parentNode !== options.root
-  ))) {
-    for (const selectorCandidate of selectorCandidates) {
-      result.push(DESCENDANT_OPERATOR + selectorCandidate)
-    }
-  }
-  return result
+/**
+ * Generates a list of selector candidates that can potentially match target element.
+ */
+function generateCandidates (
+  selectors: CssSelector[],
+  rootSelector: CssSelector
+): CssSelector[] {
+  return rootSelector === ''
+    ? selectors
+    : generateCandidateCombinations(selectors, rootSelector)
 }
 
 /**
@@ -304,14 +308,13 @@ export function getSelectorWithinRoot (
   elements: Element[],
   root: ParentNode,
   rootSelector: CssSelector = '',
-  options: CssSelectorGeneratorOptions
+  options: CssSelectorGeneratorOptions,
 ): (null | CssSelector) {
-  const selectorCandidates =
-    getElementSelectorCandidates(elements, options.root, options)
+  const elementSelectors = getAllSelectors(elements, options.root, options)
+  const selectorCandidates = generateCandidates(elementSelectors, rootSelector)
   for (const candidateSelector of selectorCandidates) {
-    const attemptSelector = (rootSelector + candidateSelector).trim()
-    if (testSelector(elements, attemptSelector, options.root)) {
-      return attemptSelector
+    if (testSelector(elements, candidateSelector, options.root)) {
+      return candidateSelector
     }
   }
   return null
@@ -324,7 +327,7 @@ export function getClosestIdentifiableParent (
   elements: Element[],
   root: ParentNode,
   rootSelector: CssSelector = '',
-  options: CssSelectorGeneratorOptions
+  options: CssSelectorGeneratorOptions,
 ): IdentifiableParent {
   if (elements.length === 0) {
     return null
@@ -332,7 +335,8 @@ export function getClosestIdentifiableParent (
 
   const candidatesList = [
     (elements.length > 1) ? elements : [],
-    ...getParents(elements, root).map((element) => [element])
+    ...getParents(elements, root)
+      .map((element) => [element]),
   ]
 
   for (const currentElements of candidatesList) {
@@ -341,7 +345,7 @@ export function getClosestIdentifiableParent (
     if (result) {
       return {
         foundElements: currentElements,
-        selector: result
+        selector: result,
       }
     }
   }

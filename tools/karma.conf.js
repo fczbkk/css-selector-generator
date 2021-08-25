@@ -4,9 +4,11 @@ module.exports = (config) => {
   config.set({
     files: [
       '../test/**/*.spec.js',
+      '../test/**/*.spec.ts',
     ],
     preprocessors: {
       '../test/**/*.spec.js': ['webpack'],
+      '../test/**/*.spec.ts': ['webpack'],
     },
     webpack: webpack_config,
     webpackMiddleware: {

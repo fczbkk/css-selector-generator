@@ -38,7 +38,7 @@ export function getCssSelector (
       foundElements,
       selector
     } = closestIdentifiableParent
-    if (testSelector(elements, selector)) {
+    if (testSelector(elements, selector, options.root)) {
       return selector
     }
     currentRoot = foundElements[0]

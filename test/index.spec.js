@@ -30,6 +30,32 @@ describe('CssSelectorGenerator', function () {
       assert.equal(result, '#aaa .aaa')
     })
 
+    it('should produce descendant selector', () => {
+      root.innerHTML = `
+      <div>
+        <span>
+          <span></span>
+        </span>
+      </div>
+    `
+      const needle = root.firstElementChild.firstElementChild
+      const result = getCssSelector(needle, {root})
+      assert.equal(result, 'div > span')
+    })
+
+    it('should take root element into account', () => {
+      root.innerHTML = `
+      <span></span>
+      <div>
+        <span></span>
+      </div>
+    `
+      const haystack = root.querySelector('div')
+      const needle = haystack.querySelector('span')
+      const result = getCssSelector(needle, {root: haystack})
+      assert.equal(result, 'span')
+    })
+
   })
 
   describe('special scenarios', function () {
