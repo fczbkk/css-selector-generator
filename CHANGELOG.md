@@ -1,3 +1,12 @@
+## [3.4.1](https://github.com/fczbkk/css-selector-generator/compare/v3.4.0...v3.4.1) (2021-08-25)
+
+
+### Bug Fixes
+
+* do not ignore root, use descendant selectors ([29e4fc6](https://github.com/fczbkk/css-selector-generator/commit/29e4fc6e66be5ae8913a3c56a819ed8f08e16cd3)), closes [#78](https://github.com/fczbkk/css-selector-generator/issues/78)
+
+
+
 # [3.4.0](https://github.com/fczbkk/css-selector-generator/compare/v3.3.0...v3.4.0) (2021-08-24)
 
 
