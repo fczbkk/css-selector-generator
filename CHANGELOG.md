@@ -1,3 +1,12 @@
+## [3.4.2](https://github.com/fczbkk/css-selector-generator/compare/v3.4.1...v3.4.2) (2021-09-07)
+
+
+### Bug Fixes
+
+* produce safer RegExp for black/whitelists ([b1b9feb](https://github.com/fczbkk/css-selector-generator/commit/b1b9feb75122132ed4d9911bb52fb32e9ac04c43))
+
+
+
 ## [3.4.1](https://github.com/fczbkk/css-selector-generator/compare/v3.4.0...v3.4.1) (2021-08-25)
 
 
