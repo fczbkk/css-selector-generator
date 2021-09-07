@@ -101,4 +101,10 @@ describe('selector - attribute', function () {
     assert.equal(result, '[aaa]')
   })
 
+  it('should escape attribute values', () => {
+    root.innerHTML = '<div width="30%"></div><div width="100%"></div>'
+    const result = getCssSelector(root.firstElementChild)
+    assert.deepEqual(result, "[width='30\\%']")
+  })
+
 })

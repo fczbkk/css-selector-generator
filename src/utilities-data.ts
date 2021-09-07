@@ -43,7 +43,7 @@ export function convertMatchListToRegExp (
   const combined_re = list
     .map((item) => {
       return (typeof item === 'string')
-        ? wildcardToRegExp(item)
+        ? '^' + wildcardToRegExp(item) + '$'
         : item.source
     })
     .join('|')
