@@ -1,7 +1,7 @@
 {
   "name": "css-selector-generator",
   "title": "CSS Selector Generator",
-  "version": "3.4.2",
+  "version": "3.4.3",
   "description": "JavaScript object that creates unique CSS selector for given element.",
   "author": "Riki Fridrich <riki@fczbkk.com> (http://fczbkk.com)",
   "license": "MIT",

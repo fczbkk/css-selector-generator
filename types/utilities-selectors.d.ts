@@ -11,6 +11,12 @@ export declare const SPECIAL_CHARACTERS_RE: RegExp;
  * Escapes special characters used by CSS selector items.
  */
 export declare function sanitizeSelectorItem(input?: string): string;
+/**
+ * Legacy version of escaping utility, originally used for IE11-. Should
+ * probably be replaced by a polyfill:
+ * https://github.com/mathiasbynens/CSS.escape
+ */
+export declare function legacySanitizeSelectorItem(input?: string): string;
 export declare const SELECTOR_TYPE_GETTERS: {
     tag: typeof getTagSelector;
     id: typeof getIdSelector;

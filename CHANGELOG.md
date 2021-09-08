@@ -1,3 +1,12 @@
+## [3.4.3](https://github.com/fczbkk/css-selector-generator/compare/v3.4.2...v3.4.3) (2021-09-08)
+
+
+### Bug Fixes
+
+* use `CSS.escape` to escape selector content ([efbbefb](https://github.com/fczbkk/css-selector-generator/commit/efbbefba7fc5821eb4e24e5d50ee24e79982e0ec)), closes [#60](https://github.com/fczbkk/css-selector-generator/issues/60)
+
+
+
 ## [3.4.2](https://github.com/fczbkk/css-selector-generator/compare/v3.4.1...v3.4.2) (2021-09-07)
 
 
