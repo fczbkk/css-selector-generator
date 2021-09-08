@@ -1,3 +1,12 @@
+## [3.4.4](https://github.com/fczbkk/css-selector-generator/compare/v3.4.3...v3.4.4) (2021-09-08)
+
+
+### Bug Fixes
+
+* ignore non-sibling elements of nth-of-type ([ba9fde1](https://github.com/fczbkk/css-selector-generator/commit/ba9fde1c5c0aaf34469e325b3d154ac9ee444b55)), closes [#52](https://github.com/fczbkk/css-selector-generator/issues/52)
+
+
+
 ## [3.4.3](https://github.com/fczbkk/css-selector-generator/compare/v3.4.2...v3.4.3) (2021-09-08)
 
 
