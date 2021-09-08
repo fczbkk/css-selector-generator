@@ -25,7 +25,7 @@ describe('selector - nth-of-type', function () {
   it('should not include tag if nthoftype is used', function () {
     const result = constructSelector({
       tag: ['div'],
-      nthoftype: ['div:nth-of-type(1)']
+      nthoftype: ['div:nth-of-type(1)'],
     })
     assert.equal(result, 'div:nth-of-type(1)')
   })
@@ -79,6 +79,22 @@ describe('selector - nth-of-type', function () {
     const elements = [...root.querySelectorAll('span')]
     const result = getNthOfTypeSelector(elements)
     assert.sameMembers(result, ['span:nth-of-type(1)'])
+  })
+
+  it('should ignore non-sibling elements when constructing', () => {
+    root.innerHTML = `
+      <div>
+        <span></span>
+        <div>
+          <span></span>
+        </div>
+        <span class="target"></span>
+      </div>
+    `
+    const options = {root, selectors: ['nthoftype']}
+    const element = root.querySelector('.target')
+    const result = getCssSelector(element, options)
+    assert.equal(result, 'span:nth-of-type(2)')
   })
 
 })
