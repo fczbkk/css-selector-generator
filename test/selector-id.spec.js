@@ -36,7 +36,7 @@ describe('selector - ID', function () {
 
   it('should escape colon character', function () {
     root.innerHTML = '<div id="aaa:bbb"></div>'
-    assert.deepEqual(getIdSelector([root.firstElementChild]), ['#aaa\\3A bbb'])
+    assert.deepEqual(getIdSelector([root.firstElementChild]), ['#aaa\\:bbb'])
   })
 
   it('should ignore ID beginning with a number', function () {

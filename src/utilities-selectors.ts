@@ -38,6 +38,15 @@ export const SPECIAL_CHARACTERS_RE = /[ !"#$%&'()\[\]{|}<>*+,./;=?@^`~\\]/
  * Escapes special characters used by CSS selector items.
  */
 export function sanitizeSelectorItem (input = ''): string {
+  return CSS?.escape?.(input) ?? legacySanitizeSelectorItem(input)
+}
+
+/**
+ * Legacy version of escaping utility, originally used for IE11-. Should
+ * probably be replaced by a polyfill:
+ * https://github.com/mathiasbynens/CSS.escape
+ */
+export function legacySanitizeSelectorItem (input = ''): string {
   return input.split('')
     .map((character) => {
       if (character === ':') {

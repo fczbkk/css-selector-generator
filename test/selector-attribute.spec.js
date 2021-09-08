@@ -52,7 +52,7 @@ describe('selector - attribute', function () {
   it('should quote attribute values', function () {
     root.innerHTML = '<div aaa="bbb:ccc"></div>'
     const result = getAttributeSelectors([root.firstElementChild])
-    assert.include(result, '[aaa=\'bbb\\3A ccc\']')
+    assert.include(result, '[aaa=\'bbb\\:ccc\']')
   })
 
   it('should ignore Angular attributes', function () {
@@ -104,7 +104,7 @@ describe('selector - attribute', function () {
   it('should escape attribute values', () => {
     root.innerHTML = '<div width="30%"></div><div width="100%"></div>'
     const result = getCssSelector(root.firstElementChild)
-    assert.deepEqual(result, "[width='30\\%']")
+    assert.deepEqual(result, "[width='\\33 0\\%']")
   })
 
 })

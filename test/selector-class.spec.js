@@ -53,7 +53,7 @@ describe('selector - class', function () {
     root.innerHTML = '<div class="aaa:bbb"></div>'
     const result = getClassSelectors([root.firstElementChild])
     assert.lengthOf(result, 1)
-    assert.include(result, '.aaa\\3A bbb')
+    assert.include(result, '.aaa\\:bbb')
   })
 
   it('should ignore class names that start with a number', function () {
