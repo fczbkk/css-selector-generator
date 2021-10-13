@@ -27,7 +27,7 @@
     "@typescript-eslint/parser": "^4.29.2",
     "chai": "^4.3.4",
     "conventional-changelog-cli": "^2.1.1",
-    "eslint": "^7.32.0",
+    "eslint": "^8.0.0",
     "husky": "^7.0.1",
     "karma": "^6.3.4",
     "karma-chai": "^0.1.0",
