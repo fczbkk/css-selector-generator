@@ -57,7 +57,7 @@ If you don't want to use this library with NPM, you can download it directly fro
 <!-- link the library -->
 <script src="build/index.js"></script>
 <script>
-	CssSelectorGenerator.getCssSelector(targtElement)
+	CssSelectorGenerator.getCssSelector(targetElement)
 </script
 ```
 
