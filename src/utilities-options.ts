@@ -1,12 +1,18 @@
 import {
   CssSelectorGeneratorOptions,
   CssSelectorMatch,
-  CssSelectorType
+  CssSelectorType,
+  CssSelectorTypes
 } from './types'
-import {VALID_SELECTOR_TYPES} from './constants'
+import {isEnumValue} from './utilities-typescript'
 
 export const DEFAULT_OPTIONS = {
-  selectors: ['id', 'class', 'tag', 'attribute'] as Array<CssSelectorType>,
+  selectors: [
+    CssSelectorType.id,
+    CssSelectorType.class,
+    CssSelectorType.tag,
+    CssSelectorType.attribute
+  ] as CssSelectorTypes,
   // if set to true, always include tag name
   includeTag: false,
   whitelist: [] as Array<CssSelectorMatch>,
@@ -22,11 +28,11 @@ export const DEFAULT_OPTIONS = {
  * Makes sure returned value is a list containing only valid selector types.
  * @param input
  */
-export function sanitizeSelectorTypes (input: unknown): Array<CssSelectorType> {
+export function sanitizeSelectorTypes (input: unknown): CssSelectorTypes {
   if (!Array.isArray(input)) {
     return []
   }
-  return input.filter((item) => VALID_SELECTOR_TYPES.includes(item))
+  return input.filter((item) => isEnumValue(CssSelectorType, item))
 }
 
 /**
@@ -85,7 +91,8 @@ export function sanitizeRoot (input: unknown, element: Element): ParentNode {
 }
 
 /**
- * Makes sure that the output is a number, usable as `maxResults` option in powerset generator.
+ * Makes sure that the output is a number, usable as `maxResults` option in
+ * powerset generator.
  */
 export function sanitizeMaxNumber (input?: unknown): number {
   return typeof input === 'number' ? input : Number.POSITIVE_INFINITY

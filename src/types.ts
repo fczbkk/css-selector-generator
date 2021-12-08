@@ -1,11 +1,16 @@
-import {VALID_SELECTOR_TYPES} from './constants'
-
 export type CssSelector = string
 export type CssSelectors = Array<CssSelector>
 
 export type CssSelectorMatch = RegExp | string
 
-export type CssSelectorType = typeof VALID_SELECTOR_TYPES[number]
+export enum CssSelectorType {
+  id = 'id',
+  class = 'class',
+  tag = 'tag',
+  attribute = 'attribute',
+  nthchild = 'nthchild',
+  nthoftype = 'nthoftype'
+}
 export type CssSelectorTypes = Array<CssSelectorType>
 
 export type CssSelectorsByType = Record<CssSelectorType, CssSelectors>
@@ -16,7 +21,7 @@ export type CssSelectorData = {
 
 export type CssSelectorGeneratorOptions = {
   // List of selector types to use. They will be prioritised by their order.
-  selectors: Array<CssSelectorType>,
+  selectors: CssSelectorTypes,
   // List of selectors that should be prioritised.
   whitelist: Array<CssSelectorMatch>,
   // List of selectors that should be ignored.

@@ -1,3 +1,5 @@
+import {CssSelectorType} from './types'
+
 export const DESCENDANT_OPERATOR = ' > '
 export const CHILD_OPERATOR = ' '
 export const SELECTOR_SEPARATOR = ', '
@@ -15,21 +17,12 @@ export const INVALID_CLASS_RE = new RegExp([
   '^\\d' // begins with a number
 ].join('|'))
 
-export const VALID_SELECTOR_TYPES = [
-  'id',
-  'class',
-  'tag',
-  'attribute',
-  'nthchild',
-  'nthoftype'
-] as const
-
 // Order in which a combined selector is constructed.
 export const SELECTOR_PATTERN = [
-  'nthoftype',
-  'tag',
-  'id',
-  'class',
-  'attribute',
-  'nthchild'
+  CssSelectorType.nthoftype,
+  CssSelectorType.tag,
+  CssSelectorType.id,
+  CssSelectorType.class,
+  CssSelectorType.attribute,
+  CssSelectorType.nthchild
 ]
