@@ -1,3 +1,10 @@
-export function isEnumValue <T> (haystack: T, needle: unknown): needle is T[keyof T] {
-  return Object.values(haystack).includes(needle)
+/**
+ * Checks whether value is one of the enum's values.
+ */
+export function isEnumValue<T> (
+  haystack: T,
+  needle: unknown
+): needle is T[keyof T] {
+  return Object.values(haystack)
+    .includes(needle)
 }
