@@ -23,6 +23,9 @@ module.exports = (config) => {
     reporters: [
       'mocha',
     ],
+    mochaReporter: {
+      output: 'minimal'
+    },
     client: {
       captureConsole: true
     },
