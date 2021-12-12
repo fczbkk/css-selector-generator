@@ -19,10 +19,10 @@ export const DEFAULT_OPTIONS = {
   blacklist: [] as Array<CssSelectorMatch>,
   combineWithinSelector: true,
   combineBetweenSelectors: true,
-  root: document,
+  root: null,
   maxCombinations: Number.POSITIVE_INFINITY,
   maxCandidates: Number.POSITIVE_INFINITY
-}
+} as CssSelectorGeneratorOptions
 
 /**
  * Makes sure returned value is a list containing only valid selector types.

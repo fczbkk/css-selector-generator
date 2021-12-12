@@ -1,6 +1,7 @@
 import isElement from 'iselement'
 import {CssSelector} from './types'
 import {getIntersection} from './utilities-data'
+import {sanitizeRoot} from './utilities-options'
 
 /**
  * Check whether element is matched uniquely by selector.
@@ -8,9 +9,10 @@ import {getIntersection} from './utilities-data'
 export function testSelector (
   elements: Element[],
   selector: CssSelector,
-  root: ParentNode = document
+  root: ParentNode,
 ): boolean {
-  const result = Array.from(root.querySelectorAll(selector))
+  const result = Array.from(sanitizeRoot(root, elements[0])
+    .querySelectorAll(selector))
   return (
     result.length === elements.length
     && elements.every((element) => result.includes(element))
@@ -23,9 +25,10 @@ export function testSelector (
 export function testMultiSelector (
   element: Element,
   selector: CssSelector,
-  root: ParentNode = document
+  root: ParentNode,
 ): boolean {
-  const result = Array.from(root.querySelectorAll(selector))
+  const result = Array.from(sanitizeRoot(root, element)
+    .querySelectorAll(selector))
   return result.includes(element)
 }
 
@@ -34,7 +37,7 @@ export function testMultiSelector (
  */
 export function getElementParents (
   element: Element,
-  root: ParentNode
+  root: ParentNode,
 ): Element[] {
   const result = []
   let parent = element
@@ -50,11 +53,11 @@ export function getElementParents (
  */
 export function getParents (
   elements: Element[],
-  root?: ParentNode
+  root?: ParentNode,
 ): Element[] {
   root = root ?? getRootNode(elements[0])
   return getIntersection(
-    elements.map((element) => getElementParents(element, root))
+    elements.map((element) => getElementParents(element, root)),
   )
 }
 

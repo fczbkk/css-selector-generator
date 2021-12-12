@@ -27,7 +27,7 @@ export type CssSelectorGeneratorOptions = {
   // List of selectors that should be ignored.
   blacklist: Array<CssSelectorMatch>,
   // Root element inside which the selector will be generated. If not set, the document root will be used.
-  root: ParentNode,
+  root: ParentNode | null,
   // If set to `true`, the generator will test combinations of selectors of single type (e.g. multiple class selectors).
   combineWithinSelector: boolean,
   // If set to `true`, the generator will try to test combinations of selectors of different types (e.g. tag + class name).
