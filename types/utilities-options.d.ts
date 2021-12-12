@@ -1,20 +1,10 @@
-import { CssSelectorGeneratorOptions, CssSelectorMatch, CssSelectorType } from './types';
-export declare const DEFAULT_OPTIONS: {
-    selectors: ("id" | "class" | "tag" | "attribute" | "nthchild" | "nthoftype")[];
-    includeTag: boolean;
-    whitelist: CssSelectorMatch[];
-    blacklist: CssSelectorMatch[];
-    combineWithinSelector: boolean;
-    combineBetweenSelectors: boolean;
-    root: Document;
-    maxCombinations: number;
-    maxCandidates: number;
-};
+import { CssSelectorGeneratorOptions, CssSelectorMatch, CssSelectorTypes } from './types';
+export declare const DEFAULT_OPTIONS: CssSelectorGeneratorOptions;
 /**
  * Makes sure returned value is a list containing only valid selector types.
  * @param input
  */
-export declare function sanitizeSelectorTypes(input: unknown): Array<CssSelectorType>;
+export declare function sanitizeSelectorTypes(input: unknown): CssSelectorTypes;
 /**
  * Checks whether provided value is of type RegExp.
  */
@@ -41,7 +31,8 @@ export declare function isParentNode(input: unknown): input is ParentNode;
  */
 export declare function sanitizeRoot(input: unknown, element: Element): ParentNode;
 /**
- * Makes sure that the output is a number, usable as `maxResults` option in powerset generator.
+ * Makes sure that the output is a number, usable as `maxResults` option in
+ * powerset generator.
  */
 export declare function sanitizeMaxNumber(input?: unknown): number;
 /**

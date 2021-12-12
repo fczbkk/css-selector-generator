@@ -1,3 +1,12 @@
+## [3.4.5-0](https://github.com/fczbkk/css-selector-generator/compare/v3.4.4...v3.4.5-0) (2021-12-12)
+
+
+### Bug Fixes
+
+* do not reference `document` ([f1a5ddd](https://github.com/fczbkk/css-selector-generator/commit/f1a5dddb263ee5d5838f94c6778d6f7afaf02139)), closes [#162](https://github.com/fczbkk/css-selector-generator/issues/162)
+
+
+
 ## [3.4.4](https://github.com/fczbkk/css-selector-generator/compare/v3.4.3...v3.4.4) (2021-09-08)
 
 

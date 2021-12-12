@@ -4,7 +4,7 @@ import { getIdSelector } from './selector-id';
 import { getNthChildSelector } from './selector-nth-child';
 import { getNthOfTypeSelector } from './selector-nth-of-type';
 import { getTagSelector } from './selector-tag';
-import { CssSelector, CssSelectorData, CssSelectorGeneratorOptions, CssSelectorType, IdentifiableParent } from './types';
+import { CssSelector, CssSelectorData, CssSelectorGeneratorOptions, CssSelectorType, CssSelectorTypes, IdentifiableParent } from './types';
 export declare const ESCAPED_COLON: string;
 export declare const SPECIAL_CHARACTERS_RE: RegExp;
 /**
@@ -48,11 +48,11 @@ export declare function getSelectorsList(elements: Element[], options: CssSelect
 /**
  * Creates list of selector types that we will need to generate the selector.
  */
-export declare function getSelectorsToGet(options: CssSelectorGeneratorOptions): Array<CssSelectorType>;
+export declare function getSelectorsToGet(options: CssSelectorGeneratorOptions): CssSelectorTypes;
 /**
  * Generates list of possible selector type combinations.
  */
-export declare function combineSelectorTypes(options: CssSelectorGeneratorOptions): Array<Array<CssSelectorType>>;
+export declare function combineSelectorTypes(options: CssSelectorGeneratorOptions): Array<CssSelectorTypes>;
 /**
  * Generates list of combined CSS selectors.
  */
@@ -60,7 +60,7 @@ export declare function getTypeCombinations(selectors_list: CssSelectorData, opt
 /**
  * Generates all variations of possible selectors from provided data.
  */
-export declare function constructSelectors(selector_types: Array<CssSelectorType>, selectors_by_type: CssSelectorData): Array<CssSelector>;
+export declare function constructSelectors(selector_types: CssSelectorTypes, selectors_by_type: CssSelectorData): Array<CssSelector>;
 /**
  * Creates selector for given selector type. Combines several parts if needed.
  */
@@ -74,7 +74,8 @@ export declare function constructSelector(selectorData?: CssSelectorData): CssSe
  */
 export declare function getSelectorWithinRoot(elements: Element[], root: ParentNode, rootSelector: CssSelector, options: CssSelectorGeneratorOptions): (null | CssSelector);
 /**
- * Climbs through parents of the element and tries to find the one that is identifiable by unique CSS selector.
+ * Climbs through parents of the element and tries to find the one that is
+ * identifiable by unique CSS selector.
  */
 export declare function getClosestIdentifiableParent(elements: Element[], root: ParentNode, rootSelector: CssSelector, options: CssSelectorGeneratorOptions): IdentifiableParent;
 /**
