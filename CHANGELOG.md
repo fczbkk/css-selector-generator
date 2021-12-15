@@ -1,3 +1,12 @@
+## [3.4.6-0](https://github.com/fczbkk/css-selector-generator/compare/v3.4.5-0...v3.4.6-0) (2021-12-15)
+
+
+### Features
+
+* add ESM version of library ([e34bdc5](https://github.com/fczbkk/css-selector-generator/commit/e34bdc5c27e0616caa344e130ae0fd1165684f83))
+
+
+
 ## [3.4.5-0](https://github.com/fczbkk/css-selector-generator/compare/v3.4.4...v3.4.5-0) (2021-12-12)
 
 
