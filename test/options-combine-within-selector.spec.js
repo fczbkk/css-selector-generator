@@ -1,5 +1,5 @@
 import {assert} from 'chai'
-import {getCssSelector} from '../src'
+import {getCssSelector} from '../src/index.ts'
 
 describe('options: combineWithinSelector', function () {
 

@@ -1,5 +1,5 @@
 import {assert} from 'chai'
-import {sanitizeMaxNumber} from '../src/utilities-options'
+import {sanitizeMaxNumber} from '../src/utilities-options.ts'
 
 describe('options: maxNumber', () => {
 

@@ -1,5 +1,5 @@
 import {assert} from 'chai'
-import {createMemo} from '../src/memo'
+import {createMemo} from '../src/memo.ts'
 
 describe('Memo', () => {
 

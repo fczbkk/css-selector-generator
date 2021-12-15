@@ -1,4 +1,4 @@
-import {getCssSelector} from '../src'
+import {getCssSelector} from '../src/index.ts'
 import {assert} from 'chai'
 
 describe('options: includeTag', function () {

@@ -1,15 +1,3 @@
 {
-  "compilerOptions": {
-    "noImplicitAny": true,
-    "module": "es6",
-    "target": "es6",
-    "allowJs": true,
-    "sourceMap": true,
-    "moduleResolution": "node",
-    "lib": [
-      "ES6",
-      "DOM",
-      "DOM.Iterable"
-    ]
-  }
+  "extends": "./tsconfig.base.json"
 }

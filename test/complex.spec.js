@@ -1,5 +1,5 @@
 import {assert} from 'chai'
-import {getCssSelector} from '../src'
+import {getCssSelector} from '../src/index.ts'
 import {testSelector} from '../src/utilities-dom.ts'
 import html_code from './html/complex.html'
 
