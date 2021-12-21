@@ -16,13 +16,13 @@ yarn add css-selector-generator
 Then include it in your source code:
 
 ```javascript
-import getCssSelector from 'css-selector-generator';
+import { getCssSelector } from 'css-selector-generator';
 ```
 
 Or you can use the ESM version:
 
 ```javascript
-import getCssSelector from 'css-selector-generator/esm';
+import { getCssSelector } from 'css-selector-generator/esm';
 ```
 
 ## How to use
