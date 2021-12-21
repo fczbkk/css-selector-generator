@@ -29,4 +29,3 @@ export declare type IdentifiableParent = null | {
     foundElements: Element[];
     selector: CssSelector;
 };
-export declare type SelectorNeedle = Element | Element[];

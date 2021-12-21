@@ -1,6 +1,8 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "./esm"
+    "outDir": "./esm",
+    "declaration": true,
+    "declarationDir": "./types"
   }
 }
