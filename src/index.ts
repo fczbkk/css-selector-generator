@@ -4,7 +4,7 @@ import {
   getClosestIdentifiableParent,
   sanitizeSelectorNeedle
 } from './utilities-selectors'
-import {CssSelector} from './types'
+import {CssSelector, CssSelectorGeneratorOptions} from './types'
 import {testSelector} from './utilities-dom'
 import {SELECTOR_SEPARATOR} from './constants'
 
@@ -13,7 +13,7 @@ import {SELECTOR_SEPARATOR} from './constants'
  */
 export function getCssSelector (
   needle: unknown,
-  custom_options = {}
+  custom_options: Partial<CssSelectorGeneratorOptions> = {}
 ): CssSelector {
   const elements = sanitizeSelectorNeedle(needle)
   const options = sanitizeOptions(elements[0], custom_options)
