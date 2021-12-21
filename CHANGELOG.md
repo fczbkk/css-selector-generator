@@ -1,3 +1,12 @@
+## [3.4.6-2](https://github.com/fczbkk/css-selector-generator/compare/v3.4.6-0...v3.4.6-2) (2021-12-21)
+
+
+### Bug Fixes
+
+* UMD build path ([9026301](https://github.com/fczbkk/css-selector-generator/commit/902630120067183eccddaf1a6e7e0a3d8e2d3389))
+
+
+
 ## [3.4.6-1](https://github.com/fczbkk/css-selector-generator/compare/v3.4.6-0...v3.4.6-1) (2021-12-21)
 
 
