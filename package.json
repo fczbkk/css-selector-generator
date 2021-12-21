@@ -8,6 +8,7 @@
   "type": "module",
   "main": "build/index.js",
   "exports": {
+    ".": "./build/index.js",
     "./esm": "./esm/index.js"
   },
   "module": "./esm/index.js",
