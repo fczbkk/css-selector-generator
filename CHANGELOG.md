@@ -1,3 +1,12 @@
+## [3.5.1](https://github.com/fczbkk/css-selector-generator/compare/v3.5.0...v3.5.1) (2022-01-02)
+
+
+### Bug Fixes
+
+* Shadow DOM support when root is not defined ([38f2a69](https://github.com/fczbkk/css-selector-generator/commit/38f2a69a0ba576b10ca133a8ff68e3bf1a01bfb7))
+
+
+
 # [3.5.0](https://github.com/fczbkk/css-selector-generator/compare/v3.4.6-3...v3.5.0) (2021-12-21)
 
 
