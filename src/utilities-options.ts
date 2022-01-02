@@ -91,6 +91,7 @@ export function sanitizeRoot (
 ): ParentNode {
   if (isParentNode(input)) {
     if (!input.contains(element)) {
+      // eslint-disable-next-line max-len
       showWarning('element root mismatch', 'Provided root does not contain the element. This will most likely result in producing a fallback selector using element\'s real root node. If you plan to use the selector using provided root (e.g. `root.querySelector`), it will nto work as intended.')
     }
     return input
@@ -99,6 +100,7 @@ export function sanitizeRoot (
   const rootNode = element.getRootNode({composed: false})
   if (isParentNode(rootNode)) {
     if (rootNode !== document) {
+      // eslint-disable-next-line max-len
       showWarning('shadow root inferred', 'You did not provide a root and the element is a child of Shadow DOM. This will produce a selector using ShadowRoot as a root. If you plan to use the selector using document as a root (e.g. `document.querySelector`), it will not work as intended.')
     }
     return rootNode
