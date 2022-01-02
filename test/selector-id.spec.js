@@ -28,12 +28,6 @@ describe('selector - ID', function () {
     assert.deepEqual(getIdSelector([root.firstElementChild]), ['#aaa\\+bbb'])
   })
 
-  it.skip('should escape UTF8 characters', function () {
-    // TODO
-    root.innerHTML = '<div id="aaa✓bbb"></div>'
-    assert.deepEqual(getIdSelector([root.firstElementChild]), ['aaa\\u2713bbb'])
-  })
-
   it('should escape colon character', function () {
     root.innerHTML = '<div id="aaa:bbb"></div>'
     assert.deepEqual(getIdSelector([root.firstElementChild]), ['#aaa\\:bbb'])
