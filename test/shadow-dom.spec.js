@@ -1,5 +1,6 @@
 import {assert} from 'chai'
 import {getCssSelector} from '../src/index.ts'
+import {getIdSelector} from '../src/selector-id.ts'
 
 describe('Shadow DOM', () => {
   let root
@@ -25,5 +26,11 @@ describe('Shadow DOM', () => {
   it('should match shadow element without specifying root', () => {
     const result = getCssSelector(shadowElement)
     assert.equal(result, '.shadowElement')
+  })
+
+  it('should get ID of element within shadow root', () => {
+    shadowElement.id = 'shadowElement'
+    const result = getIdSelector([shadowElement])[0]
+    assert.equal(result, '#shadowElement')
   })
 })

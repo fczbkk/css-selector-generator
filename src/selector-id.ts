@@ -13,9 +13,10 @@ export function getIdSelector (elements: Element[]): Array<CssSelector> {
   const element = elements[0]
   const id = element.getAttribute('id') || ''
   const selector = `#${sanitizeSelectorItem(id)}`
+  const rootNode = element.getRootNode({composed: false})
   return (
     !INVALID_ID_RE.test(id)
-    && testSelector([element], selector, element.ownerDocument)
+    && testSelector([element], selector, rootNode)
   )
     ? [selector]
     : []

@@ -9,7 +9,7 @@ import {sanitizeRoot} from './utilities-options'
 export function testSelector (
   elements: Element[],
   selector: CssSelector,
-  root: ParentNode,
+  root: Node,
 ): boolean {
   const result = Array.from(sanitizeRoot(root, elements[0])
     .querySelectorAll(selector))
