@@ -1,3 +1,12 @@
+## [3.5.2](https://github.com/fczbkk/css-selector-generator/compare/v3.5.1...v3.5.2) (2022-01-10)
+
+
+### Bug Fixes
+
+* ID selector withing shadow DOM ([65535da](https://github.com/fczbkk/css-selector-generator/commit/65535dafd46a4414902ed8ded27c8adae17cc6b1)), closes [#173](https://github.com/fczbkk/css-selector-generator/issues/173)
+
+
+
 ## [3.5.1](https://github.com/fczbkk/css-selector-generator/compare/v3.5.0...v3.5.1) (2022-01-02)
 
 

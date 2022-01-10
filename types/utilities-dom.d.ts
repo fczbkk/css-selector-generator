@@ -2,7 +2,7 @@ import { CssSelector } from './types';
 /**
  * Check whether element is matched uniquely by selector.
  */
-export declare function testSelector(elements: Element[], selector: CssSelector, root: ParentNode): boolean;
+export declare function testSelector(elements: Element[], selector: CssSelector, root: Node): boolean;
 /**
  * Test whether selector targets element. It does not have to be a unique match.
  */
