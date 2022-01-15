@@ -58,6 +58,7 @@ export enum CssSelectorType {
   nthchild = 'nthchild',
   nthoftype = 'nthoftype'
 }
+
 export type CssSelectorTypes = Array<CssSelectorType>
 
 export type CssSelectorsByType = Record<CssSelectorType, CssSelectors>
@@ -66,9 +67,9 @@ export type CssSelectorData = {
   [key in CssSelectorType]?: Array<string> | Array<Array<string>>
 }
 
-export type CssSelectorGeneratorOptions = {
+export type CssSelectorGeneratorOptionsInput = Partial<{
   // List of selector types to use. They will be prioritised by their order.
-  selectors: CssSelectorTypes,
+  selectors: (keyof typeof CssSelectorType)[],
   // List of selectors that should be prioritised.
   whitelist: Array<CssSelectorMatch>,
   // List of selectors that should be ignored.
@@ -85,7 +86,11 @@ export type CssSelectorGeneratorOptions = {
   maxCombinations: number,
   // Maximum number of selector candidates to be tested for each element. This is handy for performance reasons, e.g. when elements can produce large number of combinations of various types of selectors.
   maxCandidates: number
-}
+}>
+
+export type CssSelectorGeneratorOptions =
+  Required<Omit<CssSelectorGeneratorOptionsInput, 'selectors'>
+    & { selectors: CssSelectorTypes }>
 
 export type IdentifiableParent =
   null

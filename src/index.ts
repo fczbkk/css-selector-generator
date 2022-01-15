@@ -2,9 +2,12 @@ import {getFallbackSelector} from './selector-fallback'
 import {sanitizeOptions} from './utilities-options'
 import {
   getClosestIdentifiableParent,
-  sanitizeSelectorNeedle
+  sanitizeSelectorNeedle,
 } from './utilities-selectors'
-import {CssSelector, CssSelectorGeneratorOptions} from './types'
+import {
+  CssSelector,
+  CssSelectorGeneratorOptionsInput,
+} from './types'
 import {testSelector} from './utilities-dom'
 import {SELECTOR_SEPARATOR} from './constants'
 
@@ -13,7 +16,7 @@ import {SELECTOR_SEPARATOR} from './constants'
  */
 export function getCssSelector (
   needle: unknown,
-  custom_options: Partial<CssSelectorGeneratorOptions> = {}
+  custom_options: CssSelectorGeneratorOptionsInput = {},
 ): CssSelector {
   const elements = sanitizeSelectorNeedle(needle)
   const options = sanitizeOptions(elements[0], custom_options)
@@ -28,7 +31,7 @@ export function getCssSelector (
       elements,
       currentRoot,
       partialSelector,
-      options
+      options,
     )
   }
 
@@ -36,7 +39,7 @@ export function getCssSelector (
   while (closestIdentifiableParent) {
     const {
       foundElements,
-      selector
+      selector,
     } = closestIdentifiableParent
     if (testSelector(elements, selector, options.root)) {
       return selector
