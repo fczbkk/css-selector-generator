@@ -1,3 +1,12 @@
+## [3.5.3](https://github.com/fczbkk/css-selector-generator/compare/v3.5.2...v3.5.3) (2022-01-15)
+
+
+### Bug Fixes
+
+* set correct type of "selectors" in options ([a845239](https://github.com/fczbkk/css-selector-generator/commit/a845239eb0bafb19e5c3d7bda456d41f962e90c3)), closes [#48](https://github.com/fczbkk/css-selector-generator/issues/48)
+
+
+
 ## [3.5.2](https://github.com/fczbkk/css-selector-generator/compare/v3.5.1...v3.5.2) (2022-01-10)
 
 

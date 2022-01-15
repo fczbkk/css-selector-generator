@@ -1,9 +1,9 @@
-import { CssSelector } from './types';
+import { CssSelectorGenerated } from './types';
 /**
  * Get nth-child selector for an element.
  */
-export declare function getElementNthChildSelector(element: Element): CssSelector[];
+export declare function getElementNthChildSelector(element: Element): CssSelectorGenerated[];
 /**
  * Get nth-child selector matching all elements.
  */
-export declare function getNthChildSelector(elements: Element[]): CssSelector[];
+export declare function getNthChildSelector(elements: Element[]): CssSelectorGenerated[];

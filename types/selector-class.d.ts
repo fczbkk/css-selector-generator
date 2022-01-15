@@ -1,9 +1,9 @@
-import { CssSelector } from './types';
+import { CssSelectorGenerated } from './types';
 /**
  * Get class selectors for an element.
  */
-export declare function getElementClassSelectors(element: Element): CssSelector[];
+export declare function getElementClassSelectors(element: Element): CssSelectorGenerated[];
 /**
  * Get class selectors matching all elements.
  */
-export declare function getClassSelectors(elements: Element[]): CssSelector[];
+export declare function getClassSelectors(elements: Element[]): CssSelectorGenerated[];

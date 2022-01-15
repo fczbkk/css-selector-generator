@@ -1,10 +1,10 @@
-import { getAttributeSelectors } from './selector-attribute';
-import { getClassSelectors } from './selector-class';
-import { getIdSelector } from './selector-id';
-import { getNthChildSelector } from './selector-nth-child';
-import { getNthOfTypeSelector } from './selector-nth-of-type';
-import { getTagSelector } from './selector-tag';
-import { CssSelector, CssSelectorData, CssSelectorGeneratorOptions, CssSelectorType, CssSelectorTypes, IdentifiableParent } from './types';
+import { getAttributeSelectors, getElementAttributeSelectors } from './selector-attribute';
+import { getClassSelectors, getElementClassSelectors } from './selector-class';
+import { getElementIdSelectors, getIdSelector } from './selector-id';
+import { getElementNthChildSelector, getNthChildSelector } from './selector-nth-child';
+import { getElementNthOfTypeSelector, getNthOfTypeSelector } from './selector-nth-of-type';
+import { getElementTagSelectors, getTagSelector } from './selector-tag';
+import { CssSelector, CssSelectorData, CssSelectorGenerated, CssSelectorGeneratorOptions, CssSelectorType, CssSelectorTypes, IdentifiableParent } from './types';
 export declare const ESCAPED_COLON: string;
 export declare const SPECIAL_CHARACTERS_RE: RegExp;
 /**
@@ -25,6 +25,18 @@ export declare const SELECTOR_TYPE_GETTERS: {
     nthchild: typeof getNthChildSelector;
     nthoftype: typeof getNthOfTypeSelector;
 };
+export declare const ELEMENT_SELECTOR_TYPE_GETTERS: {
+    tag: typeof getElementTagSelectors;
+    id: typeof getElementIdSelectors;
+    class: typeof getElementClassSelectors;
+    attribute: typeof getElementAttributeSelectors;
+    nthchild: typeof getElementNthChildSelector;
+    nthoftype: typeof getElementNthOfTypeSelector;
+};
+/**
+ * Creates selector of given type for single element.
+ */
+export declare function getElementSelectorsByType(element: Element, selectorType: CssSelectorType): CssSelectorGenerated[];
 /**
  * Returns list of selectors of given type for the element.
  */
