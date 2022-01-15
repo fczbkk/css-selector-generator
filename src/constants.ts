@@ -1,8 +1,23 @@
-import {CssSelectorType} from './types'
+import {CssSelectorType, OPERATOR, OperatorValue} from './types'
 
-export const NONE_OPERATOR = ''
-export const DESCENDANT_OPERATOR = ' > '
-export const CHILD_OPERATOR = ' '
+export const NONE_OPERATOR = '' as OperatorValue
+export const DESCENDANT_OPERATOR = ' > ' as OperatorValue
+export const CHILD_OPERATOR = ' ' as OperatorValue
+
+export const OPERATOR_DATA = {
+  [OPERATOR.NONE]: {
+    type: OPERATOR.NONE,
+    value: NONE_OPERATOR
+  },
+  [OPERATOR.DESCENDANT]: {
+    type: OPERATOR.DESCENDANT,
+    value: DESCENDANT_OPERATOR
+  },
+  [OPERATOR.CHILD]: {
+    type: OPERATOR.CHILD,
+    value: CHILD_OPERATOR
+  }
+}
 
 export const SELECTOR_SEPARATOR = ', '
 

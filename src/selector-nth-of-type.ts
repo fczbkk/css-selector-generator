@@ -1,11 +1,13 @@
 import {getTagSelector} from './selector-tag'
-import {CssSelector} from './types'
+import {CssSelectorGenerated} from './types'
 import {getIntersection} from './utilities-data'
 
 /**
  * Get nth-of-type selector for an element.
  */
-export function getElementNthOfTypeSelector (element: Element): CssSelector[] {
+export function getElementNthOfTypeSelector (
+  element: Element
+): CssSelectorGenerated[] {
   const tag = getTagSelector([element])[0]
   const parentElement = element.parentElement
 
@@ -15,7 +17,7 @@ export function getElementNthOfTypeSelector (element: Element): CssSelector[] {
       .filter((element) => element.tagName.toLowerCase() === tag)
     const elementIndex = siblings.indexOf(element)
     if (elementIndex > -1) {
-      return [`${tag}:nth-of-type(${elementIndex + 1})`]
+      return [`${tag}:nth-of-type(${elementIndex + 1})` as CssSelectorGenerated]
     }
   }
 
@@ -25,6 +27,8 @@ export function getElementNthOfTypeSelector (element: Element): CssSelector[] {
 /**
  * Get Nth-of-type selector matching all elements.
  */
-export function getNthOfTypeSelector (elements: Element[]): CssSelector[] {
+export function getNthOfTypeSelector (
+  elements: Element[]
+): CssSelectorGenerated[] {
   return getIntersection(elements.map(getElementNthOfTypeSelector))
 }

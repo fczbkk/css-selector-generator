@@ -1,22 +1,22 @@
 import {sanitizeSelectorItem} from './utilities-selectors'
 import {convertMatchListToRegExp, getIntersection} from './utilities-data'
-import {CssSelector} from './types'
+import {CssSelectorGenerated} from './types'
 
 // List of attributes to be ignored. These are handled by different selector types.
 export const ATTRIBUTE_BLACKLIST = convertMatchListToRegExp([
   'class',
   'id',
   // Angular attributes
-  'ng-*'
+  'ng-*',
 ])
 
 /**
  * Get simplified attribute selector for an element.
  */
 export function attributeNodeToSimplifiedSelector ({
-  nodeName
-}: Node): CssSelector {
-  return `[${nodeName}]`
+  nodeName,
+}: Node): CssSelectorGenerated {
+  return `[${nodeName}]` as CssSelectorGenerated
 }
 
 /**
@@ -24,9 +24,10 @@ export function attributeNodeToSimplifiedSelector ({
  */
 export function attributeNodeToSelector ({
   nodeName,
-  nodeValue
-}: Node): CssSelector {
-  return `[${nodeName}='${sanitizeSelectorItem(nodeValue)}']`
+  nodeValue,
+}: Node): CssSelectorGenerated {
+  const selector = `[${nodeName}='${sanitizeSelectorItem(nodeValue)}']`
+  return selector as CssSelectorGenerated
 }
 
 /**
@@ -39,12 +40,14 @@ export function isValidAttributeNode ({nodeName}: Node): boolean {
 /**
  * Get attribute selectors for an element.
  */
-export function getElementAttributeSelectors (element: Element): CssSelector[] {
+export function getElementAttributeSelectors (
+  element: Element,
+): CssSelectorGenerated[] {
   const validAttributes = Array.from(element.attributes)
     .filter(isValidAttributeNode)
   return [
     ...validAttributes.map(attributeNodeToSimplifiedSelector),
-    ...validAttributes.map(attributeNodeToSelector)
+    ...validAttributes.map(attributeNodeToSelector),
   ]
 
 }
@@ -52,7 +55,9 @@ export function getElementAttributeSelectors (element: Element): CssSelector[] {
 /**
  * Get attribute selectors matching all elements.
  */
-export function getAttributeSelectors (elements: Element[]): CssSelector[] {
+export function getAttributeSelectors (
+  elements: Element[],
+): CssSelectorGenerated[] {
   const elementSelectors = elements.map(getElementAttributeSelectors)
   return getIntersection(elementSelectors)
 }

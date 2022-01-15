@@ -15,10 +15,12 @@ export enum OPERATOR {
   CHILD = 'child'
 }
 
+export type OperatorValue = '' | ' ' | ' > '
+
 export interface OperatorData {
   type: OPERATOR,
   // TODO use constants
-  value: '' | ' ' | ' > '
+  value: OperatorValue
 }
 
 export interface ElementSelectorData {
