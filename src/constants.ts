@@ -4,12 +4,6 @@ export const NONE_OPERATOR = ''
 export const DESCENDANT_OPERATOR = ' > '
 export const CHILD_OPERATOR = ' '
 
-export enum OPERATOR {
-  NONE = 'none',
-  DESCENDANT = 'descendant',
-  CHILD = 'child'
-}
-
 export const SELECTOR_SEPARATOR = ', '
 
 // RegExp that will match invalid patterns that can be used in ID attribute.

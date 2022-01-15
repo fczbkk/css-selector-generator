@@ -1,3 +1,48 @@
+declare const tag: unique symbol
+
+declare type Tagged<Token> = {
+  readonly [tag]: Token;
+};
+
+export type Opaque<Type, Token = unknown> = Type & Tagged<Token>;
+
+// TODO rename to "CssSelector"
+export type CssSelectorGenerated = Opaque<string, 'CssSelector'>
+
+export enum OPERATOR {
+  NONE = 'none',
+  DESCENDANT = 'descendant',
+  CHILD = 'child'
+}
+
+export interface OperatorData {
+  type: OPERATOR,
+  // TODO use constants
+  value: '' | ' ' | ' > '
+}
+
+export interface ElementSelectorData {
+  value: CssSelectorGenerated,
+  include: boolean
+}
+
+export interface ElementData {
+  element: Element,
+  operator: OperatorData,
+  selectors: Partial<Record<CssSelectorType, ElementSelectorData[]>>
+}
+
+export interface SelectorData {
+  isFallback: boolean,
+  elements: ElementData[]
+}
+
+export interface ResultData {
+  selectorData: SelectorData[],
+  getByElement: (element: Element) => ElementData | null,
+  getByCssSelector: (selector: string) => ElementData | null
+}
+
 export type CssSelector = string
 export type CssSelectors = Array<CssSelector>
 
