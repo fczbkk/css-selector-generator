@@ -1,3 +1,12 @@
+## [3.5.4](https://github.com/fczbkk/css-selector-generator/compare/v3.5.3...v3.5.4) (2022-01-16)
+
+
+### Bug Fixes
+
+* respect flags in regex patterns ([fed2116](https://github.com/fczbkk/css-selector-generator/commit/fed2116c268359ab97def752c8d099608a81a1c0)), closes [#183](https://github.com/fczbkk/css-selector-generator/issues/183)
+
+
+
 ## [3.5.3](https://github.com/fczbkk/css-selector-generator/compare/v3.5.2...v3.5.3) (2022-01-15)
 
 

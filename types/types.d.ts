@@ -66,4 +66,5 @@ export declare type IdentifiableParent = null | {
     foundElements: Element[];
     selector: CssSelector;
 };
+export declare type PatternMatcher = (input: string) => boolean;
 export {};

@@ -1,4 +1,4 @@
-import { CssSelectorMatch } from './types';
+import { CssSelectorMatch, PatternMatcher } from './types';
 /**
  * Creates array containing only items included in all input arrays.
  */
@@ -12,6 +12,7 @@ export declare function flattenArray<T>(input: Array<Array<T>>): Array<T>;
  */
 export declare function wildcardToRegExp(input: string): string;
 /**
- * Converts list of white/blacklist items to a single RegExp.
+ * Creates function that will test list of provided matchers against input.
+ * Used for white/blacklist functionality.
  */
-export declare function convertMatchListToRegExp(list?: Array<CssSelectorMatch>): RegExp;
+export declare function createPatternMatcher(list: CssSelectorMatch[]): PatternMatcher;

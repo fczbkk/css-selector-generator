@@ -1,5 +1,5 @@
 import { CssSelectorGenerated } from './types';
-export declare const ATTRIBUTE_BLACKLIST: RegExp;
+export declare const attributeBlacklistMatch: import("./types").PatternMatcher;
 /**
  * Get simplified attribute selector for an element.
  */

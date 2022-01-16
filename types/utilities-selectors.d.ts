@@ -4,7 +4,7 @@ import { getElementIdSelectors, getIdSelector } from './selector-id';
 import { getElementNthChildSelector, getNthChildSelector } from './selector-nth-child';
 import { getElementNthOfTypeSelector, getNthOfTypeSelector } from './selector-nth-of-type';
 import { getElementTagSelectors, getTagSelector } from './selector-tag';
-import { CssSelector, CssSelectorData, CssSelectorGenerated, CssSelectorGeneratorOptions, CssSelectorType, CssSelectorTypes, IdentifiableParent } from './types';
+import { CssSelector, CssSelectorData, CssSelectorGenerated, CssSelectorGeneratorOptions, CssSelectorType, CssSelectorTypes, IdentifiableParent, PatternMatcher } from './types';
 export declare const ESCAPED_COLON: string;
 export declare const SPECIAL_CHARACTERS_RE: RegExp;
 /**
@@ -44,11 +44,11 @@ export declare function getSelectorsByType(elements: Element[], selector_type: C
 /**
  * Remove blacklisted selectors from list.
  */
-export declare function filterSelectors(list: Array<CssSelector>, blacklist_re: RegExp, whitelist_re: RegExp): Array<CssSelector>;
+export declare function filterSelectors(list: Array<CssSelector>, matchBlacklist: PatternMatcher, matchWhitelist: PatternMatcher): Array<CssSelector>;
 /**
  * Prioritise whitelisted selectors in list.
  */
-export declare function orderSelectors(list: Array<CssSelector>, whitelist_re: RegExp): Array<CssSelector>;
+export declare function orderSelectors(list: Array<CssSelector>, matchWhitelist: PatternMatcher): Array<CssSelector>;
 /**
  * Returns list of unique selectors applicable to given element.
  */
