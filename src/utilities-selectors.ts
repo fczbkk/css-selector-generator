@@ -19,7 +19,10 @@ import {
   getNthOfTypeSelector,
 } from './selector-nth-of-type'
 import {getElementTagSelectors, getTagSelector} from './selector-tag'
-import {convertMatchListToRegExp, flattenArray} from './utilities-data'
+import {
+  createPatternMatcher,
+  flattenArray
+} from './utilities-data'
 import {getParents, testSelector} from './utilities-dom'
 import {
   CssSelector,
@@ -28,7 +31,7 @@ import {
   CssSelectorGeneratorOptions,
   CssSelectorType,
   CssSelectorTypes,
-  IdentifiableParent,
+  IdentifiableParent, PatternMatcher,
 } from './types'
 import isElement from 'iselement'
 import {getPowerSet} from './utilities-powerset'
@@ -116,12 +119,12 @@ export function getSelectorsByType (
  */
 export function filterSelectors (
   list: Array<CssSelector> = [],
-  blacklist_re: RegExp,
-  whitelist_re: RegExp,
+  matchBlacklist: PatternMatcher,
+  matchWhitelist: PatternMatcher,
 ): Array<CssSelector> {
   return list.filter((item) => (
-    whitelist_re.test(item)
-    || !blacklist_re.test(item)
+    matchWhitelist(item)
+    || !matchBlacklist(item)
   ))
 }
 
@@ -130,11 +133,11 @@ export function filterSelectors (
  */
 export function orderSelectors (
   list: Array<CssSelector> = [],
-  whitelist_re: RegExp,
+  matchWhitelist: PatternMatcher,
 ): Array<CssSelector> {
   return list.sort((a, b) => {
-    const a_is_whitelisted = whitelist_re.test(a)
-    const b_is_whitelisted = whitelist_re.test(b)
+    const a_is_whitelisted = matchWhitelist(a)
+    const b_is_whitelisted = matchWhitelist(b)
     if (a_is_whitelisted && !b_is_whitelisted) {
       return -1
     }
@@ -173,14 +176,14 @@ export function getSelectorsList (
     maxCombinations,
   } = options
 
-  const blacklist_re = convertMatchListToRegExp(blacklist)
-  const whitelist_re = convertMatchListToRegExp(whitelist)
+  const matchBlacklist = createPatternMatcher(blacklist)
+  const matchWhitelist = createPatternMatcher(whitelist)
 
   const reducer = (data: CssSelectorData, selector_type: CssSelectorType) => {
     const selectors_by_type = getSelectorsByType(elements, selector_type)
     const filtered_selectors =
-      filterSelectors(selectors_by_type, blacklist_re, whitelist_re)
-    const found_selectors = orderSelectors(filtered_selectors, whitelist_re)
+      filterSelectors(selectors_by_type, matchBlacklist, matchWhitelist)
+    const found_selectors = orderSelectors(filtered_selectors, matchWhitelist)
 
     data[selector_type] = combineWithinSelector
       ? getPowerSet(found_selectors, {maxResults: maxCombinations})

@@ -1,4 +1,5 @@
-import {CssSelectorMatch} from './types'
+import {CssSelectorMatch, PatternMatcher} from './types'
+import {isRegExp} from './utilities-options'
 
 /**
  * Creates array containing only items included in all input arrays.
@@ -32,20 +33,16 @@ export function wildcardToRegExp (input: string): string {
 }
 
 /**
- * Converts list of white/blacklist items to a single RegExp.
+ * Creates function that will test list of provided matchers against input.
+ * Used for white/blacklist functionality.
  */
-export function convertMatchListToRegExp (
-  list: Array<CssSelectorMatch> = []
-): RegExp {
-  if (list.length === 0) {
-    return new RegExp('.^')
-  }
-  const combined_re = list
-    .map((item) => {
-      return (typeof item === 'string')
-        ? '^' + wildcardToRegExp(item) + '$'
-        : item.source
-    })
-    .join('|')
-  return new RegExp(combined_re)
+export function createPatternMatcher (
+  list: CssSelectorMatch[]
+): PatternMatcher {
+  const patterns = list.map(
+    (item) => (isRegExp(item)
+      ? item
+      : new RegExp('^' + wildcardToRegExp(item) + '$'))
+  )
+  return (input: string) => patterns.some((re) => re.test(input))
 }

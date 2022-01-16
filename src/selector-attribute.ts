@@ -1,9 +1,12 @@
 import {sanitizeSelectorItem} from './utilities-selectors'
-import {convertMatchListToRegExp, getIntersection} from './utilities-data'
+import {
+  createPatternMatcher,
+  getIntersection
+} from './utilities-data'
 import {CssSelectorGenerated} from './types'
 
 // List of attributes to be ignored. These are handled by different selector types.
-export const ATTRIBUTE_BLACKLIST = convertMatchListToRegExp([
+export const attributeBlacklistMatch = createPatternMatcher([
   'class',
   'id',
   // Angular attributes
@@ -34,7 +37,7 @@ export function attributeNodeToSelector ({
  * Checks whether attribute should be used as a selector.
  */
 export function isValidAttributeNode ({nodeName}: Node): boolean {
-  return !ATTRIBUTE_BLACKLIST.test(nodeName)
+  return !attributeBlacklistMatch(nodeName)
 }
 
 /**
