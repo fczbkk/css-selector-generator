@@ -25,7 +25,7 @@ describe('selector - tag', function () {
     root.innerHTML = '<aaa:bbb></aaa:bbb>'
     const element = root.firstElementChild
     const selector = getTagSelector([element])
-    assert.equal(selector, 'aaa\\:bbb')
+    assert.equal(selector[0], 'aaa\\:bbb')
     assert.equal(root.querySelector(selector), element)
   })
 
