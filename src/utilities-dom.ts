@@ -37,8 +37,9 @@ export function testMultiSelector (
  */
 export function getElementParents (
   element: Element,
-  root: ParentNode,
+  root?: ParentNode,
 ): Element[] {
+  root = root ?? getRootNode(element)
   const result = []
   let parent = element
   while (isElement(parent) && parent !== root) {
@@ -55,7 +56,6 @@ export function getParents (
   elements: Element[],
   root?: ParentNode,
 ): Element[] {
-  root = root ?? getRootNode(elements[0])
   return getIntersection(
     elements.map((element) => getElementParents(element, root)),
   )

@@ -1,4 +1,4 @@
-import {getParents} from './utilities-dom'
+import {getElementParents} from './utilities-dom'
 import {getNthChildSelector} from './selector-nth-child'
 import {DESCENDANT_OPERATOR, SELECTOR_SEPARATOR} from './constants'
 import {CssSelector} from './types'
@@ -7,7 +7,7 @@ import {CssSelector} from './types'
  * Creates fallback selector for single element.
  */
 export function getElementFallbackSelector (element: Element): CssSelector {
-  const selectors = getParents([element])
+  const selectors = getElementParents(element)
     .map((element) => getNthChildSelector([element])[0])
     .reverse()
   return [':root', ...selectors].join(DESCENDANT_OPERATOR)
