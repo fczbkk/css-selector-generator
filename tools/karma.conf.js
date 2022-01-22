@@ -3,6 +3,7 @@ const webpack_config = require('./webpack.dev')
 module.exports = (config) => {
   config.set({
     files: [
+      '../test/suppressConsoleWarnings.js',
       '../test/**/*.spec.js',
       '../test/**/*.spec.ts',
     ],
