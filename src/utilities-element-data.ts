@@ -1,11 +1,12 @@
 import {
   CssSelectorGenerated,
+  CssSelectorType,
   CssSelectorTypes,
   ElementData,
   ElementSelectorData,
   OPERATOR,
 } from './types'
-import {OPERATOR_DATA} from './constants'
+import {OPERATOR_DATA, SELECTOR_PATTERN} from './constants'
 import {getElementSelectorsByType} from './utilities-selectors'
 
 /**
@@ -26,6 +27,7 @@ export function createElementSelectorData (
 export function createElementData (
   element: Element,
   selectorTypes: CssSelectorTypes,
+  operator: OPERATOR = OPERATOR.NONE
 ): ElementData {
   const selectors = {}
   selectorTypes.forEach((selectorType) => {
@@ -38,7 +40,32 @@ export function createElementData (
   })
   return {
     element,
-    operator: OPERATOR_DATA[OPERATOR.NONE],
+    operator: OPERATOR_DATA[operator],
     selectors,
   }
+}
+
+/**
+ * Constructs selector from element data.
+ */
+export function constructElementSelector (
+  {selectors, operator}: ElementData
+): CssSelectorGenerated {
+  let pattern = [...SELECTOR_PATTERN]
+  // `nthoftype` already contains tag
+  if (selectors[CssSelectorType.tag] && selectors[CssSelectorType.nthoftype]) {
+    pattern = pattern.filter((item) => item !== CssSelectorType.tag)
+  }
+
+  let selector = ''
+  pattern.forEach((selectorType) => {
+    const selectorsOfType = selectors[selectorType] || []
+    selectorsOfType.forEach(({value, include}) => {
+      if (include) {
+        selector += value
+      }
+    })
+  })
+
+  return (operator.value + selector) as CssSelectorGenerated
 }
