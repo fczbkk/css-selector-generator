@@ -31,6 +31,14 @@ describe('options: whitelist', function () {
     assert.equal(result, '.bbb')
   })
 
+  it('should use functions as predicates', function () {
+    root.innerHTML = '<div class="aaa bbb"></div>'
+    const result = getCssSelector(root.firstElementChild, {
+      whitelist: [(selector) => selector.endsWith('bb')]
+    })
+    assert.equal(result, '.bbb')
+  })
+
   it('should work with multiple items', function () {
     root.innerHTML = '<div class="aaa bbb"></div>'
     const result = getCssSelector(

@@ -48,7 +48,9 @@ export function isRegExp (input: unknown): input is RegExp {
  * @param input
  */
 export function isCssSelectorMatch (input: unknown): input is CssSelectorMatch {
-  return (typeof input === 'string') || isRegExp(input)
+  return (
+    typeof input === 'string' || typeof input === 'function' || isRegExp(input)
+  )
 }
 
 /**

@@ -1,5 +1,4 @@
 import {CssSelectorMatch, PatternMatcher} from './types'
-import {isRegExp} from './utilities-options'
 
 /**
  * Creates array containing only items included in all input arrays.
@@ -40,9 +39,12 @@ export function createPatternMatcher (
   list: CssSelectorMatch[]
 ): PatternMatcher {
   const patterns = list.map(
-    (item) => (isRegExp(item)
-      ? item
-      : new RegExp('^' + wildcardToRegExp(item) + '$'))
+    (item) =>
+      (typeof item === 'string'
+        ? new RegExp('^' + wildcardToRegExp(item) + '$')
+        : item)
   )
-  return (input: string) => patterns.some((re) => re.test(input))
+  return (input: string) =>
+    patterns.some((pattern) =>
+      (typeof pattern === 'function' ? pattern(input) : pattern.test(input)))
 }
