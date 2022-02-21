@@ -5,6 +5,9 @@ import {
 } from '../src/utilities-element-data.ts'
 import {CssSelectorType, OPERATOR} from '../src/types.ts'
 
+/**
+ * Utility function that marks all selectors in elementData as included.
+ */
 function includeAllSelectors (elementData) {
   Object.values(elementData.selectors).forEach(
     (selectorDataList) => selectorDataList.forEach(
