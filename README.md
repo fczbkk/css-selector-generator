@@ -208,7 +208,7 @@ getCssSelector(targetElement, {blacklist: ['.first*']});
 getCssSelector(targetElement, {blacklist: [/first/]});
 // ".secondClass"
 getCssSelector(targetElement, {blacklist: [
-  (input) => input.startsWith()
+  (input) => input.startsWith('.second')
 ]});
 // ".secondClass"
 ```
