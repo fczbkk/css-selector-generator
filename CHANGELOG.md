@@ -1,3 +1,12 @@
+# [3.6.0](https://github.com/fczbkk/css-selector-generator/compare/v3.5.4...v3.6.0) (2022-02-21)
+
+
+### Features
+
+* allow functions in whitelist / blacklist ([9ea3eee](https://github.com/fczbkk/css-selector-generator/commit/9ea3eee770107a84246b41bb46e6c65e083bfc85)), closes [#212](https://github.com/fczbkk/css-selector-generator/issues/212)
+
+
+
 ## [3.5.4](https://github.com/fczbkk/css-selector-generator/compare/v3.5.3...v3.5.4) (2022-01-16)
 
 

@@ -10,7 +10,7 @@ export declare function testMultiSelector(element: Element, selector: CssSelecto
 /**
  * Find all parents of a single element.
  */
-export declare function getElementParents(element: Element, root: ParentNode): Element[];
+export declare function getElementParents(element: Element, root?: ParentNode): Element[];
 /**
  * Find all common parents of elements.
  */

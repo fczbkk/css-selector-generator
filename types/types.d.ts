@@ -1,6 +1,6 @@
-declare const tag: unique symbol;
+declare const opaqueId: unique symbol;
 declare type Tagged<Token> = {
-    readonly [tag]: Token;
+    readonly [opaqueId]: Token;
 };
 export declare type Opaque<Type, Token = unknown> = Type & Tagged<Token>;
 export declare type CssSelectorGenerated = Opaque<string, 'CssSelector'>;
@@ -34,7 +34,8 @@ export interface ResultData {
 }
 export declare type CssSelector = string;
 export declare type CssSelectors = Array<CssSelector>;
-export declare type CssSelectorMatch = RegExp | string;
+declare type CssSelectorMatchFn = (input: string) => boolean;
+export declare type CssSelectorMatch = RegExp | string | CssSelectorMatchFn;
 export declare enum CssSelectorType {
     id = "id",
     class = "class",
