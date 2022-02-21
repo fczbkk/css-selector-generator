@@ -62,4 +62,30 @@ describe('utilities - pattern matcher', () => {
     assert.equal(matchPattern('strict'), true)
     assert.equal(matchPattern('STRICT'), false)
   })
+
+  it('should accept function', () => {
+    const matchFunction = (input) => input === 'aaa'
+    const matchPattern = createPatternMatcher([matchFunction])
+    assert.equal(matchPattern('aaa'), true)
+    assert.equal(matchPattern('xxx'), false)
+  })
+
+  it('should always return `false` if function returns non-boolean', () => {
+    const matchFunction = () => 'non-boolean return value'
+    const matchPattern = createPatternMatcher([matchFunction])
+    assert.equal(matchPattern('aaa'), false)
+  })
+
+  it('should ignore invalid inputs', () => {
+    const matchPattern = createPatternMatcher([
+      true,
+      false,
+      undefined,
+      null,
+      123,
+      [],
+      {}
+    ])
+    assert.equal(matchPattern('aaa'), false)
+  })
 })

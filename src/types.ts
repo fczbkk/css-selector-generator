@@ -48,7 +48,8 @@ export interface ResultData {
 export type CssSelector = string
 export type CssSelectors = Array<CssSelector>
 
-export type CssSelectorMatch = RegExp | string
+type CssSelectorMatchFn = (input: string) => boolean
+export type CssSelectorMatch = RegExp | string | CssSelectorMatchFn
 
 export enum CssSelectorType {
   id = 'id',

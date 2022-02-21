@@ -1,5 +1,6 @@
 import {CssSelectorMatch, PatternMatcher} from './types'
 import {isRegExp} from './utilities-options'
+import {showWarning} from './utilities-messages'
 
 /**
  * Creates array containing only items included in all input arrays.
@@ -39,10 +40,34 @@ export function wildcardToRegExp (input: string): string {
 export function createPatternMatcher (
   list: CssSelectorMatch[]
 ): PatternMatcher {
-  const patterns = list.map(
-    (item) => (isRegExp(item)
-      ? item
-      : new RegExp('^' + wildcardToRegExp(item) + '$'))
+  const matchFunctions = list.map((item) => {
+    if (isRegExp(item)) {
+      return (input: string) => item.test(input)
+    }
+
+    if (typeof item === 'function') {
+      return (input: string) => {
+        const result = item(input)
+        if (typeof result !== 'boolean') {
+          // eslint-disable-next-line max-len
+          showWarning('pattern matcher function invalid', 'Provided pattern matching function does not return boolean. It\'s result will be ignored.', item)
+          return false
+        }
+        return result
+      }
+    }
+
+    if (typeof item === 'string') {
+      const re = new RegExp('^' + wildcardToRegExp(item) + '$')
+      return (input: string) => re.test(input)
+    }
+
+    // eslint-disable-next-line max-len
+    showWarning('pattern matcher invalid', 'Pattern matching only accepts strings, regular expressions and/or functions. This item is invalid and will be ignored.', item)
+    return () => false
+  })
+
+  return (input: string) => matchFunctions.some(
+    (matchFunction) => matchFunction(input)
   )
-  return (input: string) => patterns.some((re) => re.test(input))
 }

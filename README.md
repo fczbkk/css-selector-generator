@@ -187,7 +187,11 @@ getCssSelector(targetElement, {root: document.querySelector('.myRootElement')});
 
 ### Blacklist
 
-If you want to ignore some selectors, you can put them on the blacklist. Blacklist is an array that can contain either regular expressions, or strings. In strings, you can use an asterisk (`*`) as a wildcard that will match any number of any characters.
+If you want to ignore some selectors, you can put them on the blacklist. Blacklist is an array that can contain either regular expressions, strings and/or functions.
+
+In **strings**, you can use an asterisk (`*`) as a wildcard that will match any number of any characters.
+
+**Functions** will receive a selector as a parameter. They should always return boolean, `true` if it is a match, `false` if it is not. Any other type of return value will be ignored.
 
 ```html
 <body>
@@ -202,6 +206,10 @@ getCssSelector(targetElement, {blacklist: ['.firstClass']});
 getCssSelector(targetElement, {blacklist: ['.first*']});
 // ".secondClass"
 getCssSelector(targetElement, {blacklist: [/first/]});
+// ".secondClass"
+getCssSelector(targetElement, {blacklist: [
+  (input) => input.startsWith()
+]});
 // ".secondClass"
 ```
 
