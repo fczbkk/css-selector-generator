@@ -1,4 +1,5 @@
 import { CssSelector, CssSelectorGeneratorOptionsInput } from './types';
+import 'core-js';
 /**
  * Generates unique CSS selector for an element.
  */

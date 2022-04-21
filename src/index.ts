@@ -10,6 +10,7 @@ import {
 } from './types'
 import {testSelector} from './utilities-dom'
 import {SELECTOR_SEPARATOR} from './constants'
+import 'core-js'
 
 /**
  * Generates unique CSS selector for an element.

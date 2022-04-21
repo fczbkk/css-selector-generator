@@ -28,11 +28,14 @@
     "version": "npm run build && npm run changelog && git add -A"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.9",
+    "@babel/preset-env": "^7.16.11",
     "@fczbkk/eslint-config": "^1.0.0",
     "@types/chai": "^4.3.0",
     "@types/mocha": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^5.9.0",
     "@typescript-eslint/parser": "^5.9.0",
+    "babel-loader": "^8.2.5",
     "chai": "^4.3.4",
     "conventional-changelog-cli": "^2.2.2",
     "eslint": "^8.6.0",
@@ -57,6 +60,7 @@
   "homepage": "https://github.com/fczbkk/css-selector-generator/",
   "dependencies": {
     "cartesian": "^1.0.1",
+    "core-js": "^3.22.1",
     "iselement": "^1.1.4"
   }
 }
