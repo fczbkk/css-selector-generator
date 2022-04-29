@@ -1,3 +1,12 @@
+## [3.6.1](https://github.com/fczbkk/css-selector-generator/compare/v3.6.0...v3.6.1) (2022-04-29)
+
+
+### Bug Fixes
+
+* do not use input's "value" selector ([f9eece2](https://github.com/fczbkk/css-selector-generator/commit/f9eece2856fca7125d34ffc09b85a2ca78758173)), closes [#262](https://github.com/fczbkk/css-selector-generator/issues/262)
+
+
+
 # [3.6.0](https://github.com/fczbkk/css-selector-generator/compare/v3.5.4...v3.6.0) (2022-02-21)
 
 

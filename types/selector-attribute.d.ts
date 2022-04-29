@@ -11,7 +11,7 @@ export declare function attributeNodeToSelector({ nodeName, nodeValue, }: Node):
 /**
  * Checks whether attribute should be used as a selector.
  */
-export declare function isValidAttributeNode({ nodeName }: Node): boolean;
+export declare function isValidAttributeNode({ nodeName }: Node, element: Element): boolean;
 /**
  * Get attribute selectors for an element.
  */
