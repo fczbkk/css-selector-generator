@@ -36,7 +36,16 @@ export function attributeNodeToSelector ({
 /**
  * Checks whether attribute should be used as a selector.
  */
-export function isValidAttributeNode ({nodeName}: Node): boolean {
+export function isValidAttributeNode (
+  {nodeName}: Node,
+  element: Element
+): boolean {
+  // form input value should not be used as a selector
+  const tagName = element.tagName.toLowerCase()
+  if (['input', 'option'].includes(tagName) && nodeName === 'value') {
+    return false
+  }
+
   return !attributeBlacklistMatch(nodeName)
 }
 
@@ -47,7 +56,7 @@ export function getElementAttributeSelectors (
   element: Element,
 ): CssSelectorGenerated[] {
   const validAttributes = Array.from(element.attributes)
-    .filter(isValidAttributeNode)
+    .filter((attributeNode) => isValidAttributeNode(attributeNode, element))
   return [
     ...validAttributes.map(attributeNodeToSimplifiedSelector),
     ...validAttributes.map(attributeNodeToSelector),

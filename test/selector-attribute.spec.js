@@ -107,4 +107,16 @@ describe('selector - attribute', function () {
     assert.deepEqual(result, "[width='\\33 0\\%']")
   })
 
+  it('should ignore `value` attribute on INPUT elements', () => {
+    root.innerHTML = '<input value="123" /><input value="456" />'
+    const result = getCssSelector(root.firstElementChild)
+    assert.notMatch(result, /^\[/)
+  })
+
+  it('should ignore `value` attribute on OPTION elements', () => {
+    root.innerHTML = '<option value="123" /><option value="456" />'
+    const result = getCssSelector(root.firstElementChild)
+    assert.notMatch(result, /^\[/)
+  })
+
 })
