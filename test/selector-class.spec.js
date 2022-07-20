@@ -56,11 +56,10 @@ describe('selector - class', function () {
     assert.include(result, '.aaa\\:bbb')
   })
 
-  it('should ignore class names that start with a number', function () {
+  it('should escape class names that start with a number', function () {
     root.innerHTML = '<div class="1 1a a1"></div>'
     const result = getClassSelectors([root.firstElementChild])
-    assert.lengthOf(result, 1)
-    assert.include(result, '.a1')
+    assert.sameMembers(result, ['.\\31 ', '.\\31 a', '.a1'])
   })
 
   it('should generate class selectors for multiple elements', () => {

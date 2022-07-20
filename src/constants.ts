@@ -25,13 +25,11 @@ export const SELECTOR_SEPARATOR = ', '
 export const INVALID_ID_RE = new RegExp([
   '^$', // empty or not set
   '\\s', // contains whitespace
-  '^\\d' // begins with a number
 ].join('|'))
 
 // RegExp that will match invalid patterns that can be used in class attribute.
 export const INVALID_CLASS_RE = new RegExp([
   '^$', // empty or not set
-  '^\\d' // begins with a number
 ].join('|'))
 
 // Order in which a combined selector is constructed.

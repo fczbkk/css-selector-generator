@@ -33,9 +33,9 @@ describe('selector - ID', function () {
     assert.deepEqual(getIdSelector([root.firstElementChild]), ['#aaa\\:bbb'])
   })
 
-  it('should ignore ID beginning with a number', function () {
+  it('should escape ID beginning with a number', function () {
     root.innerHTML = '<div id="1aaa"></div>'
-    assert.deepEqual(getIdSelector([root.firstElementChild]), [])
+    assert.deepEqual(getIdSelector([root.firstElementChild]), ['#\\31 aaa'])
   })
 
   it('should ignore non-unique ID attribute', function () {
