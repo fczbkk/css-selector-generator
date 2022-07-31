@@ -1,7 +1,7 @@
 name: library-import-test
 
 env:
-  IMPORT_TEXT: import CssSelectorGenerator from
+  IMPORT_TEXT: import { getCssSelector } from
   NPM_MODULE_NAME: css-selector-generator
 
 on:
