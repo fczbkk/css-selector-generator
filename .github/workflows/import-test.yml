@@ -1,0 +1,98 @@
+name: Library import test
+
+env:
+  IMPORT_TEXT: import CssSelectorGenerator from
+  NPM_MODULE_NAME: css-selector-generator
+
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  Pack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm install
+      - run: npm run build --if-present
+      - run: npm pack --dry-run
+      - run: npm pack | tail -1 | xargs -n1 tar -xzf
+      - uses: actions/upload-artifact@v3
+        with:
+          path: package
+
+  Webpack:
+    runs-on: ubuntu-latest
+    needs: Pack
+    steps:
+      - uses: actions/download-artifact@v3
+      - run: npm install ./artifact
+      - run: echo "${{ env.IMPORT_TEXT }} '${{ env.NPM_MODULE_NAME }}'" > index.js
+      - run: webpack --entry ./index.js
+      - run: cat dist/main.js
+
+  Parcel:
+    runs-on: ubuntu-latest
+    needs: Pack
+    steps:
+      - uses: actions/download-artifact@v3
+      - run: npm install ./artifact
+      - run: echo "${{ env.IMPORT_TEXT }} '${{ env.NPM_MODULE_NAME }}'" > index.js
+      - run: npx parcel@2 build index.js
+      - run: cat dist/index.js
+
+  Rollup:
+    runs-on: ubuntu-latest
+    needs: Pack
+    steps:
+      - uses: actions/download-artifact@v3
+      - run: npm install ./artifact rollup@2 @rollup/plugin-node-resolve
+      - run: echo "${{ env.IMPORT_TEXT }} '${{ env.NPM_MODULE_NAME }}'" > index.js
+      - run: npx rollup -p node-resolve index.js
+
+  Vite:
+    runs-on: ubuntu-latest
+    needs: Pack
+    steps:
+      - uses: actions/download-artifact@v3
+      - run: npm install ./artifact
+      - run: echo '<script type="module">${{ env.IMPORT_TEXT }} "${{ env.NPM_MODULE_NAME }}"</script>' > index.html
+      - run: npx vite build
+      - run: cat dist/assets/*
+
+  esbuild:
+    runs-on: ubuntu-latest
+    needs: Pack
+    steps:
+      - uses: actions/download-artifact@v3
+      - run: echo '{}' > package.json
+      - run: echo "${{ env.IMPORT_TEXT }} '${{ env.NPM_MODULE_NAME }}'" > index.js
+      - run: npm install ./artifact
+      - run: npx esbuild --bundle index.js
+
+  TypeScript:
+    runs-on: ubuntu-latest
+    needs: Pack
+    steps:
+      - uses: actions/download-artifact@v3
+      - run: npm install ./artifact && npm install @types/estree
+      - run: echo "${{ env.IMPORT_TEXT }} '${{ env.NPM_MODULE_NAME }}'" > index.ts
+      - run: tsc index.ts
+      - run: cat index.js
+
+  Node:
+    runs-on: ubuntu-latest
+    needs: Pack
+    steps:
+      - uses: actions/download-artifact@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14.x'
+      - run: echo "${{ env.IMPORT_TEXT }} '${{ env.NPM_MODULE_NAME }}'" > index.mjs
+      - run: npm install ./artifact
+      - run: node index.mjs
