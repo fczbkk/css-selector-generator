@@ -3,9 +3,9 @@ import {
   CssSelectorMatch,
   CssSelectorType,
   CssSelectorTypes,
-} from './types'
-import {isEnumValue} from './utilities-typescript'
-import {showWarning} from './utilities-messages'
+} from './types.js'
+import {isEnumValue} from './utilities-typescript.js'
+import {showWarning} from './utilities-messages.js'
 
 export const DEFAULT_OPTIONS = {
   selectors: [

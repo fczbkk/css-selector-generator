@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import {getCssSelector} from '../src/index.ts'
 import {testSelector} from '../src/utilities-dom.ts'
-import html_code from './html/complex.html'
+import complexHTML from './html/complex.html'
 
 describe('complex test', function () {
 
@@ -16,7 +16,7 @@ describe('complex test', function () {
   })
 
   it('should generate valid selector for every element', function () {
-    root.innerHTML = html_code;
+    root.innerHTML = complexHTML;
     [...root.querySelectorAll('*')].forEach((element) => {
       const selector = getCssSelector(element)
       assert.ok(testSelector([element], selector), selector)

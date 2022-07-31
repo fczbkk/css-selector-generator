@@ -1,7 +1,7 @@
-import {sanitizeSelectorItem} from './utilities-selectors'
-import {INVALID_ID_RE} from './constants'
-import {testSelector} from './utilities-dom'
-import {CssSelectorGenerated} from './types'
+import {sanitizeSelectorItem} from './utilities-selectors.js'
+import {INVALID_ID_RE} from './constants.js'
+import {testSelector} from './utilities-dom.js'
+import {CssSelectorGenerated} from './types.js'
 
 /**
  * Get ID selector for an element.

@@ -3,6 +3,7 @@
     "./src/**/*.ts"
   ],
   "compilerOptions": {
+    "declaration": false,
     "noImplicitAny": true,
     "module": "es6",
     "target": "es6",

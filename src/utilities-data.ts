@@ -1,6 +1,6 @@
-import {CssSelectorMatch, PatternMatcher} from './types'
-import {isRegExp} from './utilities-options'
-import {showWarning} from './utilities-messages'
+import {CssSelectorMatch, PatternMatcher} from './types.js'
+import {isRegExp} from './utilities-options.js'
+import {showWarning} from './utilities-messages.js'
 
 /**
  * Creates array containing only items included in all input arrays.

@@ -1,7 +1,7 @@
-import {sanitizeSelectorItem} from './utilities-selectors'
-import {INVALID_CLASS_RE} from './constants'
-import {CssSelectorGenerated} from './types'
-import {getIntersection} from './utilities-data'
+import {sanitizeSelectorItem} from './utilities-selectors.js'
+import {INVALID_CLASS_RE} from './constants.js'
+import {CssSelectorGenerated} from './types.js'
+import {getIntersection} from './utilities-data.js'
 
 /**
  * Get class selectors for an element.

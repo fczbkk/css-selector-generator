@@ -8,8 +8,8 @@
   "type": "module",
   "main": "build/index.js",
   "exports": {
-    ".": "./build/index.js",
-    "./esm": "./esm/index.js"
+    "import": "./esm/index.js",
+    "require": "./build/index.js"
   },
   "module": "./esm/index.js",
   "types": "types/index.d.ts",
@@ -18,8 +18,10 @@
     "test": "karma start ./tools/karma.conf.js",
     "dev": "npm run test -- --no-single-run --auto-watch",
     "prebuild": "npm run clean && npm run lint:build",
+    "postbuild": "rimraf ./temp",
     "build": "npm run build:umd && npm run build:esm",
-    "build:umd": "webpack --config ./tools/webpack.build.js",
+    "build:umd": "npm run build:cjs && webpack --config ./tools/webpack.build.js",
+    "build:cjs": "tsc --project ./tsconfig.cjs.json",
     "build:esm": "tsc --project ./tsconfig.esm.json",
     "lint": "eslint ./src/**/*.ts ./test/**/*.js ./tools/**/*.js --config .eslintrc.cjs",
     "lint:build": "npm run lint -- --max-warnings 0",

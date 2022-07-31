@@ -1,7 +1,7 @@
 import isElement from 'iselement'
-import {CssSelector} from './types'
-import {getIntersection} from './utilities-data'
-import {sanitizeRoot} from './utilities-options'
+import {CssSelector} from './types.js'
+import {getIntersection} from './utilities-data.js'
+import {sanitizeRoot} from './utilities-options.js'
 
 /**
  * Check whether element is matched uniquely by selector.

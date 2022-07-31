@@ -1,34 +1,38 @@
-const webpack_config = require('./webpack.dev')
+const webpackConfig = require('./webpack.dev.js')
 
 module.exports = (config) => {
   config.set({
     files: [
       '../test/suppressConsoleWarnings.js',
-      '../test/**/*.spec.js',
-      '../test/**/*.spec.ts',
+      {pattern: '../test/**/*.spec.js', watched: false},
+      {pattern: '../test/**/*.spec.ts', watched: false},
     ],
     preprocessors: {
       '../test/**/*.spec.js': ['webpack'],
       '../test/**/*.spec.ts': ['webpack'],
     },
-    webpack: webpack_config,
-    webpackMiddleware: {
-      stats: 'errors-only',
-    },
     browsers: [
       'ChromeHeadless',
     ],
     frameworks: [
-      'mocha', 'chai',
+      'mocha', 'chai', 'webpack',
     ],
+    plugins: [
+      require('karma-mocha'),
+      require('karma-mocha-reporter'),
+      require('karma-chai'),
+      require('karma-webpack'),
+      require('karma-chrome-launcher')
+    ],
+    webpack: webpackConfig,
     reporters: [
       'mocha',
     ],
     mochaReporter: {
-      output: 'minimal'
+      output: 'minimal',
     },
     client: {
-      captureConsole: true
+      captureConsole: true,
     },
     singleRun: true,
     autoWatch: false

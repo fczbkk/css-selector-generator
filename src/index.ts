@@ -1,15 +1,15 @@
-import {getFallbackSelector} from './selector-fallback'
-import {sanitizeOptions} from './utilities-options'
+import {getFallbackSelector} from './selector-fallback.js'
+import {sanitizeOptions} from './utilities-options.js'
 import {
   getClosestIdentifiableParent,
   sanitizeSelectorNeedle,
-} from './utilities-selectors'
+} from './utilities-selectors.js'
 import {
   CssSelector,
   CssSelectorGeneratorOptionsInput,
-} from './types'
-import {testSelector} from './utilities-dom'
-import {SELECTOR_SEPARATOR} from './constants'
+} from './types.js'
+import {testSelector} from './utilities-dom.js'
+import {SELECTOR_SEPARATOR} from './constants.js'
 
 /**
  * Generates unique CSS selector for an element.

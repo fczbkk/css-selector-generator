@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./temp",
+    "declaration": true,
+    "declarationDir": "./types"
+  }
+}
