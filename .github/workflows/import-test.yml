@@ -1,4 +1,4 @@
-name: Library import test
+name: library-import-test
 
 env:
   IMPORT_TEXT: import CssSelectorGenerator from
@@ -13,6 +13,8 @@ on:
       - master
       - main
 
+  workflow_dispatch:
+
 jobs:
   Pack:
     runs-on: ubuntu-latest
@@ -24,7 +26,7 @@ jobs:
       - run: npm pack | tail -1 | xargs -n1 tar -xzf
       - uses: actions/upload-artifact@v3
         with:
-          path: package
+          path: .
 
   Webpack:
     runs-on: ubuntu-latest
