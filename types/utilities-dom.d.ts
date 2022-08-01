@@ -1,4 +1,4 @@
-import { CssSelector } from './types';
+import { CssSelector } from './types.js';
 /**
  * Check whether element is matched uniquely by selector.
  */

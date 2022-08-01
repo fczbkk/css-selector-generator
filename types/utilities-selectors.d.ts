@@ -1,10 +1,10 @@
-import { getAttributeSelectors, getElementAttributeSelectors } from './selector-attribute';
-import { getClassSelectors, getElementClassSelectors } from './selector-class';
-import { getElementIdSelectors, getIdSelector } from './selector-id';
-import { getElementNthChildSelector, getNthChildSelector } from './selector-nth-child';
-import { getElementNthOfTypeSelector, getNthOfTypeSelector } from './selector-nth-of-type';
-import { getElementTagSelectors, getTagSelector } from './selector-tag';
-import { CssSelector, CssSelectorData, CssSelectorGenerated, CssSelectorGeneratorOptions, CssSelectorType, CssSelectorTypes, IdentifiableParent, PatternMatcher } from './types';
+import { getAttributeSelectors, getElementAttributeSelectors } from './selector-attribute.js';
+import { getClassSelectors, getElementClassSelectors } from './selector-class.js';
+import { getElementIdSelectors, getIdSelector } from './selector-id.js';
+import { getElementNthChildSelector, getNthChildSelector } from './selector-nth-child.js';
+import { getElementNthOfTypeSelector, getNthOfTypeSelector } from './selector-nth-of-type.js';
+import { getElementTagSelectors, getTagSelector } from './selector-tag.js';
+import { CssSelector, CssSelectorData, CssSelectorGenerated, CssSelectorGeneratorOptions, CssSelectorType, CssSelectorTypes, IdentifiableParent, PatternMatcher } from './types.js';
 export declare const ESCAPED_COLON: string;
 export declare const SPECIAL_CHARACTERS_RE: RegExp;
 /**

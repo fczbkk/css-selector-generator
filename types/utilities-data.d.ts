@@ -1,4 +1,4 @@
-import { CssSelectorMatch, PatternMatcher } from './types';
+import { CssSelectorMatch, PatternMatcher } from './types.js';
 /**
  * Creates array containing only items included in all input arrays.
  */

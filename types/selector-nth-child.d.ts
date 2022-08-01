@@ -1,4 +1,4 @@
-import { CssSelectorGenerated } from './types';
+import { CssSelectorGenerated } from './types.js';
 /**
  * Get nth-child selector for an element.
  */

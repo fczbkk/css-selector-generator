@@ -1,3 +1,7 @@
+## [3.6.3](https://github.com/fczbkk/css-selector-generator/compare/v3.6.2...v3.6.3) (2022-08-01)
+
+
+
 ## [3.6.2](https://github.com/fczbkk/css-selector-generator/compare/v3.6.1...v3.6.2) (2022-07-20)
 
 

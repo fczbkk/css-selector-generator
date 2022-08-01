@@ -1,5 +1,5 @@
-import { CssSelectorGenerated } from './types';
-export declare const attributeBlacklistMatch: import("./types").PatternMatcher;
+import { CssSelectorGenerated } from './types.js';
+export declare const attributeBlacklistMatch: import("./types.js").PatternMatcher;
 /**
  * Get simplified attribute selector for an element.
  */

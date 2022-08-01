@@ -1,4 +1,4 @@
-import { CssSelector } from './types';
+import { CssSelector } from './types.js';
 /**
  * Creates fallback selector for single element.
  */

@@ -1,9 +1,7 @@
-import { CssSelectorGeneratorOptions, CssSelectorMatch, CssSelectorTypes } from './types';
+import { CssSelectorGeneratorOptions, CssSelectorMatch, CssSelectorTypes } from './types.js';
 export declare const DEFAULT_OPTIONS: Required<Omit<Partial<{
     selectors: ("id" | "class" | "tag" | "attribute" | "nthchild" | "nthoftype")[];
-    whitelist: CssSelectorMatch[]; /**
-     * Checks whether provided value is valid ParentNode.
-     */
+    whitelist: CssSelectorMatch[];
     blacklist: CssSelectorMatch[];
     root: ParentNode;
     combineWithinSelector: boolean;

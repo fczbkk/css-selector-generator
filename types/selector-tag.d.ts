@@ -1,4 +1,4 @@
-import { CssSelector, CssSelectorGenerated } from './types';
+import { CssSelector, CssSelectorGenerated } from './types.js';
 /**
  * Get tag selector for an element.
  */

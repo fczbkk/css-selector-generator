@@ -1,4 +1,4 @@
-import { CssSelectorType, OPERATOR, OperatorValue } from './types';
+import { CssSelectorType, OPERATOR, OperatorValue } from './types.js';
 export declare const NONE_OPERATOR: OperatorValue;
 export declare const DESCENDANT_OPERATOR: OperatorValue;
 export declare const CHILD_OPERATOR: OperatorValue;
