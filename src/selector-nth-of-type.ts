@@ -1,6 +1,6 @@
-import {getTagSelector} from './selector-tag'
-import {CssSelectorGenerated} from './types'
-import {getIntersection} from './utilities-data'
+import {getTagSelector} from './selector-tag.js'
+import {CssSelectorGenerated} from './types.js'
+import {getIntersection} from './utilities-data.js'
 
 /**
  * Get nth-of-type selector for an element.

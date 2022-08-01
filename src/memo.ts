@@ -4,7 +4,7 @@ import {
   CssSelectorType,
   CssSelectorTypes
 } from './types'
-import {SELECTOR_TYPE_GETTERS} from './utilities-selectors'
+import {SELECTOR_TYPE_GETTERS} from './utilities-selectors.js'
 
 export type MemoSelectorData = Map<CssSelectorType, CssSelectors>
 export type MemoElementData = Map<Element[], MemoSelectorData>

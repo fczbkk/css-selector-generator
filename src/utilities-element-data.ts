@@ -5,9 +5,9 @@ import {
   ElementData,
   ElementSelectorData,
   OPERATOR,
-} from './types'
-import {OPERATOR_DATA, SELECTOR_PATTERN} from './constants'
-import {getElementSelectorsByType} from './utilities-selectors'
+} from './types.js'
+import {OPERATOR_DATA, SELECTOR_PATTERN} from './constants.js'
+import {getElementSelectorsByType} from './utilities-selectors.js'
 
 /**
  * Creates data describing a specific selector.

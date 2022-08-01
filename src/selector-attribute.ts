@@ -1,9 +1,9 @@
-import {sanitizeSelectorItem} from './utilities-selectors'
+import {sanitizeSelectorItem} from './utilities-selectors.js'
 import {
   createPatternMatcher,
   getIntersection
-} from './utilities-data'
-import {CssSelectorGenerated} from './types'
+} from './utilities-data.js'
+import {CssSelectorGenerated} from './types.js'
 
 // List of attributes to be ignored. These are handled by different selector types.
 export const attributeBlacklistMatch = createPatternMatcher([

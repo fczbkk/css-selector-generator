@@ -1,13 +1,11 @@
-const path = require('path')
-
 module.exports = {
-  entry: path.resolve(__dirname, '../src/index.ts'),
   module: {
     rules: [
       {
         test: /\.ts$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
+        use: {
+          loader: 'ts-loader'
+        }
       },
       {
         test: /\.html$/,
@@ -19,5 +17,8 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.js'],
+    extensionAlias: {
+      '.js': ['.ts', '.js'],
+    }
   },
 }

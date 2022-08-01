@@ -1,10 +1,10 @@
-import {getElementParents} from './utilities-dom'
-import {SELECTOR_SEPARATOR} from './constants'
-import {CssSelector, CssSelectorType, OPERATOR} from './types'
+import {getElementParents} from './utilities-dom.js'
+import {SELECTOR_SEPARATOR} from './constants.js'
+import {CssSelector, CssSelectorType, OPERATOR} from './types.js'
 import {
   constructElementSelector,
   createElementData
-} from './utilities-element-data'
+} from './utilities-element-data.js'
 
 /**
  * Creates fallback selector for single element.

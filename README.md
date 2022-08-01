@@ -19,12 +19,6 @@ Then include it in your source code:
 import { getCssSelector } from 'css-selector-generator';
 ```
 
-Or you can use the ESM version:
-
-```javascript
-import { getCssSelector } from 'css-selector-generator/esm';
-```
-
 ## How to use
 
 Simplest way to use it is to provide an element reference, without any options.

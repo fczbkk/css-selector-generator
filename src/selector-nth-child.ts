@@ -1,6 +1,6 @@
 import isElement from 'iselement'
-import {CssSelectorGenerated} from './types'
-import {getIntersection} from './utilities-data'
+import {CssSelectorGenerated} from './types.js'
+import {getIntersection} from './utilities-data.js'
 
 /**
  * Get nth-child selector for an element.

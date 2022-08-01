@@ -1,6 +1,6 @@
-import {sanitizeSelectorItem} from './utilities-selectors'
-import {CssSelector, CssSelectorGenerated} from './types'
-import {flattenArray} from './utilities-data'
+import {sanitizeSelectorItem} from './utilities-selectors.js'
+import {CssSelector, CssSelectorGenerated} from './types.js'
+import {flattenArray} from './utilities-data.js'
 
 /**
  * Get tag selector for an element.
