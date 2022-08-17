@@ -56,9 +56,5 @@
     "type": "git",
     "url": "git+ssh://git@github.com/fczbkk/css-selector-generator.git"
   },
-  "homepage": "https://github.com/fczbkk/css-selector-generator/",
-  "dependencies": {
-    "cartesian": "^1.0.1",
-    "iselement": "^1.1.4"
-  }
+  "homepage": "https://github.com/fczbkk/css-selector-generator/"
 }

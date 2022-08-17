@@ -1,4 +1,3 @@
-import cartesian from 'cartesian'
 import {
   CHILD_OPERATOR,
   DESCENDANT_OPERATOR,
@@ -33,8 +32,9 @@ import {
   CssSelectorTypes,
   IdentifiableParent, PatternMatcher,
 } from './types.js'
-import isElement from 'iselement'
+import {isElement} from './utilities-iselement.js'
 import {getPowerSet} from './utilities-powerset.js'
+import {getCartesianProduct} from './utilities-cartesian.js'
 
 export const ESCAPED_COLON = ':'
   .charCodeAt(0)
@@ -281,7 +281,7 @@ export function constructSelectors (
     }
   })
 
-  const combinations = cartesian(data)
+  const combinations = getCartesianProduct<string|string[]>(data)
   return combinations.map(constructSelector)
 }
 

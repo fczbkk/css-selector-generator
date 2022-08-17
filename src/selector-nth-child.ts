@@ -1,4 +1,4 @@
-import isElement from 'iselement'
+import {isElement} from './utilities-iselement.js'
 import {CssSelectorGenerated} from './types.js'
 import {getIntersection} from './utilities-data.js'
 
