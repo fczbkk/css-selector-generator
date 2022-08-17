@@ -1,7 +1,10 @@
+# based on
+# https://github.com/fregante/ghatemplates/blob/main/esm-lint/esm-lint.yml
+
 name: library-import-test
 
 env:
-  IMPORT_TEXT: import { getCssSelector } from
+  IMPORT_TEXT: import CssSelectorGenerator, { getCssSelector } from
   NPM_MODULE_NAME: css-selector-generator
 
 on:
@@ -31,7 +34,7 @@ jobs:
       - uses: actions/download-artifact@v3
       - run: npm install ./artifact
       - run: echo "${{ env.IMPORT_TEXT }} '${{ env.NPM_MODULE_NAME }}'" > index.js
-      - run: webpack --entry ./index.js
+      - run: npx webpack --entry ./index.js
       - run: cat dist/main.js
 
   Parcel:
@@ -82,3 +85,15 @@ jobs:
       - run: echo "${{ env.IMPORT_TEXT }} '${{ env.NPM_MODULE_NAME }}'" > index.ts
       - run: npx -p typescript tsc index.ts
       - run: cat index.js
+
+  Node:
+    runs-on: ubuntu-latest
+    needs: Pack
+    steps:
+      - uses: actions/download-artifact@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - run: echo "${{ env.IMPORT_TEXT }} '${{ env.NPM_MODULE_NAME }}'" > index.mjs
+      - run: npm install ./artifact
+      - run: node index.mjs
