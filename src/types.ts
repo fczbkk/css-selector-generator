@@ -39,12 +39,6 @@ export interface SelectorData {
   elements: ElementData[]
 }
 
-export interface ResultData {
-  selectorData: SelectorData[],
-  getByElement: (element: Element) => ElementData | null,
-  getByCssSelector: (selector: string) => ElementData | null
-}
-
 export type CssSelector = string
 export type CssSelectors = Array<CssSelector>
 
