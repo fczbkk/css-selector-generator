@@ -401,6 +401,15 @@ export function getClosestIdentifiableParent (
   return null
 }
 
+export function getClosestIdentifiableParentBySpecificity (
+  elements: Element[],
+  root: ParentNode,
+  rootSelector: CssSelector = '',
+  options: CssSelectorGeneratorOptions,
+): IdentifiableParent {
+  return null
+}
+
 /**
  * Converts input into list of elements, removing duplicates and non-elements.
  */
