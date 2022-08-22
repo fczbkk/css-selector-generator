@@ -1,7 +1,5 @@
 {
-  "include": [
-    "./src/**/*.ts"
-  ],
+  "include": ["./src/**/*.ts"],
   "compilerOptions": {
     "declaration": false,
     "noImplicitAny": true,
@@ -10,10 +8,6 @@
     "allowJs": true,
     "sourceMap": true,
     "moduleResolution": "node",
-    "lib": [
-      "ES6",
-      "DOM",
-      "DOM.Iterable"
-    ]
+    "lib": ["ES6", "DOM", "DOM.Iterable"]
   }
 }

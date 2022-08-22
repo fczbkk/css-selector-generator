@@ -4,21 +4,21 @@ module.exports = {
       {
         test: /\.ts$/,
         use: {
-          loader: 'ts-loader'
-        }
+          loader: "ts-loader",
+        },
       },
       {
         test: /\.html$/,
         use: {
-          loader: 'raw-loader',
+          loader: "raw-loader",
         },
       },
     ],
   },
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: [".ts", ".js"],
     extensionAlias: {
-      '.js': ['.ts', '.js'],
-    }
+      ".js": [".ts", ".js"],
+    },
   },
-}
+};

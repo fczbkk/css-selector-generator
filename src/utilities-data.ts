@@ -1,73 +1,80 @@
-import {CssSelectorMatch, PatternMatcher} from './types.js'
-import {isRegExp} from './utilities-options.js'
-import {showWarning} from './utilities-messages.js'
+import { CssSelectorMatch, PatternMatcher } from "./types.js";
+import { isRegExp } from "./utilities-options.js";
+import { showWarning } from "./utilities-messages.js";
 
 /**
  * Creates array containing only items included in all input arrays.
  */
-export function getIntersection<T> (items: Array<Array<T>> = []): Array<T> {
-  const [firstItem = [], ...otherItems] = items
+export function getIntersection<T>(items: Array<Array<T>> = []): Array<T> {
+  const [firstItem = [], ...otherItems] = items;
   if (otherItems.length === 0) {
-    return firstItem
+    return firstItem;
   }
-  return (otherItems).reduce((accumulator, currentValue) => {
-    return accumulator.filter((item) => currentValue.includes(item))
-  }, firstItem)
+  return otherItems.reduce((accumulator, currentValue) => {
+    return accumulator.filter((item) => currentValue.includes(item));
+  }, firstItem);
 }
 
 /**
  * Converts array of arrays into a flat array.
  */
-export function flattenArray<T> (input: Array<Array<T>>): Array<T> {
-  return ([] as Array<T>).concat(...input)
+export function flattenArray<T>(input: Array<Array<T>>): Array<T> {
+  return ([] as Array<T>).concat(...input);
 }
 
 /**
  * Convert string that can contain wildcards (asterisks) to RegExp source.
  */
-export function wildcardToRegExp (input: string): string {
-  return input
-    // convert all special characters used by RegExp, except an asterisk
-    .replace(/[|\\{}()[\]^$+?.]/g, '\\$&')
-    // convert asterisk to pattern that matches anything
-    .replace(/\*/g, '.+')
+export function wildcardToRegExp(input: string): string {
+  return (
+    input
+      // convert all special characters used by RegExp, except an asterisk
+      .replace(/[|\\{}()[\]^$+?.]/g, "\\$&")
+      // convert asterisk to pattern that matches anything
+      .replace(/\*/g, ".+")
+  );
 }
 
 /**
  * Creates function that will test list of provided matchers against input.
  * Used for white/blacklist functionality.
  */
-export function createPatternMatcher (
-  list: CssSelectorMatch[]
-): PatternMatcher {
+export function createPatternMatcher(list: CssSelectorMatch[]): PatternMatcher {
   const matchFunctions = list.map((item) => {
     if (isRegExp(item)) {
-      return (input: string) => item.test(input)
+      return (input: string) => item.test(input);
     }
 
-    if (typeof item === 'function') {
+    if (typeof item === "function") {
       return (input: string) => {
-        const result = item(input)
-        if (typeof result !== 'boolean') {
+        const result = item(input);
+        if (typeof result !== "boolean") {
           // eslint-disable-next-line max-len
-          showWarning('pattern matcher function invalid', 'Provided pattern matching function does not return boolean. It\'s result will be ignored.', item)
-          return false
+          showWarning(
+            "pattern matcher function invalid",
+            "Provided pattern matching function does not return boolean. It's result will be ignored.",
+            item
+          );
+          return false;
         }
-        return result
-      }
+        return result;
+      };
     }
 
-    if (typeof item === 'string') {
-      const re = new RegExp('^' + wildcardToRegExp(item) + '$')
-      return (input: string) => re.test(input)
+    if (typeof item === "string") {
+      const re = new RegExp("^" + wildcardToRegExp(item) + "$");
+      return (input: string) => re.test(input);
     }
 
     // eslint-disable-next-line max-len
-    showWarning('pattern matcher invalid', 'Pattern matching only accepts strings, regular expressions and/or functions. This item is invalid and will be ignored.', item)
-    return () => false
-  })
+    showWarning(
+      "pattern matcher invalid",
+      "Pattern matching only accepts strings, regular expressions and/or functions. This item is invalid and will be ignored.",
+      item
+    );
+    return () => false;
+  });
 
-  return (input: string) => matchFunctions.some(
-    (matchFunction) => matchFunction(input)
-  )
+  return (input: string) =>
+    matchFunctions.some((matchFunction) => matchFunction(input));
 }
