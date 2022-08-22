@@ -1,45 +1,42 @@
-import {assert} from 'chai'
-import {getFallbackSelector} from '../src/selector-fallback.ts'
-import {testMultiSelector, testSelector} from '../src/utilities-dom.ts'
+import { assert } from "chai";
+import { getFallbackSelector } from "../src/selector-fallback.ts";
+import { testMultiSelector, testSelector } from "../src/utilities-dom.ts";
 
-describe('selector - fallback', function () {
-
-  let root
+describe("selector - fallback", function () {
+  let root;
 
   beforeEach(function () {
-    root = document.body.appendChild(document.createElement('div'))
-  })
+    root = document.body.appendChild(document.createElement("div"));
+  });
 
   afterEach(function () {
-    root.parentNode.removeChild(root)
-  })
+    root.parentNode.removeChild(root);
+  });
 
-  it('should produce simple selector', () => {
-    root.innerHTML = '<div></div>'
-    const needleElement = root.firstElementChild
-    const result = getFallbackSelector([needleElement])
-    assert.ok(testSelector([needleElement], result, root))
-  })
+  it("should produce simple selector", () => {
+    root.innerHTML = "<div></div>";
+    const needleElement = root.firstElementChild;
+    const result = getFallbackSelector([needleElement]);
+    assert.ok(testSelector([needleElement], result, root));
+  });
 
-  it('should produce nested selector', () => {
-    root.innerHTML = '<div><div><div></div></div></div>'
-    const needleElement = root
-      .firstElementChild
-      .firstElementChild
-      .firstElementChild
-    const result = getFallbackSelector([needleElement])
-    assert.ok(testSelector([needleElement], result, root))
-  })
+  it("should produce nested selector", () => {
+    root.innerHTML = "<div><div><div></div></div></div>";
+    const needleElement =
+      root.firstElementChild.firstElementChild.firstElementChild;
+    const result = getFallbackSelector([needleElement]);
+    assert.ok(testSelector([needleElement], result, root));
+  });
 
-  it('should produce selector beside similar elements', () => {
-    root.innerHTML = '<div><div><div></div></div></div>'
-    const needleElement = root.firstElementChild
-    const result = getFallbackSelector([needleElement])
-    assert.ok(testSelector([needleElement], result, root))
-  })
+  it("should produce selector beside similar elements", () => {
+    root.innerHTML = "<div><div><div></div></div></div>";
+    const needleElement = root.firstElementChild;
+    const result = getFallbackSelector([needleElement]);
+    assert.ok(testSelector([needleElement], result, root));
+  });
 
   // https://developer.mozilla.org/en-US/docs/Web/API/element/querySelector#the_entire_hierarchy_counts
-  it('should consider entire hierarchy', () => {
+  it("should consider entire hierarchy", () => {
     root.innerHTML = `
       <div>
         <div>haystack
@@ -49,28 +46,24 @@ describe('selector - fallback', function () {
           </div>
         </div>
       </div>
-    `
-    const haystackElement = root
-      .firstElementChild
-      .firstElementChild
-    const needleElement = root
-      .firstElementChild
-      .firstElementChild
-      .firstElementChild
-    const result = getFallbackSelector([needleElement])
-    assert.ok(testSelector([needleElement], result, haystackElement))
-  })
+    `;
+    const haystackElement = root.firstElementChild.firstElementChild;
+    const needleElement =
+      root.firstElementChild.firstElementChild.firstElementChild;
+    const result = getFallbackSelector([needleElement]);
+    assert.ok(testSelector([needleElement], result, haystackElement));
+  });
 
-  it('should produce selector for multiple elements', () => {
+  it("should produce selector for multiple elements", () => {
     root.innerHTML = `
       <div></div>
       <div></div>
       <div></div>
-    `
-    const needleElements = [...root.querySelectorAll('div')]
-    const result = getFallbackSelector(needleElements)
+    `;
+    const needleElements = [...root.querySelectorAll("div")];
+    const result = getFallbackSelector(needleElements);
     needleElements.forEach((element) => {
-      assert.ok(testMultiSelector(element, result, root))
-    })
-  })
-})
+      assert.ok(testMultiSelector(element, result, root));
+    });
+  });
+});

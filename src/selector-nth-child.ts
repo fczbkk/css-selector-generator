@@ -1,31 +1,31 @@
-import {isElement} from './utilities-iselement.js'
-import {CssSelectorGenerated} from './types.js'
-import {getIntersection} from './utilities-data.js'
+import { isElement } from "./utilities-iselement.js";
+import { CssSelectorGenerated } from "./types.js";
+import { getIntersection } from "./utilities-data.js";
 
 /**
  * Get nth-child selector for an element.
  */
-export function getElementNthChildSelector (
+export function getElementNthChildSelector(
   element: Element
 ): CssSelectorGenerated[] {
-  const parent = element.parentNode
+  const parent = element.parentNode;
 
   if (parent) {
-    const siblings = Array.from(parent.childNodes).filter(isElement)
-    const elementIndex = siblings.indexOf(element)
+    const siblings = Array.from(parent.childNodes).filter(isElement);
+    const elementIndex = siblings.indexOf(element);
     if (elementIndex > -1) {
-      return [`:nth-child(${elementIndex + 1})` as CssSelectorGenerated]
+      return [`:nth-child(${elementIndex + 1})` as CssSelectorGenerated];
     }
   }
 
-  return []
+  return [];
 }
 
 /**
  * Get nth-child selector matching all elements.
  */
-export function getNthChildSelector (
+export function getNthChildSelector(
   elements: Element[]
 ): CssSelectorGenerated[] {
-  return getIntersection(elements.map(getElementNthChildSelector))
+  return getIntersection(elements.map(getElementNthChildSelector));
 }

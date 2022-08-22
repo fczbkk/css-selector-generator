@@ -16,7 +16,7 @@ yarn add css-selector-generator
 Then include it in your source code:
 
 ```javascript
-import { getCssSelector } from 'css-selector-generator';
+import { getCssSelector } from "css-selector-generator";
 ```
 
 ## How to use
@@ -25,8 +25,8 @@ Simplest way to use it is to provide an element reference, without any options.
 
 ```html
 <body>
-	<!-- targetElement -->
-	<div class="myElement"></div>
+  <!-- targetElement -->
+  <div class="myElement"></div>
 </body>
 ```
 
@@ -39,13 +39,13 @@ Typical example is to create a selector for any element that the user clicks on:
 
 ```javascript
 // track every click
-document.body.addEventListener('click', function (event) {
+document.body.addEventListener("click", function (event) {
   // get reference to the element user clicked on
   const element = event.target;
   // get unique CSS selector for that element
   const selector = getCssSelector(element);
   // do whatever you need to do with that selector
-  console.log('selector', selector);
+  console.log("selector", selector);
 });
 ```
 
@@ -80,7 +80,7 @@ This library also allows you to create selector targeting multiple elements at o
 ```
 
 ```javascript
-getCssSelector([firstElement, secondElement])
+getCssSelector([firstElement, secondElement]);
 // ".bbb"
 ```
 
@@ -96,7 +96,7 @@ If it is not possible to construct single selector for all elements a standalone
 ```
 
 ```javascript
-getCssSelector([firstElement, secondElement])
+getCssSelector([firstElement, secondElement]);
 // "div, span"
 ```
 
@@ -104,7 +104,7 @@ getCssSelector([firstElement, secondElement])
 
 `getCssSelector` determines the shortest CSS selector for parent -> child relationship, from the input Element until the Root Element.
 
-If there is no *unique* selector available for any of these relationships (parent -> child), a fallback of `*` will be used for this relationship.
+If there is no _unique_ selector available for any of these relationships (parent -> child), a fallback of `*` will be used for this relationship.
 
     #wrapper > * > div > .text
 
@@ -129,24 +129,24 @@ You can choose which types of selectors do you want to use:
 
 ```html
 <body>
-	<!-- targetElement -->
-	<div class="myElement"></div>
+  <!-- targetElement -->
+  <div class="myElement"></div>
 </body>
 ```
 
 ```javascript
-getCssSelector(targetElement, {selectors: ['class']});
+getCssSelector(targetElement, { selectors: ["class"] });
 // ".myElement"
-getCssSelector(targetElement, {selectors: ['tag']});
+getCssSelector(targetElement, { selectors: ["tag"] });
 // "div"
 ```
 
 Order of selector types defines their priority:
 
 ```javascript
-getCssSelector(targetElement, {selectors: ['class', 'tag']});
+getCssSelector(targetElement, { selectors: ["class", "tag"] });
 // ".myElement"
-getCssSelector(targetElement, {selectors: ['tag', 'class']});
+getCssSelector(targetElement, { selectors: ["tag", "class"] });
 // "div"
 ```
 
@@ -165,17 +165,19 @@ You can define root element, from which the selector will be created. If root el
 
 ```html
 <body>
-	<div class="myRootElement">
-		<!-- targetElement -->
-		<div class="myElement"></div>
-	</div>
+  <div class="myRootElement">
+    <!-- targetElement -->
+    <div class="myElement"></div>
+  </div>
 </body>
 ```
 
 ```javascript
-getCssSelector(targetElement)
+getCssSelector(targetElement);
 // ".myRootElement > .myElement"
-getCssSelector(targetElement, {root: document.querySelector('.myRootElement')});
+getCssSelector(targetElement, {
+  root: document.querySelector(".myRootElement"),
+});
 // ".myElement"
 ```
 
@@ -189,42 +191,39 @@ In **strings**, you can use an asterisk (`*`) as a wildcard that will match any 
 
 ```html
 <body>
-	<!-- targetElement -->
-	<div class="firstClass secondClass"></div>
+  <!-- targetElement -->
+  <div class="firstClass secondClass"></div>
 </body>
 ```
 
 ```javascript
-getCssSelector(targetElement, {blacklist: ['.firstClass']});
+getCssSelector(targetElement, { blacklist: [".firstClass"] });
 // ".secondClass"
-getCssSelector(targetElement, {blacklist: ['.first*']});
+getCssSelector(targetElement, { blacklist: [".first*"] });
 // ".secondClass"
-getCssSelector(targetElement, {blacklist: [/first/]});
+getCssSelector(targetElement, { blacklist: [/first/] });
 // ".secondClass"
-getCssSelector(targetElement, {blacklist: [
-  (input) => input.startsWith('.second')
-]});
+getCssSelector(targetElement, {
+  blacklist: [(input) => input.startsWith(".second")],
+});
 // ".secondClass"
 ```
 
 You can target selectors of any types using the blacklist.
 
 ```javascript
-getCssSelector(
-  targetElement,
-  { blacklist:
-      [
-        // ID selector
-        '#forbiddenId',
-        // class selector
-        '.forbiddenClass',
-        // attribute selector
-        '[forbidden-attribute]',
-        // tag selector
-        'div'
-      ]
-  }
-)
+getCssSelector(targetElement, {
+  blacklist: [
+    // ID selector
+    "#forbiddenId",
+    // class selector
+    ".forbiddenClass",
+    // attribute selector
+    "[forbidden-attribute]",
+    // tag selector
+    "div",
+  ],
+});
 ```
 
 ### Whitelist
@@ -233,17 +232,17 @@ Same as `blacklist` option, but instead of ignoring matching selectors, they wil
 
 ```html
 <body>
-	<!-- targetElement -->
-	<div class="firstClass secondClass"></div>
+  <!-- targetElement -->
+  <div class="firstClass secondClass"></div>
 </body>
 ```
 
 ```javascript
-getCssSelector(targetElement, {whitelist: ['.secondClass']});
+getCssSelector(targetElement, { whitelist: [".secondClass"] });
 // ".secondClass"
-getCssSelector(targetElement, {whitelist: ['.second*']});
+getCssSelector(targetElement, { whitelist: [".second*"] });
 // ".secondClass"
-getCssSelector(targetElement, {whitelist: [/second/]});
+getCssSelector(targetElement, { whitelist: [/second/] });
 // ".secondClass"
 ```
 
@@ -253,17 +252,17 @@ If set to `true`, the generator will try to look for combinations of selectors w
 
 ```html
 <body>
-	<!-- targetElement -->
-	<div class="aaa bbb"></div>
-	<div class="aaa ccc"></div>
-	<div class="bbb ccc"></div>
+  <!-- targetElement -->
+  <div class="aaa bbb"></div>
+  <div class="aaa ccc"></div>
+  <div class="bbb ccc"></div>
 </body>
 ```
 
 ```javascript
-getCssSelector(targetElement, {combineWithinSelector: false});
+getCssSelector(targetElement, { combineWithinSelector: false });
 // "body > :nth-child(1)" - in this case no single class name is unique
-getCssSelector(targetElement, {combineWithinSelector: true});
+getCssSelector(targetElement, { combineWithinSelector: true });
 // ".aaa.bbb"
 ```
 
@@ -283,9 +282,9 @@ If set to `true`, the generator will try to look for combinations of selectors b
 ```
 
 ```javascript
-getCssSelector(targetElement, {combineBetweenSelectors: false});
+getCssSelector(targetElement, { combineBetweenSelectors: false });
 // "body > :nth-child(1)" - in this case no single class name or tag name is unique
-getCssSelector(targetElement, {combineBetweenSelectors: true});
+getCssSelector(targetElement, { combineBetweenSelectors: true });
 // "div.aaa"
 ```
 
@@ -297,13 +296,13 @@ This option will add tag selector type to every selector:
 
 ```html
 <body>
-	<!-- targetElement -->
-	<div class="myElement"></div>
+  <!-- targetElement -->
+  <div class="myElement"></div>
 </body>
 ```
 
 ```javascript
-getCssSelector(targetElement, {includeTag: true});
+getCssSelector(targetElement, { includeTag: true });
 // "div.myElement"
 ```
 
@@ -314,17 +313,17 @@ This is a performance optimization option that can help when trying to find a CS
 In such case, the number of possible combinations between class names can be too large (it grows exponentially) and can significantly slow down selector generation. In reality, if the selector is not found within first few combinations, it usually won't be found within the rest of combinations.
 
 ```javascript
-getCssSelector(targetElement, {maxCombinations: 100});
+getCssSelector(targetElement, { maxCombinations: 100 });
 ```
 
 ### Max candidates
 
 Performance optimization option, similar to `maxCombinations`. This does limit a total number of selector candidates for each element.
 
-You should use it in cases, when there are not too many class names and attributes, but they are numerous enough to produce large number of combinations between them. 
+You should use it in cases, when there are not too many class names and attributes, but they are numerous enough to produce large number of combinations between them.
 
 ```javascript
-getCssSelector(targetElement, {maxCandidates: 100});
+getCssSelector(targetElement, { maxCandidates: 100 });
 ```
 
 ## Bug reports, feature requests and contact
@@ -336,7 +335,5 @@ If you found any bugs, if you have feature requests or any questions, please, ei
 CSS Selector Generator is published under the [MIT license][3].
 
 [1]: https://github.com/fczbkk/css-selector-generator/issues
-
 [2]: mailto:riki@fczbkk.com?subject=CSSSelectorGenerator
-
 [3]: https://github.com/fczbkk/css-selector-generator/blob/master/LICENSE

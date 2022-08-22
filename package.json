@@ -23,14 +23,13 @@
     "build:umd": "npm run build:cjs && webpack --config ./tools/webpack.build.js",
     "build:cjs": "tsc --project ./tsconfig.cjs.json",
     "build:esm": "tsc --project ./tsconfig.esm.json",
-    "lint": "eslint ./src/**/*.ts ./test/**/*.js ./tools/**/*.js --config .eslintrc.cjs",
+    "lint": "eslint --ext .js,.ts ./src/ ./test/ ./test/ ./tools/ --config .eslintrc.cjs",
     "lint:build": "npm run lint -- --max-warnings 0",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "postversion": "git push && git push --tags && npm publish --access=public",
     "version": "npm run build && npm run changelog && git add -A"
   },
   "devDependencies": {
-    "@fczbkk/eslint-config": "^1.0.0",
     "@types/chai": "^4.3.1",
     "@types/mocha": "^9.1.1",
     "@typescript-eslint/eslint-plugin": "^5.31.0",
@@ -38,6 +37,7 @@
     "chai": "^4.3.6",
     "conventional-changelog-cli": "^2.2.2",
     "eslint": "^8.20.0",
+    "eslint-config-prettier": "^8.5.0",
     "husky": "^8.0.1",
     "karma": "^6.4.0",
     "karma-chai": "^0.1.0",
@@ -45,7 +45,9 @@
     "karma-mocha": "^2.0.1",
     "karma-mocha-reporter": "^2.2.5",
     "karma-webpack": "^5.0.0",
+    "lint-staged": "^13.0.3",
     "mocha": "^10.0.0",
+    "prettier": "^2.7.1",
     "raw-loader": "^4.0.2",
     "ts-loader": "^9.3.1",
     "typescript": "^4.7.4",
@@ -56,5 +58,8 @@
     "type": "git",
     "url": "git+ssh://git@github.com/fczbkk/css-selector-generator.git"
   },
-  "homepage": "https://github.com/fczbkk/css-selector-generator/"
+  "homepage": "https://github.com/fczbkk/css-selector-generator/",
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  }
 }

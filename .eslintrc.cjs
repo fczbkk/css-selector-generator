@@ -1,41 +1,25 @@
-const rules = {
-  'semi': [
-    'warn',
-    'never'
-  ],
-  'max-len': [
-    'warn',
-    {
-      'ignoreComments': true
-    }
-  ],
-  'function-paren-newline': ['error', 'consistent']
-}
-
-// eslint-disable-next-line no-undef
 module.exports = {
-  'extends': '@fczbkk',
-  'parserOptions': {
-    'sourceType': 'module'
+  extends: "prettier",
+  parserOptions: {
+    sourceType: "module",
   },
-  'env': {
-    'es6': true,
-    'browser': true
+  env: {
+    es6: true,
+    browser: true,
   },
-  'rules': rules,
-  'overrides': [
+  rules: {
+    "no-console": "warn",
+  },
+  overrides: [
     {
-      'files': ['src/*.ts'],
-      'extends': [
-        '@fczbkk',
-        'plugin:@typescript-eslint/recommended'
-      ],
-      'parser': '@typescript-eslint/parser',
-      'plugins': [
-        '@typescript-eslint'
-      ],
-      'rules': rules
-    }
+      files: ["src/*.ts"],
+      extends: ["prettier"],
+      parser: "@typescript-eslint/parser",
+      plugins: ["@typescript-eslint"],
+      rules: {
+        "no-console": "warn",
+      },
+    },
   ],
-  'root': true
-}
+  root: true,
+};
