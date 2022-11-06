@@ -4,12 +4,16 @@ import {
   CssSelectorType,
   CssSelectorTypes,
 } from "./types";
-import { SELECTOR_TYPE_GETTERS } from "./utilities-selectors.js";
+import {
+  sanitizeSelectorNeedle,
+  SELECTOR_TYPE_GETTERS,
+} from "./utilities-selectors.js";
+import { getIntersection } from "./utilities-data.js";
 
 export type MemoSelectorData = Map<CssSelectorType, CssSelectors>;
-export type MemoElementData = Map<Element[], MemoSelectorData>;
+export type MemoElementData = Map<Element, MemoSelectorData>;
 export type MemoizedSelectorGetter = (
-  elements: Element[],
+  needle: Element | Element[],
   selectorTypes: CssSelectorTypes
 ) => CssSelectorsByType;
 
@@ -17,26 +21,26 @@ export type MemoizedSelectorGetter = (
  * Returns memoized data for element, creates new record in memo if necessary.
  */
 function getElementData(
-  elements: Element[],
+  element: Element,
   memo: MemoElementData = new Map()
 ): MemoSelectorData {
-  if (!memo.get(elements)) {
-    memo.set(elements, new Map());
+  if (!memo.get(element)) {
+    memo.set(element, new Map());
   }
-  return memo.get(elements);
+  return memo.get(element);
 }
 
 /**
  * Returns selector data of given type for element. Generates selector data if necessary.
  */
 function getSelectorData(
-  elements: Element[],
+  element: Element,
   selectorType: CssSelectorType,
   memo: MemoElementData = new Map()
 ) {
-  const elementData = getElementData(elements, memo);
+  const elementData = getElementData(element, memo);
   if (!elementData.get(selectorType)) {
-    elementData.set(selectorType, getSelectors(elements, selectorType));
+    elementData.set(selectorType, getSelectors(element, selectorType));
   }
   return elementData.get(selectorType);
 }
@@ -45,10 +49,10 @@ function getSelectorData(
  * Returns selector data of given type for element.
  */
 function getSelectors(
-  elements: Element[],
+  element: Element,
   selectorType: CssSelectorType
 ): CssSelectors {
-  return SELECTOR_TYPE_GETTERS[selectorType](elements);
+  return SELECTOR_TYPE_GETTERS[selectorType]([element]);
 }
 
 /**
@@ -58,12 +62,17 @@ export function createMemo(
   memo: MemoElementData = new Map()
 ): MemoizedSelectorGetter {
   return function (
-    elements: Element[],
+    needle: Element | Element[],
     selectors: CssSelectorTypes
   ): CssSelectorsByType {
     const result = {} as CssSelectorsByType;
+    const sanitizedNeedle = sanitizeSelectorNeedle(needle);
     selectors.forEach((selectorType) => {
-      result[selectorType] = getSelectorData(elements, selectorType, memo);
+      result[selectorType] = getIntersection(
+        sanitizedNeedle.map((element) =>
+          getSelectorData(element, selectorType, memo)
+        )
+      );
     });
     return result;
   };

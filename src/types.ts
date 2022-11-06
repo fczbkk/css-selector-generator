@@ -56,7 +56,7 @@ export enum CssSelectorType {
 
 export type CssSelectorTypes = Array<CssSelectorType>;
 
-export type CssSelectorsByType = Record<CssSelectorType, CssSelectors>;
+export type CssSelectorsByType = Partial<Record<CssSelectorType, CssSelectors>>;
 
 export type CssSelectorData = {
   [key in CssSelectorType]?: Array<string> | Array<Array<string>>;
