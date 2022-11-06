@@ -2,8 +2,12 @@ import { assert } from "chai";
 import { createMemo } from "../src/memo.js";
 import { CssSelectorType } from "../src/types.js";
 
+function createRoot() {
+  return document.body.appendChild(document.createElement("div"));
+}
+
 describe("Memo", () => {
-  let root: HTMLElement;
+  let root = createRoot();
 
   /**
    * Simple way to retrieve target element for test.
@@ -22,7 +26,7 @@ describe("Memo", () => {
   }
 
   beforeEach(() => {
-    root = document.body.appendChild(document.createElement("div"));
+    root = createRoot();
   });
 
   afterEach(() => {
