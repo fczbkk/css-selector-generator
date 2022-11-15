@@ -95,3 +95,6 @@ export type IdentifiableParent = null | {
 };
 
 export type PatternMatcher = (input: string) => boolean;
+
+export type Needle = Opaque<Element[], "Needle">;
+export type Parents = Opaque<ParentNode[], "Parents">;

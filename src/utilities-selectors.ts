@@ -31,6 +31,7 @@ import {
   CssSelectorType,
   CssSelectorTypes,
   IdentifiableParent,
+  Needle,
   PatternMatcher,
 } from "./types.js";
 import { isElement } from "./utilities-iselement.js";
@@ -383,9 +384,9 @@ export function getClosestIdentifiableParent(
 /**
  * Converts input into list of elements, removing duplicates and non-elements.
  */
-export function sanitizeSelectorNeedle(needle: unknown): Element[] {
+export function sanitizeSelectorNeedle(needle: unknown): Needle {
   const elements = (Array.isArray(needle) ? needle : [needle]).filter(
     isElement
   );
-  return [...new Set(elements)];
+  return [...new Set(elements)] as Needle;
 }
