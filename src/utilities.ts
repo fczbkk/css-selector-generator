@@ -1,3 +1,5 @@
+import {getRootNode, testSelector} from "./utilities-dom";
+
 export function getCommonParent (needle: Element[]) {
   if (needle.length > 0) {
     let parent = needle[0].parentElement
@@ -18,10 +20,19 @@ export function getCommonParent (needle: Element[]) {
   return null
 }
 
-export function  * parentsGenerator (needle: Element[]) {
-  // TODO
+export function  * parentsGenerator (needle: Element[], root?: ParentNode) {
+  root = root ?? getRootNode(needle[0])
+  let parent = getCommonParent(needle)
+  while (parent && root.contains(parent)) {
+    yield parent
+    parent = parent.parentElement
+  }
 }
 
-export function * viableParentsGenerator () {
-  // TODO
+export function * viableParentsGenerator (needle: Element[], needleSelector: string, root?: ParentNode) {
+  for (const parentCandidate of parentsGenerator(needle, root)) {
+    if (testSelector(needle, needleSelector, parentCandidate)) {
+      yield parentCandidate
+    }
+  }
 }
