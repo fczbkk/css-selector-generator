@@ -12,7 +12,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ["src/*.ts"],
+      files: ["src/**/*.ts", "test/**/*.ts"],
       extends: ["prettier"],
       parser: "@typescript-eslint/parser",
       plugins: ["@typescript-eslint"],
