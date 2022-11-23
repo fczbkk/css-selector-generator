@@ -1,41 +1,16 @@
 import { assert } from "chai";
 import { createMemo } from "../src/memo.js";
 import { CssSelectorType } from "../src/types.js";
-
-function createRoot() {
-  return document.body.appendChild(document.createElement("div"));
-}
+import {createRoot, getTargetElement, getTargetElements} from "./test-utilities";
 
 describe("Memo", () => {
-  let root = createRoot();
-
-  /**
-   * Simple way to retrieve target element for test.
-   * @returns {Element}
-   */
-  function getTargetElement() {
-    return root.querySelector("[data-target]");
-  }
-
-  /**
-   * Simple way to retrieve multiple target elements for test.
-   * @returns {Element[]}
-   */
-  function getTargetElements() {
-    return root.querySelectorAll("[data-target]");
-  }
-
-  beforeEach(() => {
-    root = createRoot();
-  });
-
-  afterEach(() => {
-    root.parentNode.removeChild(root);
-  });
+  let root: Element;
+  beforeEach(() => { root = createRoot(); });
+  afterEach(() => { root.parentNode.removeChild(root); });
 
   it("should retrieve selectors for an element", () => {
     root.innerHTML = "<div data-target></div>";
-    const element = getTargetElement();
+    const element = getTargetElement(root);
     const getElementSelectors = createMemo();
     const result = getElementSelectors(element, [CssSelectorType.tag]);
     assert.deepEqual(result, { [CssSelectorType.tag]: ["div"] });
@@ -46,7 +21,7 @@ describe("Memo", () => {
       <div data-target class='aaa bbb'></div>
       <div data-target class='aaa ccc'></div>
     `;
-    const elements = [...getTargetElements()];
+    const elements = [...getTargetElements(root)];
     const getElementSelectors = createMemo();
     const result = getElementSelectors(elements, [CssSelectorType.class]);
     assert.deepEqual(result, { [CssSelectorType.class]: [".aaa"] });
@@ -54,7 +29,7 @@ describe("Memo", () => {
 
   it("should use remembered value", () => {
     root.innerHTML = "<div data-target></div>";
-    const element = getTargetElement();
+    const element = getTargetElement(root);
     const memoData = new Map([
       [element, new Map([[CssSelectorType.tag, ["mock_tag_selector"]]])],
     ]);

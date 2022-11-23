@@ -384,6 +384,9 @@ export function getClosestIdentifiableParent(
  * Converts input into list of elements, removing duplicates and non-elements.
  */
 export function sanitizeSelectorNeedle(needle: unknown): Element[] {
+  if (needle instanceof NodeList || needle instanceof HTMLCollection) {
+    needle = Array.from(needle);
+  }
   const elements = (Array.isArray(needle) ? needle : [needle]).filter(
     isElement
   );
