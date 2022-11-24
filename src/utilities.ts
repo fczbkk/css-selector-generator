@@ -5,7 +5,7 @@ export function getCommonParent (needle: Element[]) {
     let parent = needle[0].parentElement
 
     // optimization for single element
-    if (needle.length === 1) {
+    if (needle.length===1) {
       return parent
     }
 
@@ -20,7 +20,7 @@ export function getCommonParent (needle: Element[]) {
   return null
 }
 
-export function  * parentsGenerator (needle: Element[], root?: ParentNode) {
+export function* parentsGenerator (needle: Element[], root?: ParentNode) {
   root = root ?? getRootNode(needle[0])
   let parent = getCommonParent(needle)
   while (parent && root.contains(parent)) {
@@ -29,10 +29,15 @@ export function  * parentsGenerator (needle: Element[], root?: ParentNode) {
   }
 }
 
-export function * viableParentsGenerator (needle: Element[], needleSelector: string, root?: ParentNode) {
+export function* viableParentsGenerator (needle: Element[], needleSelector: string, root?: ParentNode) {
   for (const parentCandidate of parentsGenerator(needle, root)) {
     if (testSelector(needle, needleSelector, parentCandidate)) {
       yield parentCandidate
     }
   }
+}
+
+export function testParentSelector (needle: Element, selector: string, root: ParentNode): boolean {
+  const matchingElements = Array.from(root.querySelectorAll(selector))
+  return matchingElements.every(element => needle.contains(element))
 }

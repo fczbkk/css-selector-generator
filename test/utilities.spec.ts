@@ -6,15 +6,19 @@ import {
 import {assert} from "chai";
 import {
   getCommonParent,
-  parentsGenerator,
+  parentsGenerator, testParentSelector,
   viableParentsGenerator
 } from "../src/utilities";
 
 describe('Utilities', () => {
 
   let root: Element;
-  beforeEach(() => { root = createRoot(); });
-  afterEach(() => { root.parentNode.removeChild(root); });
+  beforeEach(() => {
+    root = createRoot();
+  });
+  afterEach(() => {
+    root.parentNode.removeChild(root);
+  });
 
   describe('getCommonParent', () => {
     it('should get direct parent of single element', () => {
@@ -141,6 +145,36 @@ describe('Utilities', () => {
       const result = [...generator]
       assert.deepEqual(result, [root])
     })
+  })
+
+  describe('testParentSelector', () => {
+    it('should return `false` if it matches other than non-child elements within root', () => {
+      root.innerHTML = `
+        <div class="aaa" data-target></div>
+        <div class="aaa"></div>
+      `
+      const needle = getTargetElement(root)
+      const result = testParentSelector(needle, '.aaa', root)
+      assert.isFalse(result)
+    });
+    it('should return `true` if it matches only needle and some of its children', () => {
+      root.innerHTML = `
+        <div class="aaa" data-target>
+            <div class="aaa"></div>
+        </div>
+      `
+      const needle = getTargetElement(root)
+      const result = testParentSelector(needle, '.aaa', root)
+      assert.isTrue(result)
+    })
+    it('should return `true` if it matches needle uniquely', () => {
+      root.innerHTML = `
+        <div class="aaa" data-target></div>
+      `
+      const needle = getTargetElement(root)
+      const result = testParentSelector(needle, '.aaa', root)
+      assert.isTrue(result)
+    });
   })
 
 })
