@@ -8,7 +8,7 @@ import { assert } from "chai";
 import {
   getCommonParent,
   parentsGenerator,
-  testParentSelector,
+  testParentCandidate,
   viableParentsGenerator,
 } from "../src/utilities";
 
@@ -80,21 +80,19 @@ describe("Utilities", () => {
       assert.equal(result[1].className, "grandparent");
     });
     it("should yield common parents of multiple elements", () => {
-      root.innerHTML = `
-        <div class="grandparent">
-          <div class="parent">
+      const data = parseTestHtml(`
+        <div><!-- name: grandparent -->
+          <div><!-- name: parent -->
             <div>
-              <div data-target></div>
+              <div><!-- group: needle --></div>
             </div>
-            <div data-target></div>
+            <div><!-- group: needle --></div>
           </div>
         </div>
-      `;
-      const element = getTargetElements(root);
-      const generator = parentsGenerator(element);
+      `);
+      const generator = parentsGenerator(data.group.needle);
       const result = [...generator];
-      assert.equal(result[0].className, "parent");
-      assert.equal(result[1].className, "grandparent");
+      assert.deepEqual(result, [data.element.parent, data.element.grandparent]);
     });
     it("should include root if it is an element", () => {
       root.innerHTML = `<div><div></div></div>`;
@@ -113,14 +111,17 @@ describe("Utilities", () => {
     });
   });
 
-  describe.skip("viableParentsGenerator", () => {
+  describe("viableParentsGenerator", () => {
     it("should not yield if there are no viable parents", () => {
-      root.innerHTML = `
-        <div class="aaa" data-target></div>
+      const data = parseTestHtml(`
+        <div class="aaa"><!-- group: needle --></div>
         <div class="aaa"></div>
-      `;
-      const needle = getTargetElements(root);
-      const generator = viableParentsGenerator(needle, ".aaa", root);
+      `);
+      const generator = viableParentsGenerator(
+        data.group.needle,
+        ".aaa",
+        data.root
+      );
       const result = [...generator];
       assert.deepEqual(result, []);
     });
@@ -164,13 +165,28 @@ describe("Utilities", () => {
     });
   });
 
-  describe("testParentSelector", () => {
+  describe.only("testParentSelector", () => {
+    it("should return `false` if there is no match at all", () => {
+      const data = parseTestHtml(`
+        <div class="aaa"><!-- name: needle --></div>
+      `);
+      const result = testParentCandidate(
+        data.element.needle,
+        ".xxx",
+        data.root
+      );
+      assert.isFalse(result);
+    });
     it("should return `false` if it matches other than non-child elements within root", () => {
       const data = parseTestHtml(`
         <div class="aaa"><!-- name: needle --></div>
         <div class="aaa"></div>
       `);
-      const result = testParentSelector(data.element.needle, ".aaa", data.root);
+      const result = testParentCandidate(
+        data.element.needle,
+        ".aaa",
+        data.root
+      );
       assert.isFalse(result);
     });
     it("should return `true` if it matches only needle and some of its children", () => {
@@ -179,15 +195,36 @@ describe("Utilities", () => {
           <div class="aaa"></div>
         </div>
       `);
-      const result = testParentSelector(data.element.needle, ".aaa", data.root);
+      const result = testParentCandidate(
+        data.element.needle,
+        ".aaa",
+        data.root
+      );
       assert.isTrue(result);
     });
     it("should return `true` if it matches needle uniquely", () => {
       const data = parseTestHtml(`
         <div class="aaa"><!-- name: needle --></div>
       `);
-      const result = testParentSelector(data.element.needle, ".aaa", data.root);
+      const result = testParentCandidate(
+        data.element.needle,
+        ".aaa",
+        data.root
+      );
       assert.isTrue(result);
+    });
+    it("should return `false` if it matches also parents of needle", () => {
+      const data = parseTestHtml(`
+        <div class="aaa">
+          <div class="aaa"><!-- name: needle --></div>
+        </div>
+      `);
+      const result = testParentCandidate(
+        data.element.needle,
+        ".aaa",
+        data.root
+      );
+      assert.isFalse(result);
     });
   });
 });
