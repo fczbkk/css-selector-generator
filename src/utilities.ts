@@ -1,5 +1,8 @@
 import { getRootNode, testSelector } from "./utilities-dom";
 
+/**
+ * Returns closest parent element that is common for all needle elements. Returns `null` if no such element exists.
+ */
 export function getCommonParent(needle: Element[]) {
   if (needle.length > 0) {
     let parent = needle[0].parentElement;
@@ -23,8 +26,7 @@ export function getCommonParent(needle: Element[]) {
 /**
  * Yields all common parents of the needle, starting with the one closest to the needle.
  */
-export function* parentsGenerator(needle: Element[], root?: ParentNode) {
-  root = root ?? getRootNode(needle[0]);
+export function* parentsGenerator(needle: Element[], root: ParentNode) {
   let parent = getCommonParent(needle);
   while (parent && root.contains(parent)) {
     yield parent;

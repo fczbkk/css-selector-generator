@@ -61,7 +61,7 @@ describe("Utilities", () => {
   describe("parentsGenerator", () => {
     it("should not yield if there are no parents", () => {
       const element = document.createElement("div");
-      const generator = parentsGenerator([element]);
+      const generator = parentsGenerator([element], element.parentNode);
       const result = [...generator];
       assert.deepEqual(result, []);
     });
@@ -74,7 +74,7 @@ describe("Utilities", () => {
         </div>
       `;
       const element = getTargetElement(root);
-      const generator = parentsGenerator([element]);
+      const generator = parentsGenerator([element], root);
       const result = [...generator];
       assert.equal(result[0].className, "parent");
       assert.equal(result[1].className, "grandparent");
@@ -90,9 +90,13 @@ describe("Utilities", () => {
           </div>
         </div>
       `);
-      const generator = parentsGenerator(data.group.needle);
+      const generator = parentsGenerator(data.group.needle, data.root);
       const result = [...generator];
-      assert.deepEqual(result, [data.element.parent, data.element.grandparent]);
+      assert.deepEqual(result, [
+        data.element.parent,
+        data.element.grandparent,
+        data.root,
+      ]);
     });
     it("should include root if it is an element", () => {
       root.innerHTML = `<div><div></div></div>`;
@@ -149,23 +153,22 @@ describe("Utilities", () => {
     });
 
     it("should yield viable nested parent", () => {
-      root.innerHTML = `
-        <div class="aaa">
-          <div class="aaa" data-target></div>
+      const data = parseTestHtml(`
+        <div class="aaa"><!-- name: parent -->
+          <div class="aaa"><!-- group: needle --></div>
         </div>
-      `;
-      const needle = getTargetElements(root);
+      `);
       const generator = viableParentsGenerator(
-        needle,
+        data.group.needle,
         ".aaa",
-        root.firstElementChild
+        data.root
       );
       const result = [...generator];
-      assert.deepEqual(result, [root]);
+      assert.deepEqual(result, [data.element.parent]);
     });
   });
 
-  describe.only("testParentSelector", () => {
+  describe("testParentSelector", () => {
     it("should return `false` if there is no match at all", () => {
       const data = parseTestHtml(`
         <div class="aaa"><!-- name: needle --></div>
