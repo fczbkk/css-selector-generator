@@ -1,4 +1,19 @@
-import { getRootNode, testSelector } from "./utilities-dom";
+import { testSelector } from "./utilities-dom";
+import {
+  CssSelectorGeneratorOptions,
+  CssSelectorGeneratorOptionsInput,
+  CssSelectorsByType,
+  CssSelectorType,
+} from "./types.js";
+import {
+  constructSelector,
+  sanitizeSelectorNeedle,
+} from "./utilities-selectors.js";
+import { sanitizeOptions } from "./utilities-options.js";
+import { getFallbackSelector } from "./selector-fallback.js";
+import { getPowerSet, powerSetGenerator } from "./utilities-powerset.js";
+import { createMemo } from "./memo.js";
+import { getCartesianProduct } from "./utilities-cartesian.js";
 
 /**
  * Returns closest parent element that is common for all needle elements. Returns `null` if no such element exists.
@@ -62,4 +77,42 @@ export function testParentCandidate(
     matchingElements.length > 0 &&
     matchingElements.every((element) => needle.contains(element))
   );
+}
+
+export function getSelectorDataPowerSet(selectorData: CssSelectorsByType) {
+  return Object.fromEntries(
+    Object.entries(selectorData).map(([key, val]) => [key, getPowerSet(val)])
+  );
+}
+
+export function* needleCandidateGenerator(
+  needle: Element[],
+  options: CssSelectorGeneratorOptions,
+  memo = createMemo()
+) {
+  for (const selectorTypes of powerSetGenerator(options.selectors)) {
+    const needleSelectors = memo(needle, selectorTypes);
+    const needleSelectorsPowerSet = getSelectorDataPowerSet(needleSelectors);
+    const needleSelectorsCombinations = getCartesianProduct(
+      needleSelectorsPowerSet
+    );
+    for (const needleSelectorData of needleSelectorsCombinations) {
+      yield constructSelector(needleSelectorData);
+    }
+  }
+}
+
+export function* cssSelectorGenerator(
+  originalNeedle: unknown,
+  originalOptions: CssSelectorGeneratorOptionsInput = {}
+) {
+  const needle = sanitizeSelectorNeedle(originalNeedle);
+  const options = sanitizeOptions(needle[0], originalOptions);
+  const memo = createMemo();
+
+  for (const selectorTypes of powerSetGenerator(options.selectors)) {
+    console.log(selectorTypes);
+  }
+
+  yield getFallbackSelector(needle);
 }
