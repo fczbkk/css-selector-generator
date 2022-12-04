@@ -111,7 +111,7 @@ export function* cssSelectorGenerator(
   const memo = createMemo();
 
   for (const selectorTypes of powerSetGenerator(options.selectors)) {
-    console.log(selectorTypes);
+    // TODO
   }
 
   yield getFallbackSelector(needle);
