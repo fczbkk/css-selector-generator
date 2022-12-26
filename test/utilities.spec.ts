@@ -244,7 +244,11 @@ describe("Utilities", () => {
         root: data.root,
         selectors: ["class"],
       });
-      const generator = needleCandidateGenerator(data.group.needle, options);
+      const generator = needleCandidateGenerator(
+        data.group.needle,
+        [CssSelectorType.class],
+        options
+      );
       const result = [...generator];
       assert.deepEqual(result, [".aaa", ".bbb", ".aaa.bbb"]);
     });
@@ -256,7 +260,11 @@ describe("Utilities", () => {
         root: data.root,
         selectors: ["class", "id"],
       });
-      const generator = needleCandidateGenerator(data.group.needle, options);
+      const generator = needleCandidateGenerator(
+        data.group.needle,
+        [CssSelectorType.class, CssSelectorType.id],
+        options
+      );
       const result = [...generator];
       assert.deepEqual(result, [".aaa", "#bbb", "#bbb.aaa"]);
     });
@@ -273,6 +281,18 @@ describe("Utilities", () => {
       });
       const result = [...generator];
       assert.equal(result[0], ".aaa");
+    });
+    it("should generate selector using combination of selector types", () => {
+      const data = parseTestHtml(`
+        <p class="aaa"><!-- name: needle --></p>
+        <div class="aaa"></div>
+      `);
+      const generator = cssSelectorGenerator(data.element.needle, {
+        root: data.root,
+        selectors: ["class", "tag"],
+      });
+      const result = [...generator];
+      assert.equal(result[0], "p.aaa");
     });
     it("should generate nested selector", () => {
       const data = parseTestHtml(`

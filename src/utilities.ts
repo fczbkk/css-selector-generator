@@ -87,11 +87,12 @@ export function getSelectorDataPowerSet(selectorData: CssSelectorsByType) {
 
 export function* needleCandidateGenerator(
   needle: Element[],
+  selectorTypes: CssSelectorType[],
   options: CssSelectorGeneratorOptions,
   memo = createMemo()
 ) {
-  for (const selectorTypes of powerSetGenerator(options.selectors)) {
-    const needleSelectors = memo(needle, selectorTypes);
+  for (const selectorTypesCombination of powerSetGenerator(selectorTypes)) {
+    const needleSelectors = memo(needle, selectorTypesCombination);
     const needleSelectorsPowerSet = getSelectorDataPowerSet(needleSelectors);
     const needleSelectorsCombinations = getCartesianProduct(
       needleSelectorsPowerSet
@@ -102,6 +103,19 @@ export function* needleCandidateGenerator(
   }
 }
 
+export function* needleSelectorGenerator(
+  needle: Element[],
+  selectorTypes: CssSelectorType[],
+  options: CssSelectorGeneratorOptions,
+  memo = createMemo()
+) {
+  // TODO
+}
+
+export function* viableSelectorGenerator() {
+  // TODO
+}
+
 export function* cssSelectorGenerator(
   originalNeedle: unknown,
   originalOptions: CssSelectorGeneratorOptionsInput = {}
@@ -109,9 +123,14 @@ export function* cssSelectorGenerator(
   const needle = sanitizeSelectorNeedle(originalNeedle);
   const options = sanitizeOptions(needle[0], originalOptions);
   const memo = createMemo();
+  const candidateSelectorTypes = [];
 
-  for (const selectorTypes of powerSetGenerator(options.selectors)) {
-    // TODO
+  for (const nextSelectorType of options.selectors) {
+    candidateSelectorTypes.push(nextSelectorType);
+    for (const selectorTypes of powerSetGenerator(candidateSelectorTypes)) {
+      // TODO
+      console.log("candidate selector types", candidateSelectorTypes);
+    }
   }
 
   yield getFallbackSelector(needle);
