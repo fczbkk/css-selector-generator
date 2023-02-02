@@ -129,7 +129,7 @@ export function* cssSelectorGenerator(
     candidateSelectorTypes.push(nextSelectorType);
     for (const selectorTypes of powerSetGenerator(candidateSelectorTypes)) {
       // TODO
-      console.log("candidate selector types", candidateSelectorTypes);
+      // console.log("candidate selector types", candidateSelectorTypes);
     }
   }
 
