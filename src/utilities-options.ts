@@ -70,20 +70,17 @@ export function isNode(input: unknown): input is Node {
   return input instanceof Node;
 }
 
-const validParentNodeTypes: number[] = [
-  Node.DOCUMENT_NODE,
-  Node.DOCUMENT_FRAGMENT_NODE, // this includes Shadow DOM root
-  Node.ELEMENT_NODE,
-];
-
 /**
  * Checks whether provided value is valid ParentNode.
  */
 export function isParentNode(input: unknown): input is ParentNode {
-  if (!isNode(input)) {
-    return false
-  }
-  return validParentNodeTypes.includes(input.nodeType);
+  const validParentNodeTypes: number[] = [
+    Node.DOCUMENT_NODE,
+    Node.DOCUMENT_FRAGMENT_NODE, // this includes Shadow DOM root
+    Node.ELEMENT_NODE,
+  ];
+
+  return isNode(input) && validParentNodeTypes.includes(input.nodeType);
 }
 
 /**
