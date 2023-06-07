@@ -35,7 +35,7 @@
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
     "chai": "^4.3.7",
-    "conventional-changelog-cli": "^2.2.2",
+    "conventional-changelog-cli": "^3.0.0",
     "eslint": "^8.36.0",
     "eslint-config-prettier": "^8.7.0",
     "husky": "^8.0.3",
