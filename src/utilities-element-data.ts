@@ -1,4 +1,5 @@
 import {
+  CSS_SELECTOR_TYPE,
   CssSelectorGenerated,
   CssSelectorType,
   CssSelectorTypes,
@@ -56,8 +57,11 @@ export function constructElementSelector({
 }: ElementData): CssSelectorGenerated {
   let pattern = [...SELECTOR_PATTERN];
   // `nthoftype` already contains tag
-  if (selectors[CssSelectorType.tag] && selectors[CssSelectorType.nthoftype]) {
-    pattern = pattern.filter((item) => item !== CssSelectorType.tag);
+  if (
+    selectors[CSS_SELECTOR_TYPE.tag] &&
+    selectors[CSS_SELECTOR_TYPE.nthoftype]
+  ) {
+    pattern = pattern.filter((item) => item !== CSS_SELECTOR_TYPE.tag);
   }
 
   let selector = "";

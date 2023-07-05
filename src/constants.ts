@@ -1,4 +1,4 @@
-import { CssSelectorType } from "./types.js";
+import { CSS_SELECTOR_TYPE, CssSelectorType } from "./types.js";
 
 export const SELECTOR_SEPARATOR = ", ";
 
@@ -19,10 +19,10 @@ export const INVALID_CLASS_RE = new RegExp(
 
 // Order in which a combined selector is constructed.
 export const SELECTOR_PATTERN = [
-  CssSelectorType.nthoftype,
-  CssSelectorType.tag,
-  CssSelectorType.id,
-  CssSelectorType.class,
-  CssSelectorType.attribute,
-  CssSelectorType.nthchild,
+  CSS_SELECTOR_TYPE.nthoftype,
+  CSS_SELECTOR_TYPE.tag,
+  CSS_SELECTOR_TYPE.id,
+  CSS_SELECTOR_TYPE.class,
+  CSS_SELECTOR_TYPE.attribute,
+  CSS_SELECTOR_TYPE.nthchild,
 ];

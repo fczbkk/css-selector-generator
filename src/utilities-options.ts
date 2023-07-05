@@ -1,7 +1,7 @@
 import {
+  CSS_SELECTOR_TYPE,
   CssSelectorGeneratorOptions,
   CssSelectorMatch,
-  CssSelectorType,
   CssSelectorTypes,
 } from "./types.js";
 import { isEnumValue } from "./utilities-typescript.js";
@@ -9,10 +9,10 @@ import { showWarning } from "./utilities-messages.js";
 
 export const DEFAULT_OPTIONS = {
   selectors: [
-    CssSelectorType.id,
-    CssSelectorType.class,
-    CssSelectorType.tag,
-    CssSelectorType.attribute,
+    CSS_SELECTOR_TYPE.id,
+    CSS_SELECTOR_TYPE.class,
+    CSS_SELECTOR_TYPE.tag,
+    CSS_SELECTOR_TYPE.attribute,
   ] as CssSelectorTypes,
   // if set to true, always include tag name
   includeTag: false,
@@ -33,7 +33,7 @@ export function sanitizeSelectorTypes(input: unknown): CssSelectorTypes {
   if (!Array.isArray(input)) {
     return [];
   }
-  return input.filter((item) => isEnumValue(CssSelectorType, item));
+  return input.filter((item) => isEnumValue(CSS_SELECTOR_TYPE, item));
 }
 
 /**

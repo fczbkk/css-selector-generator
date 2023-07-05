@@ -36,14 +36,25 @@ export type CssSelectors = Array<CssSelector>;
 type CssSelectorMatchFn = (input: string) => boolean;
 export type CssSelectorMatch = RegExp | string | CssSelectorMatchFn;
 
-export enum CssSelectorType {
-  id = "id",
-  class = "class",
-  tag = "tag",
-  attribute = "attribute",
-  nthchild = "nthchild",
-  nthoftype = "nthoftype",
-}
+export const CSS_SELECTOR_TYPE = {
+  id: "id",
+  class: "class",
+  tag: "tag",
+  attribute: "attribute",
+  nthchild: "nthchild",
+  nthoftype: "nthoftype",
+} as const;
+
+export type CssSelectorType = ObjectValues<typeof CSS_SELECTOR_TYPE>;
+
+// export enum CssSelectorType {
+//   id = "id",
+//   class = "class",
+//   tag = "tag",
+//   attribute = "attribute",
+//   nthchild = "nthchild",
+//   nthoftype = "nthoftype",
+// }
 
 export type CssSelectorTypes = Array<CssSelectorType>;
 
@@ -55,7 +66,7 @@ export type CssSelectorData = {
 
 export type CssSelectorGeneratorOptionsInput = Partial<{
   // List of selector types to use. They will be prioritised by their order.
-  selectors: (keyof typeof CssSelectorType)[];
+  selectors: CssSelectorType[];
   // List of selectors that should be prioritised.
   whitelist: Array<CssSelectorMatch>;
   // List of selectors that should be ignored.

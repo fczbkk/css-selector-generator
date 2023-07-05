@@ -13,7 +13,7 @@ import {
   testParentCandidate,
   viableParentsGenerator,
 } from "../src/utilities";
-import { CssSelectorType } from "../src/types.js";
+import { CSS_SELECTOR_TYPE } from "../src/types.js";
 import { sanitizeOptions } from "../src/utilities-options.js";
 
 describe("Utilities", () => {
@@ -246,7 +246,7 @@ describe("Utilities", () => {
       });
       const generator = needleCandidateGenerator(
         data.group.needle,
-        [CssSelectorType.class],
+        [CSS_SELECTOR_TYPE.class],
         options
       );
       const result = [...generator];
@@ -262,7 +262,7 @@ describe("Utilities", () => {
       });
       const generator = needleCandidateGenerator(
         data.group.needle,
-        [CssSelectorType.class, CssSelectorType.id],
+        [CSS_SELECTOR_TYPE.class, CSS_SELECTOR_TYPE.id],
         options
       );
       const result = [...generator];

@@ -20,6 +20,7 @@ import { getElementTagSelectors, getTagSelector } from "./selector-tag.js";
 import { createPatternMatcher, flattenArray } from "./utilities-data.js";
 import { getParents, testSelector } from "./utilities-dom.js";
 import {
+  CSS_SELECTOR_TYPE,
   CssSelector,
   CssSelectorData,
   CssSelectorGenerated,
@@ -205,10 +206,10 @@ export function getSelectorsToGet(
  * TAG part.
  */
 function addTagTypeIfNeeded(list: CssSelectorTypes): CssSelectorTypes {
-  return list.includes(CssSelectorType.tag) ||
-    list.includes(CssSelectorType.nthoftype)
+  return list.includes(CSS_SELECTOR_TYPE.tag) ||
+    list.includes(CSS_SELECTOR_TYPE.nthoftype)
     ? [...list]
-    : [...list, CssSelectorType.tag];
+    : [...list, CSS_SELECTOR_TYPE.tag];
 }
 
 /**
@@ -281,10 +282,10 @@ export function constructSelector(
   const pattern = [...SELECTOR_PATTERN];
   // selector "nthoftype" already contains "tag"
   if (
-    selectorData[CssSelectorType.tag] &&
-    selectorData[CssSelectorType.nthoftype]
+    selectorData[CSS_SELECTOR_TYPE.tag] &&
+    selectorData[CSS_SELECTOR_TYPE.nthoftype]
   ) {
-    pattern.splice(pattern.indexOf(CssSelectorType.tag), 1);
+    pattern.splice(pattern.indexOf(CSS_SELECTOR_TYPE.tag), 1);
   }
 
   return pattern

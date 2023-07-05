@@ -3,7 +3,7 @@ import {
   constructElementSelector,
   createElementData,
 } from "../src/utilities-element-data.ts";
-import { CssSelectorType, OPERATOR } from "../src/types.ts";
+import { CSS_SELECTOR_TYPE, OPERATOR } from "../src/types.ts";
 
 /**
  * Utility function that marks all selectors in elementData as included.
@@ -31,9 +31,9 @@ describe("utilities - constructElementSelector", () => {
     element.setAttribute("class", "mockClass1 mockClass2");
     root.appendChild(element);
     const elementData = createElementData(element, [
-      CssSelectorType.id,
-      CssSelectorType.tag,
-      CssSelectorType.class,
+      CSS_SELECTOR_TYPE.id,
+      CSS_SELECTOR_TYPE.tag,
+      CSS_SELECTOR_TYPE.class,
     ]);
     includeAllSelectors(elementData);
     const result = constructElementSelector(elementData);
@@ -43,7 +43,7 @@ describe("utilities - constructElementSelector", () => {
   it("should include operator", () => {
     const element = document.createElement("div");
     root.appendChild(element);
-    const elementData = createElementData(element, [CssSelectorType.tag]);
+    const elementData = createElementData(element, [CSS_SELECTOR_TYPE.tag]);
     elementData.operator = OPERATOR.CHILD;
     includeAllSelectors(elementData);
     const result = constructElementSelector(elementData);

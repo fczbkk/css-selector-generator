@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { CssSelectorType, OPERATOR } from "../src/types.ts";
+import { CSS_SELECTOR_TYPE, OPERATOR } from "../src/types.ts";
 import { createElementData } from "../src/utilities-element-data.ts";
 
 describe("utilities - createElementData", () => {
@@ -16,12 +16,12 @@ describe("utilities - createElementData", () => {
   });
 
   it("should only contain defined selector types", () => {
-    const result = createElementData(element, [CssSelectorType.tag]);
+    const result = createElementData(element, [CSS_SELECTOR_TYPE.tag]);
     assert.deepEqual(Object.keys(result.selectors), ["tag"]);
   });
 
   it("should contain selectors data", () => {
-    const result = createElementData(element, [CssSelectorType.tag]);
+    const result = createElementData(element, [CSS_SELECTOR_TYPE.tag]);
     assert.deepEqual(result.selectors.tag, [{ value: "div", include: false }]);
   });
 });
