@@ -1,8 +1,4 @@
-import {
-  CHILD_OPERATOR,
-  DESCENDANT_OPERATOR,
-  SELECTOR_PATTERN,
-} from "./constants.js";
+import { SELECTOR_PATTERN } from "./constants.js";
 import {
   getAttributeSelectors,
   getElementAttributeSelectors,
@@ -31,6 +27,7 @@ import {
   CssSelectorType,
   CssSelectorTypes,
   IdentifiableParent,
+  OPERATOR,
   PatternMatcher,
 } from "./types.js";
 import { isElement } from "./utilities-iselement.js";
@@ -304,10 +301,10 @@ function generateCandidateCombinations(
   rootSelector: CssSelector
 ): CssSelector[] {
   return [
-    ...selectors.map((selector) => rootSelector + CHILD_OPERATOR + selector),
     ...selectors.map(
-      (selector) => rootSelector + DESCENDANT_OPERATOR + selector
+      (selector) => rootSelector + OPERATOR.DESCENDANT + selector
     ),
+    ...selectors.map((selector) => rootSelector + OPERATOR.CHILD + selector),
   ];
 }
 

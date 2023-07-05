@@ -44,7 +44,7 @@ describe("utilities - constructElementSelector", () => {
     const element = document.createElement("div");
     root.appendChild(element);
     const elementData = createElementData(element, [CssSelectorType.tag]);
-    elementData.operator = { type: OPERATOR.CHILD, value: " > " };
+    elementData.operator = OPERATOR.CHILD;
     includeAllSelectors(elementData);
     const result = constructElementSelector(elementData);
     assert.equal(result, " > div");

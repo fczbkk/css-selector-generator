@@ -6,22 +6,18 @@ declare type Tagged<Token> = {
 
 export type Opaque<Type, Token = unknown> = Type & Tagged<Token>;
 
+export type ObjectValues<T> = T[keyof T];
+
 // TODO rename to "CssSelector"
 export type CssSelectorGenerated = Opaque<string, "CssSelector">;
 
-export enum OPERATOR {
-  NONE = "none",
-  DESCENDANT = "descendant",
-  CHILD = "child",
-}
+export const OPERATOR = {
+  NONE: "",
+  DESCENDANT: " ",
+  CHILD: " > ",
+} as const;
 
-export type OperatorValue = "" | " " | " > ";
-
-export interface OperatorData {
-  type: OPERATOR;
-  // TODO use constants
-  value: OperatorValue;
-}
+export type OperatorValue = ObjectValues<typeof OPERATOR>;
 
 export interface ElementSelectorData {
   value: CssSelectorGenerated;
@@ -30,13 +26,8 @@ export interface ElementSelectorData {
 
 export interface ElementData {
   element: Element;
-  operator: OperatorData;
+  operator: OperatorValue;
   selectors: Partial<Record<CssSelectorType, ElementSelectorData[]>>;
-}
-
-export interface SelectorData {
-  isFallback: boolean;
-  elements: ElementData[];
 }
 
 export type CssSelector = string;

@@ -5,8 +5,9 @@ import {
   ElementData,
   ElementSelectorData,
   OPERATOR,
+  OperatorValue,
 } from "./types.js";
-import { OPERATOR_DATA, SELECTOR_PATTERN } from "./constants.js";
+import { SELECTOR_PATTERN } from "./constants.js";
 import { getElementSelectorsByType } from "./utilities-selectors.js";
 
 /**
@@ -27,7 +28,7 @@ export function createElementSelectorData(
 export function createElementData(
   element: Element,
   selectorTypes: CssSelectorTypes,
-  operator: OPERATOR = OPERATOR.NONE
+  operator: OperatorValue = OPERATOR.NONE
 ): ElementData {
   const selectors = {};
   selectorTypes.forEach((selectorType) => {
@@ -41,7 +42,7 @@ export function createElementData(
   });
   return {
     element,
-    operator: OPERATOR_DATA[operator],
+    operator,
     selectors,
   };
 }
@@ -69,5 +70,5 @@ export function constructElementSelector({
     });
   });
 
-  return (operator.value + selector) as CssSelectorGenerated;
+  return (operator + selector) as CssSelectorGenerated;
 }

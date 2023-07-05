@@ -1,5 +1,4 @@
 import { assert } from "chai";
-import { OPERATOR_DATA } from "../src/constants.ts";
 import { CssSelectorType, OPERATOR } from "../src/types.ts";
 import { createElementData } from "../src/utilities-element-data.ts";
 
@@ -13,7 +12,7 @@ describe("utilities - createElementData", () => {
 
   it('should contain "none" operator by default', () => {
     const result = createElementData(element, []);
-    assert.equal(result.operator, OPERATOR_DATA[OPERATOR.NONE]);
+    assert.equal(result.operator, OPERATOR.NONE);
   });
 
   it("should only contain defined selector types", () => {
