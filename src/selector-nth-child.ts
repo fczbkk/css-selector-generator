@@ -6,7 +6,7 @@ import { getIntersection } from "./utilities-data.js";
  * Get nth-child selector for an element.
  */
 export function getElementNthChildSelector(
-  element: Element
+  element: Element,
 ): CssSelectorGenerated[] {
   const parent = element.parentNode;
 
@@ -25,7 +25,7 @@ export function getElementNthChildSelector(
  * Get nth-child selector matching all elements.
  */
 export function getNthChildSelector(
-  elements: Element[]
+  elements: Element[],
 ): CssSelectorGenerated[] {
   return getIntersection(elements.map(getElementNthChildSelector));
 }

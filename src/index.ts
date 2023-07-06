@@ -13,7 +13,7 @@ import { SELECTOR_SEPARATOR } from "./constants.js";
  */
 export function getCssSelector(
   needle: unknown,
-  custom_options: CssSelectorGeneratorOptionsInput = {}
+  custom_options: CssSelectorGeneratorOptionsInput = {},
 ): CssSelector {
   const elements = sanitizeSelectorNeedle(needle);
   const options = sanitizeOptions(elements[0], custom_options);
@@ -28,7 +28,7 @@ export function getCssSelector(
       elements,
       currentRoot,
       partialSelector,
-      options
+      options,
     );
   }
 

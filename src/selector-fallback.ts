@@ -20,7 +20,7 @@ export function getElementFallbackSelector(element: Element): CssSelector {
     const elementData = createElementData(
       element,
       [CSS_SELECTOR_TYPE.nthchild],
-      OPERATOR.CHILD
+      OPERATOR.CHILD,
     );
     elementData.selectors.nthchild.forEach((selectorData) => {
       selectorData.include = true;

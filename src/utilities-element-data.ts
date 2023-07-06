@@ -15,7 +15,7 @@ import { getElementSelectorsByType } from "./utilities-selectors.js";
  * Creates data describing a specific selector.
  */
 export function createElementSelectorData(
-  selector: CssSelectorGenerated
+  selector: CssSelectorGenerated,
 ): ElementSelectorData {
   return {
     value: selector,
@@ -29,7 +29,7 @@ export function createElementSelectorData(
 export function createElementData(
   element: Element,
   selectorTypes: CssSelectorTypes,
-  operator: OperatorValue = OPERATOR.NONE
+  operator: OperatorValue = OPERATOR.NONE,
 ): ElementData {
   const selectors = {};
   selectorTypes.forEach((selectorType) => {
@@ -37,8 +37,8 @@ export function createElementData(
       selectors,
       selectorType,
       getElementSelectorsByType(element, selectorType).map(
-        createElementSelectorData
-      )
+        createElementSelectorData,
+      ),
     );
   });
   return {

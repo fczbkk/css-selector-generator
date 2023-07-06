@@ -91,7 +91,7 @@ export const ELEMENT_SELECTOR_TYPE_GETTERS = {
  */
 export function getElementSelectorsByType(
   element: Element,
-  selectorType: CssSelectorType
+  selectorType: CssSelectorType,
 ): CssSelectorGenerated[] {
   return ELEMENT_SELECTOR_TYPE_GETTERS[selectorType](element);
 }
@@ -101,7 +101,7 @@ export function getElementSelectorsByType(
  */
 export function getSelectorsByType(
   elements: Element[],
-  selector_type: CssSelectorType
+  selector_type: CssSelectorType,
 ): Array<CssSelector> {
   const getter =
     SELECTOR_TYPE_GETTERS[selector_type] ?? ((): Array<CssSelector> => []);
@@ -114,7 +114,7 @@ export function getSelectorsByType(
 export function filterSelectors(
   list: Array<CssSelector> = [],
   matchBlacklist: PatternMatcher,
-  matchWhitelist: PatternMatcher
+  matchWhitelist: PatternMatcher,
 ): Array<CssSelector> {
   return list.filter((item) => matchWhitelist(item) || !matchBlacklist(item));
 }
@@ -124,7 +124,7 @@ export function filterSelectors(
  */
 export function orderSelectors(
   list: Array<CssSelector> = [],
-  matchWhitelist: PatternMatcher
+  matchWhitelist: PatternMatcher,
 ): Array<CssSelector> {
   return list.sort((a, b) => {
     const a_is_whitelisted = matchWhitelist(a);
@@ -145,7 +145,7 @@ export function orderSelectors(
 export function getAllSelectors(
   elements: Element[],
   root: ParentNode,
-  options: CssSelectorGeneratorOptions
+  options: CssSelectorGeneratorOptions,
 ): Array<CssSelector> {
   const selectors_list = getSelectorsList(elements, options);
   const type_combinations = getTypeCombinations(selectors_list, options);
@@ -158,7 +158,7 @@ export function getAllSelectors(
  */
 export function getSelectorsList(
   elements: Element[],
-  options: CssSelectorGeneratorOptions
+  options: CssSelectorGeneratorOptions,
 ): CssSelectorData {
   const { blacklist, whitelist, combineWithinSelector, maxCombinations } =
     options;
@@ -171,7 +171,7 @@ export function getSelectorsList(
     const filtered_selectors = filterSelectors(
       selectors_by_type,
       matchBlacklist,
-      matchWhitelist
+      matchWhitelist,
     );
     const found_selectors = orderSelectors(filtered_selectors, matchWhitelist);
 
@@ -189,7 +189,7 @@ export function getSelectorsList(
  * Creates list of selector types that we will need to generate the selector.
  */
 export function getSelectorsToGet(
-  options: CssSelectorGeneratorOptions
+  options: CssSelectorGeneratorOptions,
 ): CssSelectorTypes {
   const { selectors, includeTag } = options;
 
@@ -216,7 +216,7 @@ function addTagTypeIfNeeded(list: CssSelectorTypes): CssSelectorTypes {
  * Generates list of possible selector type combinations.
  */
 export function combineSelectorTypes(
-  options: CssSelectorGeneratorOptions
+  options: CssSelectorGeneratorOptions,
 ): Array<CssSelectorTypes> {
   const { selectors, combineBetweenSelectors, includeTag, maxCandidates } =
     options;
@@ -233,7 +233,7 @@ export function combineSelectorTypes(
  */
 export function getTypeCombinations(
   selectors_list: CssSelectorData,
-  options: CssSelectorGeneratorOptions
+  options: CssSelectorGeneratorOptions,
 ): Array<Array<CssSelector>> {
   return combineSelectorTypes(options)
     .map((item) => {
@@ -247,7 +247,7 @@ export function getTypeCombinations(
  */
 export function constructSelectors(
   selector_types: CssSelectorTypes,
-  selectors_by_type: CssSelectorData
+  selectors_by_type: CssSelectorData,
 ): Array<CssSelector> {
   const data: CssSelectorData = {};
   selector_types.forEach((selector_type) => {
@@ -266,7 +266,7 @@ export function constructSelectors(
  */
 export function constructSelectorType(
   selector_type: CssSelectorType,
-  selectors_data: CssSelectorData
+  selectors_data: CssSelectorData,
 ): CssSelector {
   return selectors_data[selector_type]
     ? selectors_data[selector_type].join("")
@@ -277,7 +277,7 @@ export function constructSelectorType(
  * Converts selector data object to a selector.
  */
 export function constructSelector(
-  selectorData: CssSelectorData = {}
+  selectorData: CssSelectorData = {},
 ): CssSelector {
   const pattern = [...SELECTOR_PATTERN];
   // selector "nthoftype" already contains "tag"
@@ -299,11 +299,11 @@ export function constructSelector(
  */
 function generateCandidateCombinations(
   selectors: CssSelector[],
-  rootSelector: CssSelector
+  rootSelector: CssSelector,
 ): CssSelector[] {
   return [
     ...selectors.map(
-      (selector) => rootSelector + OPERATOR.DESCENDANT + selector
+      (selector) => rootSelector + OPERATOR.DESCENDANT + selector,
     ),
     ...selectors.map((selector) => rootSelector + OPERATOR.CHILD + selector),
   ];
@@ -315,7 +315,7 @@ function generateCandidateCombinations(
  */
 function generateCandidates(
   selectors: CssSelector[],
-  rootSelector: CssSelector
+  rootSelector: CssSelector,
 ): CssSelector[] {
   return rootSelector === ""
     ? selectors
@@ -329,7 +329,7 @@ export function getSelectorWithinRoot(
   elements: Element[],
   root: ParentNode,
   rootSelector: CssSelector = "",
-  options: CssSelectorGeneratorOptions
+  options: CssSelectorGeneratorOptions,
 ): null | CssSelector {
   const elementSelectors = getAllSelectors(elements, options.root, options);
   const selectorCandidates = generateCandidates(elementSelectors, rootSelector);
@@ -349,7 +349,7 @@ export function getClosestIdentifiableParent(
   elements: Element[],
   root: ParentNode,
   rootSelector: CssSelector = "",
-  options: CssSelectorGeneratorOptions
+  options: CssSelectorGeneratorOptions,
 ): IdentifiableParent {
   if (elements.length === 0) {
     return null;
@@ -365,7 +365,7 @@ export function getClosestIdentifiableParent(
       currentElements,
       root,
       rootSelector,
-      options
+      options,
     );
     if (result) {
       return {
@@ -386,7 +386,7 @@ export function sanitizeSelectorNeedle(needle: unknown): Element[] {
     needle = Array.from(needle);
   }
   const elements = (Array.isArray(needle) ? needle : [needle]).filter(
-    isElement
+    isElement,
   );
   return [...new Set(elements)];
 }

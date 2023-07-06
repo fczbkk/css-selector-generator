@@ -9,10 +9,10 @@ import { sanitizeRoot } from "./utilities-options.js";
 export function testSelector(
   elements: Element[],
   selector: CssSelector,
-  root?: Node
+  root?: Node,
 ): boolean {
   const result = Array.from(
-    sanitizeRoot(root, elements[0]).querySelectorAll(selector)
+    sanitizeRoot(root, elements[0]).querySelectorAll(selector),
   );
   return (
     result.length === elements.length &&
@@ -26,10 +26,10 @@ export function testSelector(
 export function testMultiSelector(
   element: Element,
   selector: CssSelector,
-  root: ParentNode
+  root: ParentNode,
 ): boolean {
   const result = Array.from(
-    sanitizeRoot(root, element).querySelectorAll(selector)
+    sanitizeRoot(root, element).querySelectorAll(selector),
   );
   return result.includes(element);
 }
@@ -39,7 +39,7 @@ export function testMultiSelector(
  */
 export function getElementParents(
   element: Element,
-  root?: ParentNode
+  root?: ParentNode,
 ): Element[] {
   root = root ?? getRootNode(element);
   const result = [];
@@ -56,7 +56,7 @@ export function getElementParents(
  */
 export function getParents(elements: Element[], root?: ParentNode): Element[] {
   return getIntersection(
-    elements.map((element) => getElementParents(element, root))
+    elements.map((element) => getElementParents(element, root)),
   );
 }
 

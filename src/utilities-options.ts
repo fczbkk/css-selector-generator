@@ -55,7 +55,7 @@ export function isCssSelectorMatch(input: unknown): input is CssSelectorMatch {
  * Converts input to a list of valid values for whitelist or blacklist.
  */
 export function sanitizeCssSelectorMatchList(
-  input: unknown
+  input: unknown,
 ): Array<CssSelectorMatch> {
   if (!Array.isArray(input)) {
     return [];
@@ -92,7 +92,7 @@ export function sanitizeRoot(input: unknown, element: Element): ParentNode {
       // eslint-disable-next-line max-len
       showWarning(
         "element root mismatch",
-        "Provided root does not contain the element. This will most likely result in producing a fallback selector using element's real root node. If you plan to use the selector using provided root (e.g. `root.querySelector`), it will nto work as intended."
+        "Provided root does not contain the element. This will most likely result in producing a fallback selector using element's real root node. If you plan to use the selector using provided root (e.g. `root.querySelector`), it will nto work as intended.",
       );
     }
     return input;
@@ -104,7 +104,7 @@ export function sanitizeRoot(input: unknown, element: Element): ParentNode {
       // eslint-disable-next-line max-len
       showWarning(
         "shadow root inferred",
-        "You did not provide a root and the element is a child of Shadow DOM. This will produce a selector using ShadowRoot as a root. If you plan to use the selector using document as a root (e.g. `document.querySelector`), it will not work as intended."
+        "You did not provide a root and the element is a child of Shadow DOM. This will produce a selector using ShadowRoot as a root. If you plan to use the selector using document as a root (e.g. `document.querySelector`), it will not work as intended.",
       );
     }
     return rootNode;
@@ -126,7 +126,7 @@ export function sanitizeMaxNumber(input?: unknown): number {
  */
 export function sanitizeOptions(
   element: Element,
-  custom_options = {}
+  custom_options = {},
 ): CssSelectorGeneratorOptions {
   const options = {
     ...DEFAULT_OPTIONS,

@@ -14,7 +14,7 @@ export type MemoSelectorData = Map<CssSelectorType, CssSelectors>;
 export type MemoElementData = Map<Element, MemoSelectorData>;
 export type MemoizedSelectorGetter = (
   needle: Element | Element[],
-  selectorTypes: CssSelectorTypes
+  selectorTypes: CssSelectorTypes,
 ) => CssSelectorsByType;
 
 /**
@@ -22,7 +22,7 @@ export type MemoizedSelectorGetter = (
  */
 function getElementData(
   element: Element,
-  memo: MemoElementData = new Map()
+  memo: MemoElementData = new Map(),
 ): MemoSelectorData {
   if (!memo.get(element)) {
     memo.set(element, new Map());
@@ -36,7 +36,7 @@ function getElementData(
 function getSelectorData(
   element: Element,
   selectorType: CssSelectorType,
-  memo: MemoElementData = new Map()
+  memo: MemoElementData = new Map(),
 ) {
   const elementData = getElementData(element, memo);
   if (!elementData.get(selectorType)) {
@@ -50,7 +50,7 @@ function getSelectorData(
  */
 function getSelectors(
   element: Element,
-  selectorType: CssSelectorType
+  selectorType: CssSelectorType,
 ): CssSelectors {
   return SELECTOR_TYPE_GETTERS[selectorType]([element]);
 }
@@ -59,19 +59,19 @@ function getSelectors(
  * Creates interface for getting CSS selectors by type for an element. Results are remembered for use in later calls.
  */
 export function createMemo(
-  memo: MemoElementData = new Map()
+  memo: MemoElementData = new Map(),
 ): MemoizedSelectorGetter {
   return function (
     needle: Element | Element[],
-    selectors: CssSelectorTypes
+    selectors: CssSelectorTypes,
   ): CssSelectorsByType {
     const result = {} as CssSelectorsByType;
     const sanitizedNeedle = sanitizeSelectorNeedle(needle);
     selectors.forEach((selectorType) => {
       result[selectorType] = getIntersection(
         sanitizedNeedle.map((element) =>
-          getSelectorData(element, selectorType, memo)
-        )
+          getSelectorData(element, selectorType, memo),
+        ),
       );
     });
     return result;

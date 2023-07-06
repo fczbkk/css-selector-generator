@@ -55,7 +55,7 @@ export function* parentsGenerator(needle: Element[], root: ParentNode) {
 export function* viableParentsGenerator(
   needle: Element[],
   needleSelector: string,
-  root?: ParentNode
+  root?: ParentNode,
 ) {
   for (const parentCandidate of parentsGenerator(needle, root)) {
     if (testSelector(needle, needleSelector, parentCandidate)) {
@@ -70,7 +70,7 @@ export function* viableParentsGenerator(
 export function testParentCandidate(
   needle: Element,
   needleSelector: string,
-  parent: ParentNode
+  parent: ParentNode,
 ): boolean {
   const matchingElements = Array.from(parent.querySelectorAll(needleSelector));
   return (
@@ -81,7 +81,7 @@ export function testParentCandidate(
 
 export function getSelectorDataPowerSet(selectorData: CssSelectorsByType) {
   return Object.fromEntries(
-    Object.entries(selectorData).map(([key, val]) => [key, getPowerSet(val)])
+    Object.entries(selectorData).map(([key, val]) => [key, getPowerSet(val)]),
   );
 }
 
@@ -89,13 +89,13 @@ export function* needleCandidateGenerator(
   needle: Element[],
   selectorTypes: CssSelectorType[],
   options: CssSelectorGeneratorOptions,
-  memo = createMemo()
+  memo = createMemo(),
 ) {
   for (const selectorTypesCombination of powerSetGenerator(selectorTypes)) {
     const needleSelectors = memo(needle, selectorTypesCombination);
     const needleSelectorsPowerSet = getSelectorDataPowerSet(needleSelectors);
     const needleSelectorsCombinations = getCartesianProduct(
-      needleSelectorsPowerSet
+      needleSelectorsPowerSet,
     );
     for (const needleSelectorData of needleSelectorsCombinations) {
       yield constructSelector(needleSelectorData);
@@ -107,7 +107,7 @@ export function* needleSelectorGenerator(
   needle: Element[],
   selectorTypes: CssSelectorType[],
   options: CssSelectorGeneratorOptions,
-  memo = createMemo()
+  memo = createMemo(),
 ) {
   // TODO
 }
@@ -118,7 +118,7 @@ export function* viableSelectorGenerator() {
 
 export function* cssSelectorGenerator(
   originalNeedle: unknown,
-  originalOptions: CssSelectorGeneratorOptionsInput = {}
+  originalOptions: CssSelectorGeneratorOptionsInput = {},
 ) {
   const needle = sanitizeSelectorNeedle(originalNeedle);
   const options = sanitizeOptions(needle[0], originalOptions);

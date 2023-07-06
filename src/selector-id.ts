@@ -7,7 +7,7 @@ import { CssSelectorGenerated } from "./types.js";
  * Get ID selector for an element.
  * */
 export function getElementIdSelectors(
-  element: Element
+  element: Element,
 ): CssSelectorGenerated[] {
   const id = element.getAttribute("id") || "";
   const selector = `#${sanitizeSelectorItem(id)}` as CssSelectorGenerated;

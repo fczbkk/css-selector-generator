@@ -35,7 +35,7 @@ export function attributeNodeToSelector({
  */
 export function isValidAttributeNode(
   { nodeName }: Node,
-  element: Element
+  element: Element,
 ): boolean {
   // form input value should not be used as a selector
   const tagName = element.tagName.toLowerCase();
@@ -50,10 +50,10 @@ export function isValidAttributeNode(
  * Get attribute selectors for an element.
  */
 export function getElementAttributeSelectors(
-  element: Element
+  element: Element,
 ): CssSelectorGenerated[] {
   const validAttributes = Array.from(element.attributes).filter(
-    (attributeNode) => isValidAttributeNode(attributeNode, element)
+    (attributeNode) => isValidAttributeNode(attributeNode, element),
   );
   return [
     ...validAttributes.map(attributeNodeToSimplifiedSelector),
@@ -65,7 +65,7 @@ export function getElementAttributeSelectors(
  * Get attribute selectors matching all elements.
  */
 export function getAttributeSelectors(
-  elements: Element[]
+  elements: Element[],
 ): CssSelectorGenerated[] {
   const elementSelectors = elements.map(getElementAttributeSelectors);
   return getIntersection(elementSelectors);

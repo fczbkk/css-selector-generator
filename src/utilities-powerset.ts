@@ -4,7 +4,7 @@ type powerSetGeneratorOptions = {
 
 export function* powerSetGenerator<T>(
   input: Array<T> = [],
-  { maxResults = Number.POSITIVE_INFINITY }: powerSetGeneratorOptions = {}
+  { maxResults = Number.POSITIVE_INFINITY }: powerSetGeneratorOptions = {},
 ): IterableIterator<Array<T>> {
   let resultCounter = 0;
   let offsets = generateOffsets(1);
@@ -22,7 +22,7 @@ export function* powerSetGenerator<T>(
  */
 export function getPowerSet<T>(
   input: Array<T> = [],
-  { maxResults = Number.POSITIVE_INFINITY }: powerSetGeneratorOptions = {}
+  { maxResults = Number.POSITIVE_INFINITY }: powerSetGeneratorOptions = {},
 ): Array<Array<T>> {
   return Array.from(powerSetGenerator(input, { maxResults }));
 }

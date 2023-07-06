@@ -53,7 +53,7 @@ export function createPatternMatcher(list: CssSelectorMatch[]): PatternMatcher {
           showWarning(
             "pattern matcher function invalid",
             "Provided pattern matching function does not return boolean. It's result will be ignored.",
-            item
+            item,
           );
           return false;
         }
@@ -70,7 +70,7 @@ export function createPatternMatcher(list: CssSelectorMatch[]): PatternMatcher {
     showWarning(
       "pattern matcher invalid",
       "Pattern matching only accepts strings, regular expressions and/or functions. This item is invalid and will be ignored.",
-      item
+      item,
     );
     return () => false;
   });

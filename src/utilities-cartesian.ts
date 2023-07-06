@@ -2,7 +2,7 @@
  * Generates cartesian product out of input object.
  */
 export function getCartesianProduct<T>(
-  input: Record<string, T[]> = {}
+  input: Record<string, T[]> = {},
 ): Record<string, T>[] {
   let result: Record<string, T>[] = [];
   Object.entries(input).forEach(([key, values]) => {
