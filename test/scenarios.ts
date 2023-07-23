@@ -43,7 +43,7 @@ const selector = await page.evaluate(() => {
   );
 });
 
-console.log("selector", selector);
+// console.log("selector", selector);
 
 await browser.close();
 
