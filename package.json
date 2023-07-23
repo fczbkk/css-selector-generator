@@ -27,7 +27,8 @@
     "lint:build": "npm run lint -- --max-warnings 0",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "postversion": "git push && git push --tags && npm publish --access=public",
-    "version": "npm run build && npm run changelog && git add -A"
+    "version": "npm run build && npm run changelog && git add -A",
+    "scenarios": "tsx ./test/scenarios.ts"
   },
   "devDependencies": {
     "@types/chai": "^4.3.5",
@@ -36,6 +37,7 @@
     "@typescript-eslint/parser": "^5.61.0",
     "chai": "^4.3.7",
     "conventional-changelog-cli": "^3.0.0",
+    "esbuild": "^0.18.13",
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^8.8.0",
     "husky": "^8.0.3",
@@ -47,9 +49,11 @@
     "karma-webpack": "^5.0.0",
     "lint-staged": "^13.2.3",
     "mocha": "^10.2.0",
+    "playwright": "^1.35.1",
     "prettier": "^3.0.0",
     "raw-loader": "^4.0.2",
     "ts-loader": "^9.4.4",
+    "tsx": "^3.12.7",
     "typescript": "^5.1.6",
     "webpack": "^5.88.1",
     "webpack-cli": "^5.1.4"

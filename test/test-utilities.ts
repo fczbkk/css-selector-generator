@@ -61,12 +61,16 @@ function getAllComments(root: Element): Comment[] {
   return result;
 }
 
-export function parseTestHtml(html: string) {
-  const root = document.createElement("div");
-  root.innerHTML = html;
+export function getScenarioData(root: Element) {
   const comments = getAllComments(root);
   return {
     root,
     ...parseComments(comments),
   };
+}
+
+export function parseTestHtml(html: string) {
+  const root = document.createElement("div");
+  root.innerHTML = html;
+  return getScenarioData(root);
 }
