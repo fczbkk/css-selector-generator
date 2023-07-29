@@ -1,10 +1,10 @@
-import { getAttributeSelectors, getElementAttributeSelectors } from './selector-attribute.js';
-import { getClassSelectors, getElementClassSelectors } from './selector-class.js';
-import { getElementIdSelectors, getIdSelector } from './selector-id.js';
-import { getElementNthChildSelector, getNthChildSelector } from './selector-nth-child.js';
-import { getElementNthOfTypeSelector, getNthOfTypeSelector } from './selector-nth-of-type.js';
-import { getElementTagSelectors, getTagSelector } from './selector-tag.js';
-import { CssSelector, CssSelectorData, CssSelectorGenerated, CssSelectorGeneratorOptions, CssSelectorType, CssSelectorTypes, IdentifiableParent, PatternMatcher } from './types.js';
+import { getAttributeSelectors, getElementAttributeSelectors } from "./selector-attribute.js";
+import { getClassSelectors, getElementClassSelectors } from "./selector-class.js";
+import { getElementIdSelectors, getIdSelector } from "./selector-id.js";
+import { getElementNthChildSelector, getNthChildSelector } from "./selector-nth-child.js";
+import { getElementNthOfTypeSelector, getNthOfTypeSelector } from "./selector-nth-of-type.js";
+import { getElementTagSelectors, getTagSelector } from "./selector-tag.js";
+import { CssSelector, CssSelectorData, CssSelectorGenerated, CssSelectorGeneratorOptions, CssSelectorType, CssSelectorTypes, IdentifiableParent, PatternMatcher } from "./types.js";
 export declare const ESCAPED_COLON: string;
 export declare const SPECIAL_CHARACTERS_RE: RegExp;
 /**
@@ -84,7 +84,7 @@ export declare function constructSelector(selectorData?: CssSelectorData): CssSe
 /**
  * Tries to find an unique CSS selector for element within given parent.
  */
-export declare function getSelectorWithinRoot(elements: Element[], root: ParentNode, rootSelector: CssSelector, options: CssSelectorGeneratorOptions): (null | CssSelector);
+export declare function getSelectorWithinRoot(elements: Element[], root: ParentNode, rootSelector: CssSelector, options: CssSelectorGeneratorOptions): null | CssSelector;
 /**
  * Climbs through parents of the element and tries to find the one that is
  * identifiable by unique CSS selector.

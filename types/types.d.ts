@@ -2,55 +2,44 @@ declare const opaqueId: unique symbol;
 declare type Tagged<Token> = {
     readonly [opaqueId]: Token;
 };
-export declare type Opaque<Type, Token = unknown> = Type & Tagged<Token>;
-export declare type CssSelectorGenerated = Opaque<string, 'CssSelector'>;
-export declare enum OPERATOR {
-    NONE = "none",
-    DESCENDANT = "descendant",
-    CHILD = "child"
-}
-export declare type OperatorValue = '' | ' ' | ' > ';
-export interface OperatorData {
-    type: OPERATOR;
-    value: OperatorValue;
-}
+export type Opaque<Type, Token = unknown> = Type & Tagged<Token>;
+export type ObjectValues<T> = T[keyof T];
+export type CssSelectorGenerated = Opaque<string, "CssSelector">;
+export declare const OPERATOR: {
+    readonly NONE: "";
+    readonly DESCENDANT: " ";
+    readonly CHILD: " > ";
+};
+export type OperatorValue = ObjectValues<typeof OPERATOR>;
 export interface ElementSelectorData {
     value: CssSelectorGenerated;
     include: boolean;
 }
 export interface ElementData {
     element: Element;
-    operator: OperatorData;
+    operator: OperatorValue;
     selectors: Partial<Record<CssSelectorType, ElementSelectorData[]>>;
 }
-export interface SelectorData {
-    isFallback: boolean;
-    elements: ElementData[];
-}
-export interface ResultData {
-    selectorData: SelectorData[];
-    getByElement: (element: Element) => ElementData | null;
-    getByCssSelector: (selector: string) => ElementData | null;
-}
-export declare type CssSelector = string;
-export declare type CssSelectors = Array<CssSelector>;
-declare type CssSelectorMatchFn = (input: string) => boolean;
-export declare type CssSelectorMatch = RegExp | string | CssSelectorMatchFn;
-export declare enum CssSelectorType {
-    id = "id",
-    class = "class",
-    tag = "tag",
-    attribute = "attribute",
-    nthchild = "nthchild",
-    nthoftype = "nthoftype"
-}
-export declare type CssSelectorTypes = Array<CssSelectorType>;
-export declare type CssSelectorsByType = Record<CssSelectorType, CssSelectors>;
-export declare type CssSelectorData = {
+export type CssSelector = string;
+export type CssSelectors = Array<CssSelector>;
+type CssSelectorMatchFn = (input: string) => boolean;
+export type CssSelectorMatch = RegExp | string | CssSelectorMatchFn;
+export declare const CSS_SELECTOR_TYPE: {
+    readonly id: "id";
+    readonly class: "class";
+    readonly tag: "tag";
+    readonly attribute: "attribute";
+    readonly nthchild: "nthchild";
+    readonly nthoftype: "nthoftype";
+};
+export type CssSelectorType = ObjectValues<typeof CSS_SELECTOR_TYPE>;
+export type CssSelectorTypes = Array<CssSelectorType>;
+export type CssSelectorsByType = Partial<Record<CssSelectorType, CssSelectors>>;
+export type CssSelectorData = {
     [key in CssSelectorType]?: Array<string> | Array<Array<string>>;
 };
-export declare type CssSelectorGeneratorOptionsInput = Partial<{
-    selectors: (keyof typeof CssSelectorType)[];
+export type CssSelectorGeneratorOptionsInput = Partial<{
+    selectors: CssSelectorType[];
     whitelist: Array<CssSelectorMatch>;
     blacklist: Array<CssSelectorMatch>;
     root: ParentNode | null;
@@ -60,12 +49,12 @@ export declare type CssSelectorGeneratorOptionsInput = Partial<{
     maxCombinations: number;
     maxCandidates: number;
 }>;
-export declare type CssSelectorGeneratorOptions = Required<Omit<CssSelectorGeneratorOptionsInput, 'selectors'> & {
+export type CssSelectorGeneratorOptions = Required<Omit<CssSelectorGeneratorOptionsInput, "selectors"> & {
     selectors: CssSelectorTypes;
 }>;
-export declare type IdentifiableParent = null | {
+export type IdentifiableParent = null | {
     foundElements: Element[];
     selector: CssSelector;
 };
-export declare type PatternMatcher = (input: string) => boolean;
+export type PatternMatcher = (input: string) => boolean;
 export {};
