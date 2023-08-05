@@ -1,10 +1,26 @@
 import { URL } from "node:url";
-import { resolve } from "node:path";
+import { resolve, extname } from "node:path";
 import { build } from "esbuild";
+import { readdir, readFile } from "node:fs/promises";
+import type { Dirent } from "node:fs";
+import { equal } from "node:assert";
 
 import { chromium } from "playwright";
+import type { Page } from "playwright";
+import { ScenarioData } from "./test-utilities.js";
+
+interface ScenarioTestResult {
+  [key: string]: { expectation: string; selector: string };
+}
+
+// TODO collect all results and report them, throw an error if any of them fail
 
 const __dirname = new URL(".", import.meta.url).pathname;
+const scenariosDir = resolve(__dirname, "../scenario");
+
+function isHtmlFile(dirent: Dirent) {
+  return dirent.isFile() && extname(dirent.name) === ".html";
+}
 
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage();
@@ -23,27 +39,41 @@ await buildAndInsertScript({
   globalName: "CssSelectorGenerator",
 });
 
-const scenario = `
-  <div class="aaa bbb">
-    <!-- name: needle -->
-  </div>
-  <div class="aaa"></div>
-  <div class="bbb"></div>
-`;
+async function testScenario(
+  scenarioContent: string,
+  page: Page,
+): Promise<ScenarioTestResult> {
+  await page.setContent(scenarioContent);
 
-await page.setContent(scenario);
+  return page.evaluate(() => {
+    // @ts-ignore -- TS does not know that we added the library to the page's global scope
+    const scenarioData: ScenarioData = window.testUtilities.getScenarioData(
+      document.body,
+    );
 
-const selector = await page.evaluate(() => {
-  // @ts-ignore -- TS does not know that we added the library to the page's global scope
-  const scenarioData = window.testUtilities.getScenarioData(document.body);
-  // const element = document.querySelector("p");
-  // @ts-ignore -- TS does not know that we added the library to the page's global scope
-  return window.CssSelectorGenerator.getCssSelector(
-    scenarioData.element.needle,
-  );
-});
+    const result: ScenarioTestResult = {};
+    for (const [key, expectation] of Object.entries(scenarioData.expectation)) {
+      // @ts-ignore -- TS does not know that we added the library to the page's global scope
+      const selector = window.CssSelectorGenerator.getCssSelector(
+        scenarioData.element[key],
+      );
+      result[key] = { expectation, selector };
+    }
 
-// console.log("selector", selector);
+    return result;
+  });
+}
+
+const scenarioFiles = (await readdir(scenariosDir, { withFileTypes: true }))
+  .filter(isHtmlFile)
+  .map(({ name, path }) => resolve(path, name));
+
+for (const scenarioFile of scenarioFiles) {
+  const scenarioContent = await readFile(scenarioFile, "utf-8");
+  const scenarioData = await testScenario(scenarioContent, page);
+  // TODO handle results
+  // console.log(scenarioData);
+}
 
 await browser.close();
 
