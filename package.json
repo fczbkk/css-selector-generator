@@ -8,8 +8,14 @@
   "type": "module",
   "main": "build/index.js",
   "exports": {
-    "import": "./esm/index.js",
-    "require": "./build/index.js"
+    "import": {
+      "types": "./types/index.d.ts",
+      "default": "./esm/index.js"
+    },
+    "require":  {
+      "types": "./types/index.d.ts",
+      "default": "./build/index.js"
+    }
   },
   "module": "./esm/index.js",
   "types": "types/index.d.ts",
