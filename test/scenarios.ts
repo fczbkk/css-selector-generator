@@ -11,6 +11,9 @@ import {chromium} from "playwright";
 import type {Page} from "playwright";
 import {ScenarioData} from "./test-utilities.js";
 
+// TODO: temporary hack until Typescript learns that Dirent has a "path" property
+type DirentWithPath = Dirent & { path: string };
+
 interface ScenarioTestResultItem {
   key: string;
   expectation: string;
@@ -115,7 +118,7 @@ async function buildScript ({
 async function getScenariosFiles () {
   return (await readdir(scenariosDir, {withFileTypes: true}))
     .filter(isHtmlFile)
-    .map(({name, path}) => resolve(path, name));
+    .map(({name, path}: DirentWithPath) => resolve(path, name));
 }
 
 async function testAllScenarios () {
