@@ -117,4 +117,14 @@ describe("selector - attribute", function () {
     const result = getCssSelector(root.firstElementChild);
     assert.notMatch(result, /^\[/);
   });
+
+  it('should escape attributes containing colons', () => {
+    root.innerHTML = '<div aaa:bbb="ccc" />'
+    const element = root.firstElementChild
+    const selectors = getAttributeSelectors([element])
+    selectors.forEach((selector) => {
+      assert.doesNotThrow(() => document.querySelector(selector), selector)
+      assert.equal(document.querySelector(selector), element)
+    })
+  });
 });
