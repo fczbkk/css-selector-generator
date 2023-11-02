@@ -1,13 +1,17 @@
 import { CssSelectorGenerated } from "./types.js";
+type AttributeData = {
+    name: string;
+    value: string;
+};
 export declare const attributeBlacklistMatch: import("./types.js").PatternMatcher;
 /**
  * Get simplified attribute selector for an element.
  */
-export declare function attributeNodeToSimplifiedSelector({ nodeName, }: Node): CssSelectorGenerated;
+export declare function attributeNodeToSimplifiedSelector({ name, }: AttributeData): CssSelectorGenerated;
 /**
  * Get attribute selector for an element.
  */
-export declare function attributeNodeToSelector({ nodeName, nodeValue, }: Node): CssSelectorGenerated;
+export declare function attributeNodeToSelector({ name, value, }: AttributeData): CssSelectorGenerated;
 /**
  * Checks whether attribute should be used as a selector.
  */
@@ -20,3 +24,4 @@ export declare function getElementAttributeSelectors(element: Element): CssSelec
  * Get attribute selectors matching all elements.
  */
 export declare function getAttributeSelectors(elements: Element[]): CssSelectorGenerated[];
+export {};
