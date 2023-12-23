@@ -82,6 +82,9 @@ export function getScenarioData(root: Element): ScenarioData {
   };
 }
 
+/**
+ * @deprecated Use `parseAllComments` from scenario-utilities.ts instead.
+ */
 export function parseTestHtml(html: string): ScenarioData {
   const root = document.createElement("div");
   root.innerHTML = html;
