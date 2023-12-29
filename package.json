@@ -18,7 +18,7 @@
   "module": "./esm/index.js",
   "types": "types/index.d.ts",
   "scripts": {
-    "clean": "rimraf ./esm ./types",
+    "clean": "rimraf ./esm ./types ./temp",
     "test": "karma start ./tools/karma.conf.js",
     "dev": "npm run test -- --no-single-run --auto-watch",
     "prebuild": "npm run clean && npm run lint:build",
