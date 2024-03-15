@@ -19,7 +19,7 @@ export const attributeBlacklistMatch = createPatternMatcher([
  * Prevents errors when attribute name contains a colon (e.g. "xlink:href").
  */
 function sanitizeAttributeName (name: string) {
-  return name.replace(/:/g, "\\:");
+  return CSS.escape(name);
 }
 
 /**

@@ -127,4 +127,11 @@ describe("selector - attribute", function () {
       assert.equal(document.querySelector(selector), element)
     })
   });
+
+  it('should escape attributes containing semi-colons', () => {
+    root.innerHTML = '<div aaa;bbb="ccc" />'
+    const element = root.firstElementChild
+    const result = getCssSelector(element)
+    assert.equal(result, '[aaa\\;bbb]')
+  });
 });
