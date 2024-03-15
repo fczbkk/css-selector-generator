@@ -1,3 +1,12 @@
+## [3.6.7](https://github.com/fczbkk/css-selector-generator/compare/v3.6.6...v3.6.7) (2024-03-15)
+
+
+### Bug Fixes
+
+* properly escape all attribute names ([52d159e](https://github.com/fczbkk/css-selector-generator/commit/52d159ea5f4ab5f43bd2cd73cc54b6c63dfa616f)), closes [#650](https://github.com/fczbkk/css-selector-generator/issues/650)
+
+
+
 ## [3.6.6](https://github.com/fczbkk/css-selector-generator/compare/v3.6.5...v3.6.6) (2023-11-02)
 
 
