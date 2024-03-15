@@ -3,9 +3,9 @@ import { createPatternMatcher, getIntersection } from "./utilities-data.js";
 import { CssSelectorGenerated } from "./types.js";
 
 type AttributeData = {
-  name: string,
-  value: string
-}
+  name: string;
+  value: string;
+};
 
 // List of attributes to be ignored. These are handled by different selector types.
 export const attributeBlacklistMatch = createPatternMatcher([
@@ -14,13 +14,6 @@ export const attributeBlacklistMatch = createPatternMatcher([
   // Angular attributes
   "ng-*",
 ]);
-
-/**
- * Prevents errors when attribute name contains a colon (e.g. "xlink:href").
- */
-function sanitizeAttributeName (name: string) {
-  return name.replace(/:/g, "\\:");
-}
 
 /**
  * Get simplified attribute selector for an element.
@@ -60,9 +53,9 @@ export function isValidAttributeNode(
 /**
  * Sanitize all attribute data. We want to do it once, before we start to generate simplified/full selectors from the same data.
  */
-function sanitizeAttributeData({nodeName, nodeValue}: Node): AttributeData {
+function sanitizeAttributeData({ nodeName, nodeValue }: Node): AttributeData {
   return {
-    name: sanitizeAttributeName(nodeName),
+    name: sanitizeSelectorItem(nodeName),
     value: sanitizeSelectorItem(nodeValue),
   };
 }
@@ -73,9 +66,9 @@ function sanitizeAttributeData({nodeName, nodeValue}: Node): AttributeData {
 export function getElementAttributeSelectors(
   element: Element,
 ): CssSelectorGenerated[] {
-  const validAttributes = Array.from(element.attributes).filter(
-    (attributeNode) => isValidAttributeNode(attributeNode, element),
-  ).map(sanitizeAttributeData);
+  const validAttributes = Array.from(element.attributes)
+    .filter((attributeNode) => isValidAttributeNode(attributeNode, element))
+    .map(sanitizeAttributeData);
   return [
     ...validAttributes.map(attributeNodeToSimplifiedSelector),
     ...validAttributes.map(attributeNodeToSelector),

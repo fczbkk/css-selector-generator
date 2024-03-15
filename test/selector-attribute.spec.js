@@ -118,13 +118,13 @@ describe("selector - attribute", function () {
     assert.notMatch(result, /^\[/);
   });
 
-  it('should escape attributes containing colons', () => {
-    root.innerHTML = '<div aaa:bbb="ccc" />'
-    const element = root.firstElementChild
-    const selectors = getAttributeSelectors([element])
+  it("should escape attributes containing colons and semicolons", () => {
+    root.innerHTML = '<div aaa:bbb="ccc" ddd;eee="fff" :="ggg" ;="hhh" : ; />';
+    const element = root.firstElementChild;
+    const selectors = getAttributeSelectors([element]);
     selectors.forEach((selector) => {
-      assert.doesNotThrow(() => document.querySelector(selector), selector)
-      assert.equal(document.querySelector(selector), element)
-    })
+      assert.doesNotThrow(() => document.querySelector(selector), selector);
+      assert.equal(document.querySelector(selector), element);
+    });
   });
 });
