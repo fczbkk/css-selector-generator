@@ -1,3 +1,12 @@
+## [3.6.8](https://github.com/fczbkk/css-selector-generator/compare/v3.6.7...v3.6.8) (2024-06-02)
+
+
+### Bug Fixes
+
+* isElement works on elements in an iframe ([bc26e3e](https://github.com/fczbkk/css-selector-generator/commit/bc26e3e7743a2fbfc58288ea8e71eb237429c488)), closes [#667](https://github.com/fczbkk/css-selector-generator/issues/667)
+
+
+
 ## [3.6.7](https://github.com/fczbkk/css-selector-generator/compare/v3.6.6...v3.6.7) (2024-03-15)
 
 
