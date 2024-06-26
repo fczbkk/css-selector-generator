@@ -20,6 +20,8 @@
   "scripts": {
     "clean": "rimraf ./esm ./types ./temp",
     "test": "karma start ./tools/karma.conf.js",
+    "test:new": "tsx test/run-tests.ts",
+    "test:playwright": "playwright test playwright-tests/playwright.spec.ts --config playwright-tests/playwright.config.ts",
     "dev": "npm run test -- --no-single-run --auto-watch",
     "prebuild": "npm run clean && npm run lint:build",
     "postbuild": "rimraf ./temp",
@@ -35,32 +37,34 @@
     "scenarios": "tsx ./test/scenarios.ts"
   },
   "devDependencies": {
-    "@types/chai": "^4.3.11",
-    "@types/mocha": "^10.0.6",
-    "@typescript-eslint/eslint-plugin": "^6.20.0",
-    "@typescript-eslint/parser": "^6.20.0",
+    "@types/chai": "^4.3.16",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "^20.14.9",
+    "@typescript-eslint/eslint-plugin": "^7.14.1",
+    "@typescript-eslint/parser": "^7.14.1",
     "chai": "^4.3.7",
     "chalk": "^5.3.0",
-    "conventional-changelog-cli": "^4.1.0",
-    "esbuild": "^0.20.0",
+    "conventional-changelog-cli": "^5.0.0",
+    "esbuild": "^0.21.5",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
-    "husky": "^9.0.10",
-    "karma": "^6.4.2",
+    "husky": "^9.0.11",
+    "karma": "^6.4.3",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^3.2.0",
     "karma-mocha": "^2.0.1",
     "karma-mocha-reporter": "^2.2.5",
     "karma-webpack": "^5.0.1",
-    "lint-staged": "^15.2.1",
-    "mocha": "^10.2.0",
-    "playwright": "^1.41.2",
-    "prettier": "^3.2.5",
+    "lint-staged": "^15.2.7",
+    "mocha": "^10.5.1",
+    "playwright": "^1.45.0",
+    "prettier": "^3.3.2",
+    "puppeteer": "^22.12.0",
     "raw-loader": "^4.0.2",
     "ts-loader": "^9.5.1",
-    "tsx": "^4.7.0",
-    "typescript": "^5.3.3",
-    "webpack": "^5.90.1",
+    "tsx": "^4.15.7",
+    "typescript": "^5.5.2",
+    "webpack": "^5.92.1",
     "webpack-cli": "^5.1.4"
   },
   "repository": {
@@ -70,5 +74,9 @@
   "homepage": "https://github.com/fczbkk/css-selector-generator/",
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.45.0",
+    "glob": "^10.4.2"
   }
 }

@@ -128,7 +128,7 @@ describe("Utilities", () => {
       const generator = viableParentsGenerator(
         data.group.needle,
         ".aaa",
-        data.root
+        data.root,
       );
       const result = [...generator];
       assert.deepEqual(result, []);
@@ -165,7 +165,7 @@ describe("Utilities", () => {
       const generator = viableParentsGenerator(
         data.group.needle,
         ".aaa",
-        data.root
+        data.root,
       );
       const result = [...generator];
       assert.deepEqual(result, [data.element.parent]);
@@ -180,7 +180,7 @@ describe("Utilities", () => {
       const result = testParentCandidate(
         data.element.needle,
         ".xxx",
-        data.root
+        data.root,
       );
       assert.isFalse(result);
     });
@@ -192,7 +192,7 @@ describe("Utilities", () => {
       const result = testParentCandidate(
         data.element.needle,
         ".aaa",
-        data.root
+        data.root,
       );
       assert.isFalse(result);
     });
@@ -205,7 +205,7 @@ describe("Utilities", () => {
       const result = testParentCandidate(
         data.element.needle,
         ".aaa",
-        data.root
+        data.root,
       );
       assert.isTrue(result);
     });
@@ -216,7 +216,7 @@ describe("Utilities", () => {
       const result = testParentCandidate(
         data.element.needle,
         ".aaa",
-        data.root
+        data.root,
       );
       assert.isTrue(result);
     });
@@ -229,7 +229,7 @@ describe("Utilities", () => {
       const result = testParentCandidate(
         data.element.needle,
         ".aaa",
-        data.root
+        data.root,
       );
       assert.isFalse(result);
     });
@@ -247,7 +247,7 @@ describe("Utilities", () => {
       const generator = needleCandidateGenerator(
         data.group.needle,
         [CSS_SELECTOR_TYPE.class],
-        options
+        options,
       );
       const result = [...generator];
       assert.deepEqual(result, [".aaa", ".bbb", ".aaa.bbb"]);
@@ -263,7 +263,7 @@ describe("Utilities", () => {
       const generator = needleCandidateGenerator(
         data.group.needle,
         [CSS_SELECTOR_TYPE.class, CSS_SELECTOR_TYPE.id],
-        options
+        options,
       );
       const result = [...generator];
       assert.deepEqual(result, [".aaa", "#bbb", "#bbb.aaa"]);

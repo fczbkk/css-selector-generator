@@ -66,7 +66,7 @@ async function testScenario(
   await page.setContent(`
     <!DOCTYPE html>
     <html>
-      <body>${scenarioContent}</body>
+      <body></body>
     </html>
   `);
 
