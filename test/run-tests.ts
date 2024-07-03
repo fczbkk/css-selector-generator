@@ -24,26 +24,6 @@ async function buildAndInsertScript(props: BuildScriptProps, page: Page) {
   return await page.addScriptTag({ path: buildPath });
 }
 
-async function getTestEnvironment() {
-  const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage();
-
-  // inject the library
-  await buildAndInsertScript(
-    {
-      srcPath: path.resolve(__dirname, "../src/index.ts"),
-      buildPath: path.resolve(__dirname, "../temp/test/index.js"),
-      globalName: "CssSelectorGenerator",
-    },
-    page,
-  );
-
-  return {
-    page,
-    browser,
-  };
-}
-
 /**
  * Transfers Playwright's console message object to terminal.
  */
@@ -61,6 +41,7 @@ async function consoleMessageToTerminal(consoleMessage: ConsoleMessage) {
   const logValues = await Promise.all(
     msgArgs.map(async (arg) => await arg.jsonValue()),
   );
+  // eslint-disable-next-line no-console
   console[method](...logValues);
 }
 
@@ -87,7 +68,7 @@ async function runSingleTest(testFile: string, browser: Browser) {
     });
 
     // TODO figure out why the diff option is not working. We are not receiving "expected" and "actual" properties from the browser.
-    const reporter = new Mocha.reporters.Spec(runner, {
+    new Mocha.reporters.Spec(runner, {
       diff: true,
     });
 
@@ -182,21 +163,9 @@ async function runTests() {
   return allFailedTests;
 }
 
-async function runComplexTest() {
-  const content = await readFile(
-    path.resolve(__dirname, "../test/complex.html"),
-    "utf-8",
-  );
-  const { page } = await getTestEnvironment();
-  await page.setContent(content);
-
-  // TODO get all elements
-  // TODO generate selectors for all elements
-  // TODO if some element does not return valid selector, report error
-}
-
 function showErrors(errors: Error[]) {
   for (const error of errors) {
+    // eslint-disable-next-line no-console
     console.error(error);
   }
 }
