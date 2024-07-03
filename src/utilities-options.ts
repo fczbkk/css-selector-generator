@@ -92,7 +92,7 @@ export function sanitizeRoot(input: unknown, element: Element): ParentNode {
       // eslint-disable-next-line max-len
       showWarning(
         "element root mismatch",
-        "Provided root does not contain the element. This will most likely result in producing a fallback selector using element's real root node. If you plan to use the selector using provided root (e.g. `root.querySelector`), it will nto work as intended.",
+        "Provided root does not contain the element. This will most likely result in producing a fallback selector using element's real root node. If you plan to use the selector using provided root (e.g. `root.querySelector`), it will not work as intended.",
       );
     }
     return input;
