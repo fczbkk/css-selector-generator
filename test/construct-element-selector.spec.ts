@@ -2,20 +2,20 @@ import { assert } from "chai";
 import {
   constructElementSelector,
   createElementData,
-} from "../src/utilities-element-data.ts";
-import { CSS_SELECTOR_TYPE, OPERATOR } from "../src/types.ts";
+} from "../src/utilities-element-data.js";
+import { CSS_SELECTOR_TYPE, ElementData, OPERATOR } from "../src/types.js";
 
 /**
  * Utility function that marks all selectors in elementData as included.
  */
-function includeAllSelectors(elementData) {
+function includeAllSelectors(elementData: ElementData) {
   Object.values(elementData.selectors).forEach((selectorDataList) =>
-    selectorDataList.forEach((selectorData) => (selectorData.include = true))
+    selectorDataList.forEach((selectorData) => (selectorData.include = true)),
   );
 }
 
 describe("utilities - constructElementSelector", () => {
-  let root;
+  let root: Element;
 
   beforeEach(() => {
     root = document.body.appendChild(document.createElement("div"));

@@ -1,26 +1,36 @@
 import { test, expect } from "./fixtures.js";
-import { sanitizeRoot } from "../src/utilities-options.js";
+import { readFile } from "node:fs/promises";
+import { URL } from "node:url";
+import * as path from "node:path";
+import { getCssSelector } from "../src/index.js";
 
-test("selector test", async ({ blankPage }) => {
-  await blankPage.setContent("ahoj");
-  const body = await blankPage.body();
-  await expect(body).toHaveText("ahoj");
-});
+const __dirname = new URL(".", import.meta.url).pathname;
 
-test("sanitize root", async ({ blankPage }) => {
-  await blankPage.page.exposeBinding("sanitizeRoot", sanitizeRoot);
-  const result = await blankPage.page.evaluate(() => {
-    const element = document.body.appendChild(document.createElement("div"));
-    return sanitizeRoot(document, element);
+declare global {
+  interface CssSelectorGenerator {
+    getCssSelector: typeof getCssSelector;
+  }
+  const CssSelectorGenerator: CssSelectorGenerator;
+}
+
+test("complex test", async ({ libraryPage }) => {
+  const contentPath = path.resolve(__dirname, "../test/html/complex.html");
+  const content = await readFile(contentPath, "utf8");
+  await libraryPage.setContent(content);
+
+  const foundErrors = await libraryPage.page.evaluate(() => {
+    const allElements = document.querySelectorAll("*");
+    const errors = [];
+    Array.from(allElements).forEach((element) => {
+      const selector = CssSelectorGenerator.getCssSelector(element);
+      const matches = document.querySelectorAll(selector);
+      if (matches.length !== 1 && matches[1] !== element) {
+        errors.push({ selector, element });
+      }
+    });
+
+    return errors;
   });
 
-  console.log("result", result);
-  expect(true).toBe(false);
-
-  /*
-    const element = root.appendChild(document.createElement("div"));
-    const result = sanitizeRoot(document, element);
-    assert.equal(result, document);
-
-   */
+  expect(foundErrors).toEqual([]);
 });

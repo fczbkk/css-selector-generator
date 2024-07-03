@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { getNthChildSelector } from "../src/selector-nth-child.ts";
+import { getNthChildSelector } from "../src/selector-nth-child.js";
 
 describe("selector - nth-child", function () {
   let root;

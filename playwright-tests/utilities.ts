@@ -1,5 +1,6 @@
 import type { BuildOptions } from "esbuild";
 import { build } from "esbuild";
+import { Page } from "playwright";
 
 export interface BuildScriptProps {
   srcPath: string;
@@ -25,4 +26,13 @@ export async function buildScript({
     platform: "browser",
     ...buildOptions,
   });
+}
+
+export async function buildAndInsertScript(
+  props: BuildScriptProps,
+  page: Page,
+) {
+  const { buildPath } = props;
+  await buildScript(props);
+  return await page.addScriptTag({ path: buildPath });
 }

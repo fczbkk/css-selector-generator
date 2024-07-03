@@ -4,11 +4,9 @@ module.exports = (config) => {
   config.set({
     files: [
       "../test/suppressConsoleWarnings.js",
-      { pattern: "../test/**/*.spec.js", watched: false },
       { pattern: "../test/**/*.spec.ts", watched: false },
     ],
     preprocessors: {
-      "../test/**/*.spec.js": ["webpack"],
       "../test/**/*.spec.ts": ["webpack"],
     },
     browsers: ["ChromeHeadless"],

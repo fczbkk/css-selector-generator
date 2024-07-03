@@ -1,6 +1,6 @@
 import { assert } from "chai";
-import { CSS_SELECTOR_TYPE, OPERATOR } from "../src/types.ts";
-import { createElementData } from "../src/utilities-element-data.ts";
+import { CSS_SELECTOR_TYPE, OPERATOR } from "../src/types.js";
+import { createElementData } from "../src/utilities-element-data.js";
 
 describe("utilities - createElementData", () => {
   const element = document.createElement("div");

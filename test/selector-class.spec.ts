@@ -1,5 +1,6 @@
 import { assert } from "chai";
-import { getClassSelectors } from "../src/selector-class.ts";
+import { getClassSelectors } from "../src/selector-class.js";
+import { CssSelectorGenerated } from "../src/types";
 
 describe("selector - class", function () {
   let root;
@@ -16,9 +17,9 @@ describe("selector - class", function () {
     root.innerHTML = '<div class="aaa bbb ccc"></div>';
     const result = getClassSelectors([root.firstElementChild]);
     assert.lengthOf(result, 3);
-    assert.include(result, ".aaa");
-    assert.include(result, ".bbb");
-    assert.include(result, ".ccc");
+    assert.include(result, ".aaa" as CssSelectorGenerated);
+    assert.include(result, ".bbb" as CssSelectorGenerated);
+    assert.include(result, ".ccc" as CssSelectorGenerated);
   });
 
   it("should return empty list if not set", function () {
@@ -31,9 +32,9 @@ describe("selector - class", function () {
     root.innerHTML = '<div class="   aaa   bbb   ccc   "></div>';
     const result = getClassSelectors([root.firstElementChild]);
     assert.lengthOf(result, 3);
-    assert.include(result, ".aaa");
-    assert.include(result, ".bbb");
-    assert.include(result, ".ccc");
+    assert.include(result, ".aaa" as CssSelectorGenerated);
+    assert.include(result, ".bbb" as CssSelectorGenerated);
+    assert.include(result, ".ccc" as CssSelectorGenerated);
   });
 
   it("should ignore empty class name", function () {
@@ -51,8 +52,9 @@ describe("selector - class", function () {
   it("should sanitize class name", function () {
     root.innerHTML = '<div class="aaa:bbb"></div>';
     const result = getClassSelectors([root.firstElementChild]);
+    const expectation = ".aaa\\:bbb" as CssSelectorGenerated;
     assert.lengthOf(result, 1);
-    assert.include(result, ".aaa\\:bbb");
+    assert.include(result, expectation);
   });
 
   it("should escape class names that start with a number", function () {

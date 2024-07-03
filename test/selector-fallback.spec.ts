@@ -1,6 +1,6 @@
 import { assert } from "chai";
-import { getFallbackSelector } from "../src/selector-fallback.ts";
-import { testMultiSelector, testSelector } from "../src/utilities-dom.ts";
+import { getFallbackSelector } from "../src/selector-fallback.js";
+import { testMultiSelector, testSelector } from "../src/utilities-dom.js";
 
 describe("selector - fallback", function () {
   let root;

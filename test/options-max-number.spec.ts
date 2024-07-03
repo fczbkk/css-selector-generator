@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { sanitizeMaxNumber } from "../src/utilities-options.ts";
+import { sanitizeMaxNumber } from "../src/utilities-options.js";
 
 describe("options: maxNumber", () => {
   it("should default to positive infinity", () => {

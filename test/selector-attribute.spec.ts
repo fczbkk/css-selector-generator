@@ -1,6 +1,7 @@
 import { assert } from "chai";
-import getCssSelector from "../src/index.ts";
-import { getAttributeSelectors } from "../src/selector-attribute.ts";
+import getCssSelector from "../src/index.js";
+import { getAttributeSelectors } from "../src/selector-attribute.js";
+import { CssSelectorGenerated } from "../src/types";
 
 describe("selector - attribute", function () {
   let root;
@@ -45,13 +46,15 @@ describe("selector - attribute", function () {
   it("should sanitize attribute values", function () {
     root.innerHTML = '<div aaa="bbb ccc"></div>';
     const result = getAttributeSelectors([root.firstElementChild]);
-    assert.include(result, "[aaa='bbb\\ ccc']");
+    const expectation = "[aaa='bbb\\ ccc']" as CssSelectorGenerated;
+    assert.include(result, expectation);
   });
 
   it("should quote attribute values", function () {
     root.innerHTML = '<div aaa="bbb:ccc"></div>';
     const result = getAttributeSelectors([root.firstElementChild]);
-    assert.include(result, "[aaa='bbb\\:ccc']");
+    const expectation = "[aaa='bbb\\:ccc']" as CssSelectorGenerated;
+    assert.include(result, expectation);
   });
 
   it("should ignore Angular attributes", function () {

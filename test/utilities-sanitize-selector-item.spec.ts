@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { sanitizeSelectorItem } from "../src/utilities-selectors.ts";
+import { sanitizeSelectorItem } from "../src/utilities-selectors.js";
 
 describe("utilities - sanitizeSelectorItem", function () {
   it("should leave content as is", function () {

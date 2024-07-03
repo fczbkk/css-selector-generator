@@ -1,6 +1,6 @@
 import { assert } from "chai";
-import { getCssSelector } from "../src/index.ts";
-import { getIdSelector } from "../src/selector-id.ts";
+import { getCssSelector } from "../src";
+import { getIdSelector } from "../src/selector-id.js";
 
 describe("Shadow DOM", () => {
   let root;

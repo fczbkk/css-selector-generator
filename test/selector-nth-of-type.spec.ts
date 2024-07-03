@@ -1,7 +1,8 @@
 import { assert } from "chai";
-import { getNthOfTypeSelector } from "../src/selector-nth-of-type.ts";
-import { getCssSelector } from "../src/index.ts";
-import { constructSelector } from "../src/utilities-selectors.ts";
+import { getNthOfTypeSelector } from "../src/selector-nth-of-type.js";
+import { getCssSelector } from "../src";
+import { constructSelector } from "../src/utilities-selectors.js";
+import { CSS_SELECTOR_TYPE } from "../src/types";
 
 describe("selector - nth-of-type", function () {
   let root;
@@ -90,7 +91,7 @@ describe("selector - nth-of-type", function () {
         <span class="target"></span>
       </div>
     `;
-    const options = { root, selectors: ["nthoftype"] };
+    const options = { root, selectors: [CSS_SELECTOR_TYPE.nthoftype] };
     const element = root.querySelector(".target");
     const result = getCssSelector(element, options);
     assert.equal(result, "span:nth-of-type(2)");

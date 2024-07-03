@@ -1,6 +1,8 @@
 import { assert } from "chai";
-import { testSelector } from "../src/utilities-dom.ts";
-import { getCssSelector } from "../src/index.ts";
+import { testSelector } from "../src/utilities-dom.js";
+import { getCssSelector } from "../src";
+
+// TODO convert these to scenarios
 
 describe("CssSelectorGenerator", function () {
   let root;
@@ -130,6 +132,7 @@ describe("CssSelectorGenerator", function () {
     });
   });
 
+  // TODO convert these to scenarios
   describe("multiple elements", () => {
     it("should get single selector matching multiple elements", () => {
       root.innerHTML = `
@@ -144,7 +147,7 @@ describe("CssSelectorGenerator", function () {
     it("should get combined selector matching multiple elements", () => {
       root.innerHTML = "<a></a><span></span>";
       const elements = [root.children[0], root.children[1]];
-      const result = getCssSelector(elements);
+      const result = getCssSelector(elements, { root });
       assert.equal(result, "a, span");
     });
 

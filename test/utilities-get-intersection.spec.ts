@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { getIntersection } from "../src/utilities-data.ts";
+import { getIntersection } from "../src/utilities-data.js";
 
 describe("utilities - getIntersection", () => {
   it("should produce empty array from empty input", () => {

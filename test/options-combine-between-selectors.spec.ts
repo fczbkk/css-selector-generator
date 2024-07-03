@@ -1,8 +1,8 @@
 import { assert } from "chai";
-import { getCssSelector } from "../src/index.ts";
+import { getCssSelector } from "../src";
 
 describe("options: combineBetweenSelectors", function () {
-  let root;
+  let root: Element;
   const html_non_unique_class_and_tag =
     '<p class="aaa"></p>' + "<p></p>" + '<div class="aaa"></div>';
 

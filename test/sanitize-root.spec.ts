@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { sanitizeRoot } from "../src/utilities-options.ts";
+import { sanitizeRoot } from "../src/utilities-options.js";
 
 describe("utilities - sanitizeRoot", () => {
   let root;

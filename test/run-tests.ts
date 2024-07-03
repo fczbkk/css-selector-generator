@@ -2,7 +2,6 @@ import { chromium, type Page, type Browser } from "playwright";
 import chalk from "chalk";
 import { URL } from "node:url";
 import * as path from "node:path";
-import type { Dirent } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { buildScript, BuildScriptProps } from "../playwright-tests/utilities";
 import { glob } from "glob";
@@ -39,14 +38,35 @@ async function getTestEnvironment() {
     page,
   );
 
-  return { page, browser };
+  return {
+    page,
+    browser,
+  };
 }
 
+const consoleMessageMethods = {
+  warning: "warn",
+  startGroup: "group",
+  startGroupCollapsed: "groupCollapsed",
+  endGroup: "groupEnd",
+};
+
 async function runSingleTest(testFile: string, browser: Browser) {
-  return new Promise<Error[]>(async (resolve, reject) => {
+  return new Promise<Error[]>(async (resolve) => {
     const startTimestamp = Date.now();
     process.stdout.write(`running tests from: ${chalk.bold(testFile)}...`);
     const page = await browser.newPage();
+
+    page.on("console", async (msg) => {
+      // TODO extract the console conversion functionality
+      const type = msg.type();
+      const method = consoleMessageMethods[type] || type;
+      const msgArgs = msg.args();
+      const logValues = await Promise.all(
+        msgArgs.map(async (arg) => await arg.jsonValue()),
+      );
+      console[method](...logValues);
+    });
 
     // Create a new Mocha runner and reporter
     const suite = new Mocha.Suite(testFile);
@@ -80,8 +100,9 @@ async function runSingleTest(testFile: string, browser: Browser) {
 
     await page.setContent(`
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
       <head>
+        <title>mock page</title>
         <style>${style}</style>
       </head>
       <body>
@@ -155,6 +176,19 @@ async function runTests() {
   );
 
   return allFailedTests;
+}
+
+async function runComplexTest() {
+  const content = await readFile(
+    path.resolve(__dirname, "../test/complex.html"),
+    "utf-8",
+  );
+  const { page } = await getTestEnvironment();
+  await page.setContent(content);
+
+  // TODO get all elements
+  // TODO generate selectors for all elements
+  // TODO if some element does not return valid selector, report error
 }
 
 function showErrors(errors: Error[]) {
