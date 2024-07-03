@@ -1,4 +1,4 @@
-import { chromium, type Page, type Browser } from "playwright";
+import { chromium, type Page, type Browser, ConsoleMessage } from "playwright";
 import chalk from "chalk";
 import { URL } from "node:url";
 import * as path from "node:path";
@@ -44,12 +44,25 @@ async function getTestEnvironment() {
   };
 }
 
-const consoleMessageMethods = {
-  warning: "warn",
-  startGroup: "group",
-  startGroupCollapsed: "groupCollapsed",
-  endGroup: "groupEnd",
-};
+/**
+ * Transfers Playwright's console message object to terminal.
+ */
+async function consoleMessageToTerminal(consoleMessage: ConsoleMessage) {
+  const consoleMessageMethods = {
+    warning: "warn",
+    startGroup: "group",
+    startGroupCollapsed: "groupCollapsed",
+    endGroup: "groupEnd",
+  };
+
+  const type = consoleMessage.type();
+  const method = consoleMessageMethods[type] || type;
+  const msgArgs = consoleMessage.args();
+  const logValues = await Promise.all(
+    msgArgs.map(async (arg) => await arg.jsonValue()),
+  );
+  console[method](...logValues);
+}
 
 async function runSingleTest(testFile: string, browser: Browser) {
   return new Promise<Error[]>(async (resolve) => {
@@ -57,16 +70,7 @@ async function runSingleTest(testFile: string, browser: Browser) {
     process.stdout.write(`running tests from: ${chalk.bold(testFile)}...`);
     const page = await browser.newPage();
 
-    page.on("console", async (msg) => {
-      // TODO extract the console conversion functionality
-      const type = msg.type();
-      const method = consoleMessageMethods[type] || type;
-      const msgArgs = msg.args();
-      const logValues = await Promise.all(
-        msgArgs.map(async (arg) => await arg.jsonValue()),
-      );
-      console[method](...logValues);
-    });
+    page.on("console", consoleMessageToTerminal);
 
     // Create a new Mocha runner and reporter
     const suite = new Mocha.Suite(testFile);
