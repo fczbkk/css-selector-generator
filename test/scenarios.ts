@@ -1,15 +1,16 @@
 /* eslint no-console: 0 */
 
 import { URL } from "node:url";
-import { resolve, extname } from "node:path";
+import * as path from "node:path";
 import { build } from "esbuild";
-import { readdir, readFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import type { Dirent } from "node:fs";
 import chalk from "chalk";
 
 import { chromium } from "playwright";
 import type { Page } from "playwright";
 import { parseAllComments, ScenarioExpectations } from "./scenario-utilities";
+import { glob } from "glob";
 
 // TODO: temporary hack until Typescript learns that Dirent has a "path" property
 type DirentWithPath = Dirent & { path: string };
@@ -26,11 +27,7 @@ interface ScenarioTestResult {
 }
 
 const __dirname = new URL(".", import.meta.url).pathname;
-const scenariosDir = resolve(__dirname, "../scenario");
-
-function isHtmlFile(dirent: Dirent) {
-  return dirent.isFile() && extname(dirent.name) === ".html";
-}
+const scenariosDir = path.resolve(__dirname, "../scenario");
 
 async function getTestEnvironment() {
   const browser = await chromium.launch({ headless: true });
@@ -39,8 +36,11 @@ async function getTestEnvironment() {
   // inject test utilities
   await buildAndInsertScript(
     {
-      srcPath: resolve(__dirname, "./scenario-utilities.ts"),
-      buildPath: resolve(__dirname, "../temp/scenarios/scenario-utilities.js"),
+      srcPath: path.resolve(__dirname, "./scenario-utilities.ts"),
+      buildPath: path.resolve(
+        __dirname,
+        "../temp/scenarios/scenario-utilities.js",
+      ),
       globalName: "scenarioUtilities",
     },
     page,
@@ -49,8 +49,8 @@ async function getTestEnvironment() {
   // inject the library
   await buildAndInsertScript(
     {
-      srcPath: resolve(__dirname, "../src/index.ts"),
-      buildPath: resolve(__dirname, "../temp/scenarios/index.js"),
+      srcPath: path.resolve(__dirname, "../src/index.ts"),
+      buildPath: path.resolve(__dirname, "../temp/scenarios/index.js"),
       globalName: "CssSelectorGenerator",
     },
     page,
@@ -125,10 +125,11 @@ async function buildScript({
   });
 }
 
+// TODO rewrite using glob, see run-tests.ts
 async function getScenariosFiles() {
-  return (await readdir(scenariosDir, { withFileTypes: true }))
-    .filter(isHtmlFile)
-    .map(({ name, path }: DirentWithPath) => resolve(path, name));
+  return glob("**/*.html", {
+    cwd: scenariosDir,
+  });
 }
 
 async function testAllScenarios() {
@@ -140,7 +141,8 @@ async function testAllScenarios() {
   const scenarioFiles = await getScenariosFiles();
 
   for (const scenarioFile of scenarioFiles) {
-    const scenarioContent = await readFile(scenarioFile, "utf-8");
+    const scenarioFilePath = path.resolve(scenariosDir, scenarioFile);
+    const scenarioContent = await readFile(scenarioFilePath, "utf-8");
     const scenarioData = await testScenario(scenarioContent, page);
     const { error } = scenarioData;
 

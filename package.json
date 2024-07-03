@@ -19,8 +19,7 @@
   "types": "types/index.d.ts",
   "scripts": {
     "clean": "rimraf ./esm ./types ./temp",
-    "test": "karma start ./tools/karma.conf.js",
-    "test:new": "npm run test:unit && npm run test:playwright && npm run test:scenarios",
+    "test": "npm run test:unit && npm run test:playwright && npm run test:scenarios",
     "test:playwright": "playwright test playwright-tests/playwright.spec.ts --config playwright-tests/playwright.config.ts",
     "test:scenarios": "tsx ./test/scenarios.ts",
     "test:unit": "tsx test/run-tests.ts",

@@ -15,4 +15,5 @@ jobs:
         with:
           node-version: 22
       - run: npm ci
+      - run: npx playwright install
       - run: npm test
