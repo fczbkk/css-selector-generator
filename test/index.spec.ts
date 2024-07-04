@@ -1,11 +1,8 @@
 import { assert } from "chai";
-import { testSelector } from "../src/utilities-dom.js";
 import { getCssSelector } from "../src";
 
-// TODO convert these to scenarios
-
 describe("CssSelectorGenerator", function () {
-  let root;
+  let root: Element;
 
   beforeEach(function () {
     root = document.body.appendChild(document.createElement("div"));
@@ -16,33 +13,6 @@ describe("CssSelectorGenerator", function () {
   });
 
   describe("basic scenarios", function () {
-    it("should get shallow selector", function () {
-      root.innerHTML = '<div class="aaa"></div>';
-      const result = getCssSelector(root.firstElementChild, { root });
-      assert.equal(result, ".aaa");
-    });
-
-    it("should get deep selector", function () {
-      root.innerHTML =
-        '<div id="aaa" class="aaa"><div><div class="aaa"></div></div></div>';
-      const element = root.firstElementChild.firstChild.firstChild;
-      const result = getCssSelector(element, { root });
-      assert.equal(result, "#aaa .aaa");
-    });
-
-    it("should produce descendant selector", () => {
-      root.innerHTML = `
-      <div>
-        <span>
-          <span></span>
-        </span>
-      </div>
-    `;
-      const needle = root.firstElementChild.firstElementChild;
-      const result = getCssSelector(needle, { root });
-      assert.equal(result, "div > span");
-    });
-
     it("should take root element into account", () => {
       root.innerHTML = `
       <span></span>
@@ -83,79 +53,6 @@ describe("CssSelectorGenerator", function () {
       const end = Date.now();
 
       assert.isBelow(end - start, 100);
-    });
-  });
-
-  describe("class selectors", function () {
-    it("should get class selector", function () {
-      root.innerHTML = '<div class="aaa"></div>';
-      const result = getCssSelector(root.firstElementChild, {
-        selectors: ["class"],
-        root,
-      });
-      assert.equal(result, ".aaa");
-    });
-
-    it("should use single unique class", function () {
-      root.innerHTML = '<div class="aaa bbb"></div><div class="aaa ccc"></div>';
-      const result = getCssSelector(root.firstElementChild, {
-        selectors: ["class"],
-        root,
-      });
-      assert.equal(result, ".bbb");
-    });
-
-    it("should use combination of class names", function () {
-      root.innerHTML =
-        "" +
-        '<div class="aaa bbb"></div>' +
-        '<div class="aaa ccc"></div>' +
-        '<div class="bbb ccc"></div>';
-      const result = getCssSelector(root.firstElementChild, {
-        selectors: ["class"],
-        root,
-      });
-      assert.equal(result, ".aaa.bbb");
-    });
-  });
-
-  describe("fallback", function () {
-    it("should use nth-child descendants", function () {
-      root.innerHTML = "<div><div><div></div></div></div>";
-      const element =
-        root.firstElementChild.firstElementChild.firstElementChild;
-      const result = getCssSelector(element, {
-        root,
-        selectors: [],
-      });
-      assert.ok(testSelector([element], result, root));
-    });
-  });
-
-  // TODO convert these to scenarios
-  describe("multiple elements", () => {
-    it("should get single selector matching multiple elements", () => {
-      root.innerHTML = `
-        <div class="aaa bbb"></div>
-        <span class="bbb ccc"></span>
-      `;
-      const elements = [...root.querySelectorAll(".bbb")];
-      const result = getCssSelector(elements);
-      assert.equal(result, ".bbb");
-    });
-
-    it("should get combined selector matching multiple elements", () => {
-      root.innerHTML = "<a></a><span></span>";
-      const elements = [root.children[0], root.children[1]];
-      const result = getCssSelector(elements, { root });
-      assert.equal(result, "a, span");
-    });
-
-    it("should get fallback selectors for multiple elements", () => {
-      root.innerHTML = "<div></div><div></div><div></div>";
-      const elements = [root.children[0], root.children[1]];
-      const result = getCssSelector(elements);
-      assert.ok(testSelector(elements, result));
     });
   });
 });

@@ -4,16 +4,13 @@ import { URL } from "node:url";
 import * as path from "node:path";
 import { build } from "esbuild";
 import { readFile } from "node:fs/promises";
-import type { Dirent } from "node:fs";
 import chalk from "chalk";
 
 import { chromium } from "playwright";
 import type { Page } from "playwright";
-import { parseAllComments, ScenarioExpectations } from "./scenario-utilities";
+import type { ScenarioExpectations } from "./scenario-utilities";
 import { glob } from "glob";
-
-// TODO: temporary hack until Typescript learns that Dirent has a "path" property
-type DirentWithPath = Dirent & { path: string };
+import { consoleMessageToTerminal } from "../playwright-tests/utilities";
 
 interface ScenarioTestResultItem {
   key: string;
@@ -56,17 +53,22 @@ async function getTestEnvironment() {
     page,
   );
 
-  return { page, browser };
+  return {
+    page,
+    browser,
+  };
 }
 
 async function testScenario(
   scenarioContent: string,
   page: Page,
 ): Promise<ScenarioTestResult> {
+  page.on("console", consoleMessageToTerminal);
+
   await page.setContent(`
     <!DOCTYPE html>
-    <html>
-      <body></body>
+    <html lang="en">
+      <body>${scenarioContent}</body>
     </html>
   `);
 
@@ -75,9 +77,10 @@ async function testScenario(
       // @ts-ignore -- TS does not know that we added the library to the page's global scope
       window.scenarioUtilities.parseAllComments(document.body);
 
-    console.log("scenarioExpectations", scenarioExpectations);
-
-    const result: ScenarioTestResult = { success: [], error: [] };
+    const result: ScenarioTestResult = {
+      success: [],
+      error: [],
+    };
     scenarioExpectations.forEach((targetElements, expectedSelector) => {
       const elements = Array.from(targetElements);
       // @ts-ignore -- TS does not know that we added the library to the page's global scope
@@ -125,7 +128,6 @@ async function buildScript({
   });
 }
 
-// TODO rewrite using glob, see run-tests.ts
 async function getScenariosFiles() {
   return glob("**/*.html", {
     cwd: scenariosDir,

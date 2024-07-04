@@ -1,0 +1,11 @@
+<div><!-- identifier: needle --></div>
+
+<!-- this prevents creation of a `div` selector -->
+<div></div>
+
+<!--
+  NOTE: The first two parts of the fallback selector chain are:
+  :root -> HTML
+  :nth-child(2) -> BODY
+-->
+<!-- expect: needle; :root > :nth-child(2) > :nth-child(1) -->

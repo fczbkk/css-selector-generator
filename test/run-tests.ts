@@ -1,9 +1,13 @@
-import { chromium, type Page, type Browser, ConsoleMessage } from "playwright";
+import { type Browser, chromium, type Page } from "playwright";
 import chalk from "chalk";
 import { URL } from "node:url";
 import * as path from "node:path";
 import { readFile } from "node:fs/promises";
-import { buildScript, BuildScriptProps } from "../playwright-tests/utilities";
+import {
+  buildScript,
+  BuildScriptProps,
+  consoleMessageToTerminal,
+} from "../playwright-tests/utilities";
 import { glob } from "glob";
 import * as Mocha from "mocha";
 
@@ -22,27 +26,6 @@ async function buildAndInsertScript(props: BuildScriptProps, page: Page) {
   const { buildPath } = props;
   await buildScript(props);
   return await page.addScriptTag({ path: buildPath });
-}
-
-/**
- * Transfers Playwright's console message object to terminal.
- */
-async function consoleMessageToTerminal(consoleMessage: ConsoleMessage) {
-  const consoleMessageMethods = {
-    warning: "warn",
-    startGroup: "group",
-    startGroupCollapsed: "groupCollapsed",
-    endGroup: "groupEnd",
-  };
-
-  const type = consoleMessage.type();
-  const method = consoleMessageMethods[type] || type;
-  const msgArgs = consoleMessage.args();
-  const logValues = await Promise.all(
-    msgArgs.map(async (arg) => await arg.jsonValue()),
-  );
-  // eslint-disable-next-line no-console
-  console[method](...logValues);
 }
 
 async function runSingleTest(testFile: string, browser: Browser) {

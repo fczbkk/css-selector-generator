@@ -1,6 +1,6 @@
 import type { BuildOptions } from "esbuild";
 import { build } from "esbuild";
-import { Page } from "playwright";
+import { ConsoleMessage, Page } from "playwright";
 
 export interface BuildScriptProps {
   srcPath: string;
@@ -35,4 +35,25 @@ export async function buildAndInsertScript(
   const { buildPath } = props;
   await buildScript(props);
   return await page.addScriptTag({ path: buildPath });
+}
+
+/**
+ * Transfers Playwright's console message object to terminal.
+ */
+export async function consoleMessageToTerminal(consoleMessage: ConsoleMessage) {
+  const consoleMessageMethods = {
+    warning: "warn",
+    startGroup: "group",
+    startGroupCollapsed: "groupCollapsed",
+    endGroup: "groupEnd",
+  };
+
+  const type = consoleMessage.type();
+  const method = consoleMessageMethods[type] || type;
+  const msgArgs = consoleMessage.args();
+  const logValues = await Promise.all(
+    msgArgs.map(async (arg) => await arg.jsonValue()),
+  );
+  // eslint-disable-next-line no-console
+  console[method](...logValues);
 }
