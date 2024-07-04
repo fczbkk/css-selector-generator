@@ -23,7 +23,7 @@ jobs:
       - run: npm run build --if-present
       - run: npm pack --dry-run
       - run: npm pack | tail -1 | xargs -n1 tar -xzf
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: package
 
