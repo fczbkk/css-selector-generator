@@ -30,7 +30,7 @@ describe("utilities - getParents", function () {
 
   it("should return empty array if element is invalid", function () {
     const element = "xxx";
-    // @ts-ignore: intentionally using wrong input for test purposes
+    // @ts-expect-error: intentionally using wrong input for test purposes
     const result = getParents([element], root);
     assert.lengthOf(result, 0);
   });

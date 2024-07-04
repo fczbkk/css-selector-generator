@@ -1,16 +1,10 @@
 import { testSelector } from "./utilities-dom";
 import {
   CssSelectorGeneratorOptions,
-  CssSelectorGeneratorOptionsInput,
   CssSelectorsByType,
   CssSelectorType,
 } from "./types.js";
-import {
-  constructSelector,
-  sanitizeSelectorNeedle,
-} from "./utilities-selectors.js";
-import { sanitizeOptions } from "./utilities-options.js";
-import { getFallbackSelector } from "./selector-fallback.js";
+import { constructSelector } from "./utilities-selectors.js";
 import { getPowerSet, powerSetGenerator } from "./utilities-powerset.js";
 import { createMemo } from "./memo.js";
 import { getCartesianProduct } from "./utilities-cartesian.js";
@@ -101,37 +95,4 @@ export function* needleCandidateGenerator(
       yield constructSelector(needleSelectorData);
     }
   }
-}
-
-export function* needleSelectorGenerator(
-  needle: Element[],
-  selectorTypes: CssSelectorType[],
-  options: CssSelectorGeneratorOptions,
-  memo = createMemo(),
-) {
-  // TODO
-}
-
-export function* viableSelectorGenerator() {
-  // TODO
-}
-
-export function* cssSelectorGenerator(
-  originalNeedle: unknown,
-  originalOptions: CssSelectorGeneratorOptionsInput = {},
-) {
-  const needle = sanitizeSelectorNeedle(originalNeedle);
-  const options = sanitizeOptions(needle[0], originalOptions);
-  const memo = createMemo();
-  const candidateSelectorTypes = [];
-
-  for (const nextSelectorType of options.selectors) {
-    candidateSelectorTypes.push(nextSelectorType);
-    for (const selectorTypes of powerSetGenerator(candidateSelectorTypes)) {
-      // TODO
-      // console.log("candidate selector types", candidateSelectorTypes);
-    }
-  }
-
-  yield getFallbackSelector(needle);
 }

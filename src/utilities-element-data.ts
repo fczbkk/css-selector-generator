@@ -1,7 +1,6 @@
 import {
   CSS_SELECTOR_TYPE,
   CssSelectorGenerated,
-  CssSelectorType,
   CssSelectorTypes,
   ElementData,
   ElementSelectorData,

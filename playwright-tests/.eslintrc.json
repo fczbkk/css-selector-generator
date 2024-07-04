@@ -1,8 +1,0 @@
-{
-  "env": {
-    "mocha": true,
-    "node": true
-  },
-  "root": false,
-  "parser": "@typescript-eslint/parser"
-}

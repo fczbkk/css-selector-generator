@@ -72,9 +72,11 @@ async function testScenario(
     </html>
   `);
 
+  // TODO declare globals to be used inside the `page.evaluate()`, see playwright-tests/playwright.spec.ts
+
   return page.evaluate(() => {
     const scenarioExpectations: ScenarioExpectations =
-      // @ts-ignore -- TS does not know that we added the library to the page's global scope
+      // @ts-expect-error -- TS does not know that we added the library to the page's global scope
       window.scenarioUtilities.parseAllComments(document.body);
 
     const result: ScenarioTestResult = {
@@ -83,7 +85,7 @@ async function testScenario(
     };
     scenarioExpectations.forEach((targetElements, expectedSelector) => {
       const elements = Array.from(targetElements);
-      // @ts-ignore -- TS does not know that we added the library to the page's global scope
+      // @ts-expect-error -- TS does not know that we added the library to the page's global scope
       const generatedSelector = window.CssSelectorGenerator.getCssSelector(
         elements.length === 1 ? elements[0] : elements,
       );

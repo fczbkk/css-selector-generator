@@ -49,7 +49,6 @@ export function createPatternMatcher(list: CssSelectorMatch[]): PatternMatcher {
       return (input: string) => {
         const result = item(input);
         if (typeof result !== "boolean") {
-          // eslint-disable-next-line max-len
           showWarning(
             "pattern matcher function invalid",
             "Provided pattern matching function does not return boolean. It's result will be ignored.",
@@ -66,7 +65,6 @@ export function createPatternMatcher(list: CssSelectorMatch[]): PatternMatcher {
       return (input: string) => re.test(input);
     }
 
-    // eslint-disable-next-line max-len
     showWarning(
       "pattern matcher invalid",
       "Pattern matching only accepts strings, regular expressions and/or functions. This item is invalid and will be ignored.",

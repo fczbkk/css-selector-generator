@@ -1,4 +1,4 @@
-import { CSS_SELECTOR_TYPE, CssSelectorType } from "./types.js";
+import { CSS_SELECTOR_TYPE } from "./types.js";
 
 export const SELECTOR_SEPARATOR = ", ";
 

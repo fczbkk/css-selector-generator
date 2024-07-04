@@ -51,7 +51,7 @@ async function runSingleTest(testFile: string, browser: Browser) {
     });
 
     // TODO figure out why the diff option is not working. We are not receiving "expected" and "actual" properties from the browser.
-    new Mocha.reporters.Spec(runner, {
+    new Mocha.reporters.List(runner, {
       diff: true,
     });
 

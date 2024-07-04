@@ -1,7 +1,10 @@
-const webpack_config = require("./webpack.config");
-const path = require("path");
+import webpack_config from "./webpack.config.mjs";
+import path from "node:path";
+import { URL } from "node:url";
 
-module.exports = Object.assign({}, webpack_config, {
+const __dirname = new URL(".", import.meta.url).pathname;
+
+export default Object.assign({}, webpack_config, {
   mode: "production",
   devtool: "hidden-source-map",
   entry: path.resolve(__dirname, "../temp/index.js"),

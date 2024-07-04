@@ -1,11 +1,6 @@
 import { getElementParents } from "./utilities-dom.js";
 import { SELECTOR_SEPARATOR } from "./constants.js";
-import {
-  CSS_SELECTOR_TYPE,
-  CssSelector,
-  CssSelectorType,
-  OPERATOR,
-} from "./types.js";
+import { CSS_SELECTOR_TYPE, CssSelector, OPERATOR } from "./types.js";
 import {
   constructElementSelector,
   createElementData,

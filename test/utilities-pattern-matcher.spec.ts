@@ -72,24 +72,24 @@ describe("utilities - pattern matcher", () => {
 
   it("should always return `false` if function returns non-boolean", () => {
     const matchFunction = () => "non-boolean return value";
-    // @ts-ignore: intentionally using wrong input for test purposes
+    // @ts-expect-error: intentionally using wrong input for test purposes
     const matchPattern = createPatternMatcher([matchFunction]);
     assert.equal(matchPattern("aaa"), false);
   });
 
   it("should ignore invalid inputs", () => {
     const matchPattern = createPatternMatcher([
-      // @ts-ignore: intentionally using wrong input for test purposes
+      // @ts-expect-error: intentionally using wrong input for test purposes
       true,
-      // @ts-ignore: intentionally using wrong input for test purposes
+      // @ts-expect-error: intentionally using wrong input for test purposes
       false,
       undefined,
       null,
-      // @ts-ignore: intentionally using wrong input for test purposes
+      // @ts-expect-error: intentionally using wrong input for test purposes
       123,
-      // @ts-ignore: intentionally using wrong input for test purposes
+      // @ts-expect-error: intentionally using wrong input for test purposes
       [],
-      // @ts-ignore: intentionally using wrong input for test purposes
+      // @ts-expect-error: intentionally using wrong input for test purposes
       {},
     ]);
     assert.equal(matchPattern("aaa"), false);
