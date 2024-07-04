@@ -1,17 +1,5 @@
 import { CssSelectorGeneratorOptions, CssSelectorMatch, CssSelectorTypes } from "./types.js";
-export declare const DEFAULT_OPTIONS: Required<Omit<Partial<{
-    selectors: import("./types.js").CssSelectorType[];
-    whitelist: CssSelectorMatch[];
-    blacklist: CssSelectorMatch[];
-    root: ParentNode;
-    combineWithinSelector: boolean;
-    combineBetweenSelectors: boolean;
-    includeTag: boolean;
-    maxCombinations: number;
-    maxCandidates: number;
-}>, "selectors"> & {
-    selectors: CssSelectorTypes;
-}>;
+export declare const DEFAULT_OPTIONS: CssSelectorGeneratorOptions;
 /**
  * Makes sure returned value is a list containing only valid selector types.
  * @param input

@@ -23,7 +23,7 @@
     "test:playwright": "playwright test playwright-tests/playwright.spec.ts --config playwright-tests/playwright.config.ts",
     "test:scenarios": "tsx ./test/scenarios.ts",
     "test:unit": "tsx test/run-tests.ts",
-    "dev": "npm run test -- --no-single-run --auto-watch",
+    "dev": "echo TODO",
     "prebuild": "npm run clean && npm run lint:build",
     "postbuild": "rimraf ./temp",
     "build": "npm run build:umd && npm run build:esm",
@@ -37,6 +37,7 @@
     "version": "npm run build && npm run changelog && git add -A"
   },
   "devDependencies": {
+    "@playwright/test": "^1.45.0",
     "@types/chai": "^4.3.16",
     "@types/mocha": "^10.0.7",
     "@types/node": "^20.14.9",
@@ -48,18 +49,12 @@
     "esbuild": "^0.21.5",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
+    "glob": "^10.4.2",
     "husky": "^9.0.11",
-    "karma": "^6.4.3",
-    "karma-chai": "^0.1.0",
-    "karma-chrome-launcher": "^3.2.0",
-    "karma-mocha": "^2.0.1",
-    "karma-mocha-reporter": "^2.2.5",
-    "karma-webpack": "^5.0.1",
     "lint-staged": "^15.2.7",
     "mocha": "^10.5.1",
     "playwright": "^1.45.0",
     "prettier": "^3.3.2",
-    "puppeteer": "^22.12.0",
     "raw-loader": "^4.0.2",
     "ts-loader": "^9.5.1",
     "tsx": "^4.15.7",
@@ -74,9 +69,5 @@
   "homepage": "https://github.com/fczbkk/css-selector-generator/",
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
-  },
-  "dependencies": {
-    "@playwright/test": "^1.45.0",
-    "glob": "^10.4.2"
   }
 }
