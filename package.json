@@ -23,7 +23,7 @@
     "test:playwright": "playwright test playwright-tests/playwright.spec.ts --config playwright-tests/playwright.config.ts",
     "test:scenarios": "tsx ./test/scenarios.ts",
     "test:unit": "tsx test/run-tests.ts",
-    "dev": "echo TODO",
+    "dev": "npm run watch:unit & npm run watch:playwright & npm run watch:scenarios",
     "prebuild": "npm run clean && npm run lint:build",
     "postbuild": "rimraf ./temp",
     "build": "npm run build:umd && npm run build:esm",
@@ -34,7 +34,10 @@
     "lint:build": "npm run lint -- --max-warnings 0",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "postversion": "git push && git push --tags && npm publish --access=public",
-    "version": "npm run build && npm run changelog && git add -A"
+    "version": "npm run build && npm run changelog && git add -A",
+    "watch:unit": "chokidar '{src,test}/**/*.ts' -c 'npm run test:unit'",
+    "watch:playwright": "chokidar 'playwright-tests/**/*.ts' -c 'npm run test:playwright'",
+    "watch:scenarios": "chokidar 'scenario/**/*.html' -c 'npm run test:scenarios'"
   },
   "devDependencies": {
     "@eslint/js": "^9.6.0",
@@ -44,6 +47,7 @@
     "@types/node": "^20.14.9",
     "chai": "^5.1.1",
     "chalk": "^5.3.0",
+    "chokidar-cli": "^3.0.0",
     "conventional-changelog-cli": "^5.0.0",
     "esbuild": "^0.21.5",
     "eslint": "^9.6.0",
