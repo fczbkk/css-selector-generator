@@ -7,7 +7,7 @@ export default [
     files: ["**/*.{js,mjs,cjs,ts}"],
   },
   {
-    ignores: ["build/", "types/", "temp/"],
+    ignores: ["build/", "types/", "temp/", "esm/"],
   },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,

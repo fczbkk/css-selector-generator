@@ -1,4 +1,4 @@
-import webpack_config from "./webpack.config.mjs";
+import webpack_config from "./webpack.config.js";
 import path from "node:path";
 import { URL } from "node:url";
 
