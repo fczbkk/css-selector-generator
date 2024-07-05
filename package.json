@@ -27,7 +27,7 @@
     "prebuild": "npm run clean && npm run lint:build",
     "postbuild": "rimraf ./temp",
     "build": "npm run build:umd && npm run build:esm",
-    "build:umd": "npm run build:cjs && webpack --config ./tools/webpack.build.js",
+    "build:umd": "npm run build:cjs && webpack --config ./config/webpack.build.js",
     "build:cjs": "tsc --project ./tsconfig.cjs.json",
     "build:esm": "tsc --project ./tsconfig.esm.json",
     "lint": "eslint --config eslint.config.mjs",
