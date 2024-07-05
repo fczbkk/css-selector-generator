@@ -2,7 +2,7 @@ import { assert } from "chai";
 import { getNthChildSelector } from "../src/selector-nth-child.js";
 
 describe("selector - nth-child", function () {
-  let root;
+  let root: Element;
 
   beforeEach(function () {
     root = document.body.appendChild(document.createElement("div"));

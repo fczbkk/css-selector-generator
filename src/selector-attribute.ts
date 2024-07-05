@@ -2,10 +2,10 @@ import { sanitizeSelectorItem } from "./utilities-selectors.js";
 import { createPatternMatcher, getIntersection } from "./utilities-data.js";
 import { CssSelectorGenerated } from "./types.js";
 
-type AttributeData = {
+interface AttributeData {
   name: string;
   value: string;
-};
+}
 
 // List of attributes to be ignored. These are handled by different selector types.
 export const attributeBlacklistMatch = createPatternMatcher([

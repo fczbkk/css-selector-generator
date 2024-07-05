@@ -16,7 +16,7 @@ export function getElementTagSelectors(
 /**
  * Get tag selector for list of elements.
  */
-export function getTagSelector(elements: Element[]): Array<CssSelector> {
+export function getTagSelector(elements: Element[]): CssSelector[] {
   const selectors = [
     ...new Set(flattenArray(elements.map(getElementTagSelectors))),
   ];

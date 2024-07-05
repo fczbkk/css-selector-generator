@@ -3,7 +3,7 @@ import { getFallbackSelector } from "../src/selector-fallback.js";
 import { testMultiSelector, testSelector } from "../src/utilities-dom.js";
 
 describe("selector - fallback", function () {
-  let root;
+  let root: Element;
 
   beforeEach(function () {
     root = document.body.appendChild(document.createElement("div"));

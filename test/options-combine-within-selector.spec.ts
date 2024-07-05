@@ -2,7 +2,7 @@ import { assert } from "chai";
 import { getCssSelector } from "../src";
 
 describe("options: combineWithinSelector", function () {
-  let root;
+  let root: Element;
   const html_combined_classnames =
     '<div class="aaa bbb"></div>' +
     '<div class="aaa"></div>' +

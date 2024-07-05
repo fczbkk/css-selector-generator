@@ -5,7 +5,7 @@ import { showWarning } from "./utilities-messages.js";
 /**
  * Creates array containing only items included in all input arrays.
  */
-export function getIntersection<T>(items: Array<Array<T>> = []): Array<T> {
+export function getIntersection<T>(items: T[][] = []): T[] {
   const [firstItem = [], ...otherItems] = items;
   if (otherItems.length === 0) {
     return firstItem;
@@ -18,8 +18,8 @@ export function getIntersection<T>(items: Array<Array<T>> = []): Array<T> {
 /**
  * Converts array of arrays into a flat array.
  */
-export function flattenArray<T>(input: Array<Array<T>>): Array<T> {
-  return ([] as Array<T>).concat(...input);
+export function flattenArray<T>(input: T[][]): T[] {
+  return ([] as T[]).concat(...input);
 }
 
 /**

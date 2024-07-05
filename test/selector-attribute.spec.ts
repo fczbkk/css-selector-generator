@@ -4,7 +4,7 @@ import { getAttributeSelectors } from "../src/selector-attribute.js";
 import { CssSelectorGenerated } from "../src/types";
 
 describe("selector - attribute", function () {
-  let root;
+  let root: Element;
 
   beforeEach(function () {
     root = document.body.appendChild(document.createElement("div"));

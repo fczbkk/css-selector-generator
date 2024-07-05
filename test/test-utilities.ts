@@ -19,9 +19,9 @@ export function getTargetElements(root: Element): Element[] {
 }
 
 interface ParseCommentsResult {
-  element: { [key: string]: Element };
-  group: { [key: string]: Element[] };
-  expectation: { [key: string]: string };
+  element: Record<string, Element>;
+  group: Record<string, Element[]>;
+  expectation: Record<string, string>;
 }
 
 function parseComments(comments: Comment[]): ParseCommentsResult {

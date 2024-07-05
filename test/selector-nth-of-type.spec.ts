@@ -5,7 +5,7 @@ import { constructSelector } from "../src/utilities-selectors.js";
 import { CSS_SELECTOR_TYPE } from "../src/types";
 
 describe("selector - nth-of-type", function () {
-  let root;
+  let root: Element;
 
   beforeEach(function () {
     root = document.body.appendChild(document.createElement("div"));

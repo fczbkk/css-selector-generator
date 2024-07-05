@@ -102,9 +102,9 @@ export function getElementSelectorsByType(
 export function getSelectorsByType(
   elements: Element[],
   selector_type: CssSelectorType,
-): Array<CssSelector> {
+): CssSelector[] {
   const getter =
-    SELECTOR_TYPE_GETTERS[selector_type] ?? ((): Array<CssSelector> => []);
+    SELECTOR_TYPE_GETTERS[selector_type] ?? ((): CssSelector[] => []);
   return getter(elements);
 }
 
@@ -112,10 +112,10 @@ export function getSelectorsByType(
  * Remove blacklisted selectors from list.
  */
 export function filterSelectors(
-  list: Array<CssSelector> = [],
+  list: CssSelector[] = [],
   matchBlacklist: PatternMatcher,
   matchWhitelist: PatternMatcher,
-): Array<CssSelector> {
+): CssSelector[] {
   return list.filter((item) => matchWhitelist(item) || !matchBlacklist(item));
 }
 
@@ -123,9 +123,9 @@ export function filterSelectors(
  * Prioritise whitelisted selectors in list.
  */
 export function orderSelectors(
-  list: Array<CssSelector> = [],
+  list: CssSelector[] = [],
   matchWhitelist: PatternMatcher,
-): Array<CssSelector> {
+): CssSelector[] {
   return list.sort((a, b) => {
     const a_is_whitelisted = matchWhitelist(a);
     const b_is_whitelisted = matchWhitelist(b);
@@ -146,7 +146,7 @@ export function getAllSelectors(
   elements: Element[],
   root: ParentNode,
   options: CssSelectorGeneratorOptions,
-): Array<CssSelector> {
+): CssSelector[] {
   const selectors_list = getSelectorsList(elements, options);
   const type_combinations = getTypeCombinations(selectors_list, options);
   const all_selectors = flattenArray(type_combinations);
@@ -217,7 +217,7 @@ function addTagTypeIfNeeded(list: CssSelectorTypes): CssSelectorTypes {
  */
 export function combineSelectorTypes(
   options: CssSelectorGeneratorOptions,
-): Array<CssSelectorTypes> {
+): CssSelectorTypes[] {
   const { selectors, combineBetweenSelectors, includeTag, maxCandidates } =
     options;
 
@@ -234,7 +234,7 @@ export function combineSelectorTypes(
 export function getTypeCombinations(
   selectors_list: CssSelectorData,
   options: CssSelectorGeneratorOptions,
-): Array<Array<CssSelector>> {
+): CssSelector[][] {
   return combineSelectorTypes(options)
     .map((item) => {
       return constructSelectors(item, selectors_list);
@@ -248,7 +248,7 @@ export function getTypeCombinations(
 export function constructSelectors(
   selector_types: CssSelectorTypes,
   selectors_by_type: CssSelectorData,
-): Array<CssSelector> {
+): CssSelector[] {
   const data: CssSelectorData = {};
   selector_types.forEach((selector_type) => {
     const selector_variants = selectors_by_type[selector_type];
@@ -323,7 +323,7 @@ function generateCandidates(
 }
 
 /**
- * Tries to find an unique CSS selector for element within given parent.
+ * Tries to find a unique CSS selector for element within given parent.
  */
 export function getSelectorWithinRoot(
   elements: Element[],

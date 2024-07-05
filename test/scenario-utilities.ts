@@ -39,11 +39,11 @@ function splitContent(content: string, re: RegExp): [string, string] {
   return [key.trim(), val.trim()];
 }
 
-type ScenarioExpectationItem = {
+interface ScenarioExpectationItem {
   element?: Element;
   identifier?: string;
   expectation?: string;
-};
+}
 
 export function parseCommentContent(
   content: string,

@@ -1,8 +1,8 @@
 declare const opaqueId: unique symbol;
 
-declare type Tagged<Token> = {
+declare interface Tagged<Token> {
   readonly [opaqueId]: Token;
-};
+}
 
 export type Opaque<Type, Token = unknown> = Type & Tagged<Token>;
 
@@ -31,7 +31,7 @@ export interface ElementData {
 }
 
 export type CssSelector = string;
-export type CssSelectors = Array<CssSelector>;
+export type CssSelectors = CssSelector[];
 
 type CssSelectorMatchFn = (input: string) => boolean;
 export type CssSelectorMatch = RegExp | string | CssSelectorMatchFn;
@@ -56,21 +56,21 @@ export type CssSelectorType = ObjectValues<typeof CSS_SELECTOR_TYPE>;
 //   nthoftype = "nthoftype",
 // }
 
-export type CssSelectorTypes = Array<CssSelectorType>;
+export type CssSelectorTypes = CssSelectorType[];
 
 export type CssSelectorsByType = Partial<Record<CssSelectorType, CssSelectors>>;
 
 export type CssSelectorData = {
-  [key in CssSelectorType]?: Array<string> | Array<Array<string>>;
+  [key in CssSelectorType]?: string[] | string[][];
 };
 
 export type CssSelectorGeneratorOptionsInput = Partial<{
   // List of selector types to use. They will be prioritised by their order.
   selectors: CssSelectorType[];
   // List of selectors that should be prioritised.
-  whitelist: Array<CssSelectorMatch>;
+  whitelist: CssSelectorMatch[];
   // List of selectors that should be ignored.
-  blacklist: Array<CssSelectorMatch>;
+  blacklist: CssSelectorMatch[];
   // Root element inside which the selector will be generated. If not set, the document root will be used.
   root: ParentNode | null;
   // If set to `true`, the generator will test combinations of selectors of single type (e.g. multiple class selectors).

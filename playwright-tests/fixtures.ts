@@ -2,10 +2,10 @@ import { test as base } from "@playwright/test";
 import { BlankPage } from "./fixture.blank-page.js";
 import { LibraryPage } from "./fixture.library-page.js";
 
-type Fixtures = {
+interface Fixtures {
   blankPage: BlankPage;
   libraryPage: LibraryPage;
-};
+}
 
 export const test = base.extend<Fixtures>({
   blankPage: async ({ page }, use) => {

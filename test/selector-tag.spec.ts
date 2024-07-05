@@ -2,7 +2,7 @@ import { assert } from "chai";
 import { getTagSelector } from "../src/selector-tag.js";
 
 describe("selector - tag", function () {
-  let root;
+  let root: Element;
 
   beforeEach(function () {
     root = document.body.appendChild(document.createElement("div"));

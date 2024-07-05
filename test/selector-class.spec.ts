@@ -3,7 +3,7 @@ import { getClassSelectors } from "../src/selector-class.js";
 import { CssSelectorGenerated } from "../src/types";
 
 describe("selector - class", function () {
-  let root;
+  let root: Element;
 
   beforeEach(function () {
     root = document.body.appendChild(document.createElement("div"));

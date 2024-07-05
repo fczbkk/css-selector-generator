@@ -16,8 +16,8 @@ export const DEFAULT_OPTIONS = {
   ] as CssSelectorTypes,
   // if set to true, always include tag name
   includeTag: false,
-  whitelist: [] as Array<CssSelectorMatch>,
-  blacklist: [] as Array<CssSelectorMatch>,
+  whitelist: [] as CssSelectorMatch[],
+  blacklist: [] as CssSelectorMatch[],
   combineWithinSelector: true,
   combineBetweenSelectors: true,
   root: null,
@@ -56,7 +56,7 @@ export function isCssSelectorMatch(input: unknown): input is CssSelectorMatch {
  */
 export function sanitizeCssSelectorMatchList(
   input: unknown,
-): Array<CssSelectorMatch> {
+): CssSelectorMatch[] {
   if (!Array.isArray(input)) {
     return [];
   }

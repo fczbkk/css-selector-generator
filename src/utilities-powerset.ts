@@ -1,11 +1,11 @@
-type powerSetGeneratorOptions = {
+interface powerSetGeneratorOptions {
   maxResults?: number;
-};
+}
 
 export function* powerSetGenerator<T>(
-  input: Array<T> = [],
+  input: T[] = [],
   { maxResults = Number.POSITIVE_INFINITY }: powerSetGeneratorOptions = {},
-): IterableIterator<Array<T>> {
+): IterableIterator<T[]> {
   let resultCounter = 0;
   let offsets = generateOffsets(1);
 
@@ -21,9 +21,9 @@ export function* powerSetGenerator<T>(
  * Generates power set of input items.
  */
 export function getPowerSet<T>(
-  input: Array<T> = [],
+  input: T[] = [],
   { maxResults = Number.POSITIVE_INFINITY }: powerSetGeneratorOptions = {},
-): Array<Array<T>> {
+): T[][] {
   return Array.from(powerSetGenerator(input, { maxResults }));
 }
 
@@ -58,6 +58,6 @@ function bumpOffsets(offsets: number[] = [], maxValue = 0): number[] {
 /**
  * Generates array of size N, filled with numbers sequence starting from 0.
  */
-function generateOffsets(size = 1): Array<number> {
+function generateOffsets(size = 1): number[] {
   return Array.from(Array(size).keys());
 }

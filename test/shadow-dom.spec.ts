@@ -3,7 +3,7 @@ import { getCssSelector } from "../src";
 import { getIdSelector } from "../src/selector-id.js";
 
 describe("Shadow DOM", () => {
-  let root;
+  let root: Element;
   let shadowRoot;
   let shadowElement;
 

@@ -9,7 +9,11 @@ describe("utilities - isElement", () => {
     assert.isFalse(isElement(0));
     assert.isFalse(isElement({}));
     assert.isFalse(isElement([]));
-    assert.isFalse(isElement(() => {}));
+    assert.isFalse(
+      isElement(() => {
+        /* noop */
+      }),
+    );
   });
   it("should identify a valid element", () => {
     const element = document.createElement("div");

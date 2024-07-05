@@ -2,7 +2,7 @@ import { assert } from "chai";
 import { getIdSelector } from "../src/selector-id.js";
 
 describe("selector - ID", function () {
-  let root;
+  let root: Element;
 
   beforeEach(function () {
     root = document.body.appendChild(document.createElement("div"));

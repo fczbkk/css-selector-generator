@@ -37,7 +37,7 @@
     "version": "npm run build && npm run changelog && git add -A",
     "watch:unit": "chokidar '{src,test}/**/*.ts' -c 'npm run test:unit'",
     "watch:playwright": "chokidar 'playwright-tests/**/*.ts' -c 'npm run test:playwright'",
-    "watch:scenarios": "chokidar 'scenario/**/*.html' -c 'npm run test:scenarios'"
+    "watch:scenarios": "chokidar 'src/**/*.ts' 'scenario/**/*.html' -c 'npm run test:scenarios'"
   },
   "devDependencies": {
     "@eslint/js": "^9.6.0",

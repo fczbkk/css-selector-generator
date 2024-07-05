@@ -10,7 +10,8 @@ export default [
     ignores: ["build/", "types/", "temp/", "esm/"],
   },
   pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
+  ...tseslint.configs.strict,
+  ...tseslint.configs.stylistic,
   eslintConfigPrettier,
   {
     rules: {

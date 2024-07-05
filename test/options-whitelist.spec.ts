@@ -2,7 +2,7 @@ import { assert } from "chai";
 import { getCssSelector } from "../src";
 
 describe("options: whitelist", function () {
-  let root;
+  let root: Element;
 
   beforeEach(function () {
     root = document.body.appendChild(document.createElement("div"));

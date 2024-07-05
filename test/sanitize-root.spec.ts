@@ -2,7 +2,7 @@ import { assert } from "chai";
 import { sanitizeRoot } from "../src/utilities-options.js";
 
 describe("utilities - sanitizeRoot", () => {
-  let root;
+  let root: Element;
 
   beforeEach(() => {
     root = document.body.appendChild(document.createElement("div"));

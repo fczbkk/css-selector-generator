@@ -2,7 +2,7 @@ import { assert } from "chai";
 import { getParents } from "../src/utilities-dom.js";
 
 describe("utilities - getParents", function () {
-  let root;
+  let root: Element;
 
   beforeEach(function () {
     root = document.body.appendChild(document.createElement("div"));

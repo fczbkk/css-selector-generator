@@ -2,7 +2,7 @@ import { getCssSelector } from "../src";
 import { assert } from "chai";
 
 describe("options: includeTag", function () {
-  let root;
+  let root: Element;
 
   beforeEach(function () {
     root = document.body.appendChild(document.createElement("div"));
