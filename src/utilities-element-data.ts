@@ -65,7 +65,7 @@ export function constructElementSelector({
 
   let selector = "";
   pattern.forEach((selectorType) => {
-    const selectorsOfType = selectors[selectorType] || [];
+    const selectorsOfType = selectors[selectorType] ?? [];
     selectorsOfType.forEach(({ value, include }) => {
       if (include) {
         selector += value;

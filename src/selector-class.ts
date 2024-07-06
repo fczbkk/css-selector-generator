@@ -9,7 +9,7 @@ import { getIntersection } from "./utilities-data.js";
 export function getElementClassSelectors(
   element: Element,
 ): CssSelectorGenerated[] {
-  return (element.getAttribute("class") || "")
+  return (element.getAttribute("class") ?? "")
     .trim()
     .split(/\s+/)
     .filter((item) => !INVALID_CLASS_RE.test(item))

@@ -10,9 +10,9 @@ function createMapOfSets<keyType, valType>() {
   const data: MapOfSets<keyType, valType> = new Map();
   return {
     getData: () => data,
-    get: (key: keyType) => data.get(key) || new Set(),
+    get: (key: keyType) => data.get(key) ?? new Set(),
     set: (key: keyType, val: valType) => {
-      const set = data.get(key) || new Set();
+      const set = data.get(key) ?? new Set();
       set.add(val);
       data.set(key, set);
     },

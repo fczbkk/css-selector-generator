@@ -1,6 +1,14 @@
 {
-  "extends": "./tsconfig.base.json",
+  "include": ["**/*.ts"],
   "compilerOptions": {
-    "declaration": false
+    "allowJs": true,
+    "declaration": false,
+    "lib": ["ES6", "DOM", "DOM.Iterable"],
+    "module": "es6",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "target": "es6"
   }
 }
