@@ -9,9 +9,9 @@ import { CSS_SELECTOR_TYPE, ElementData, OPERATOR } from "../src/types.js";
  * Utility function that marks all selectors in elementData as included.
  */
 function includeAllSelectors(elementData: ElementData) {
-  Object.values(elementData.selectors).forEach((selectorDataList) =>
-    selectorDataList.forEach((selectorData) => (selectorData.include = true)),
-  );
+  Object.values(elementData.selectors).forEach((selectorDataList) => {
+    selectorDataList.forEach((selectorData) => (selectorData.include = true));
+  });
 }
 
 describe("utilities - constructElementSelector", () => {

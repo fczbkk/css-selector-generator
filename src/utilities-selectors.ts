@@ -45,7 +45,9 @@ export const SPECIAL_CHARACTERS_RE = /[ !"#$%&'()\[\]{|}<>*+,./;=?@^`~\\]/;
  * Escapes special characters used by CSS selector items.
  */
 export function sanitizeSelectorItem(input = ""): string {
-  return CSS?.escape?.(input) ?? legacySanitizeSelectorItem(input);
+  // This should not be necessary, but just to be sure, let's keep the legacy sanitizer in place, for backwards compatibility.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  return CSS ? CSS.escape(input) : legacySanitizeSelectorItem(input);
 }
 
 /**
@@ -68,23 +70,29 @@ export function legacySanitizeSelectorItem(input = ""): string {
     .join("");
 }
 
-export const SELECTOR_TYPE_GETTERS = {
+export const SELECTOR_TYPE_GETTERS: Record<
+  CssSelectorType,
+  (elements: Element[]) => CssSelector[]
+> = {
   tag: getTagSelector,
   id: getIdSelector,
   class: getClassSelectors,
   attribute: getAttributeSelectors,
   nthchild: getNthChildSelector,
   nthoftype: getNthOfTypeSelector,
-};
+} as const;
 
-export const ELEMENT_SELECTOR_TYPE_GETTERS = {
+export const ELEMENT_SELECTOR_TYPE_GETTERS: Record<
+  CssSelectorType,
+  (element: Element) => CssSelectorGenerated[]
+> = {
   tag: getElementTagSelectors,
   id: getElementIdSelectors,
   class: getElementClassSelectors,
   attribute: getElementAttributeSelectors,
   nthchild: getElementNthChildSelector,
   nthoftype: getElementNthOfTypeSelector,
-};
+} as const;
 
 /**
  * Creates selector of given type for single element.
@@ -103,8 +111,7 @@ export function getSelectorsByType(
   elements: Element[],
   selector_type: CssSelectorType,
 ): CssSelector[] {
-  const getter =
-    SELECTOR_TYPE_GETTERS[selector_type] ?? ((): CssSelector[] => []);
+  const getter = SELECTOR_TYPE_GETTERS[selector_type];
   return getter(elements);
 }
 
@@ -193,7 +200,7 @@ export function getSelectorsToGet(
 ): CssSelectorTypes {
   const { selectors, includeTag } = options;
 
-  const selectors_to_get = [].concat(selectors);
+  const selectors_to_get = [...selectors];
   if (includeTag && !selectors_to_get.includes("tag")) {
     selectors_to_get.push("tag");
   }
@@ -252,7 +259,7 @@ export function constructSelectors(
   const data: CssSelectorData = {};
   selector_types.forEach((selector_type) => {
     const selector_variants = selectors_by_type[selector_type];
-    if (selector_variants.length > 0) {
+    if (selector_variants && selector_variants.length > 0) {
       data[selector_type] = selector_variants;
     }
   });
@@ -331,10 +338,10 @@ export function getSelectorWithinRoot(
   rootSelector: CssSelector = "",
   options: CssSelectorGeneratorOptions,
 ): null | CssSelector {
-  const elementSelectors = getAllSelectors(elements, options.root, options);
+  const elementSelectors = getAllSelectors(elements, root, options);
   const selectorCandidates = generateCandidates(elementSelectors, rootSelector);
   for (const candidateSelector of selectorCandidates) {
-    if (testSelector(elements, candidateSelector, options.root)) {
+    if (testSelector(elements, candidateSelector, root)) {
       return candidateSelector;
     }
   }

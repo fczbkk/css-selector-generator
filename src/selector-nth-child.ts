@@ -14,7 +14,9 @@ export function getElementNthChildSelector(
     const siblings = Array.from(parent.childNodes).filter(isElement);
     const elementIndex = siblings.indexOf(element);
     if (elementIndex > -1) {
-      return [`:nth-child(${elementIndex + 1})` as CssSelectorGenerated];
+      return [
+        `:nth-child(${String(elementIndex + 1)})` as CssSelectorGenerated,
+      ];
     }
   }
 

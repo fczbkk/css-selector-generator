@@ -22,7 +22,9 @@ function createMapOfSets<keyType, valType>() {
         key: keyType,
         map: MapOfSets<keyType, valType>,
       ) => void,
-    ) => data.forEach(callback),
+    ) => {
+      data.forEach(callback);
+    },
   };
 }
 
@@ -32,7 +34,7 @@ function getRegExpSplitter(divider: string): RegExp {
 
 function splitContent(content: string, re: RegExp): [string, string] {
   const match = content.match(re);
-  if (!match) {
+  if (!match?.groups) {
     return [null, content];
   }
   const { key, val } = match.groups;
@@ -76,6 +78,10 @@ export function parseComment(comment: Comment): ScenarioExpectationItem | null {
 
 export type ScenarioExpectations = Map<string, Set<Element>>;
 
+function isCommentNode(node: Node): node is Comment {
+  return node.nodeType === Node.COMMENT_NODE;
+}
+
 export function parseAllComments(rootElement: Element): ScenarioExpectations {
   const foundComments: ScenarioExpectationItem[] = [];
   const elementsByExpectation = createMapOfSets<string, Element>();
@@ -87,11 +93,13 @@ export function parseAllComments(rootElement: Element): ScenarioExpectations {
     NodeFilter.SHOW_COMMENT,
     { acceptNode: () => NodeFilter.FILTER_ACCEPT },
   );
-  let currentNode: Comment;
-  while ((currentNode = iterator.nextNode() as Comment)) {
-    const comment = parseComment(currentNode);
-    if (comment) {
-      foundComments.push(comment);
+  let currentNode: Node | null;
+  while ((currentNode = iterator.nextNode())) {
+    if (isCommentNode(currentNode)) {
+      const comment = parseComment(currentNode);
+      if (comment) {
+        foundComments.push(comment);
+      }
     }
   }
 

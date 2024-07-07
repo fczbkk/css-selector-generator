@@ -33,13 +33,16 @@ function parseComments(comments: Comment[]): ParseCommentsResult {
   };
   comments.forEach((comment) => {
     const element = comment.parentElement;
-    for (const match of comment.textContent.matchAll(contentRe)) {
-      const { key, val } = match.groups;
+    for (const { groups } of comment.textContent.matchAll(contentRe)) {
+      if (!groups) {
+        continue;
+      }
+      const { key, val } = groups;
       if (key === "name") {
         result.element[val] = element;
       }
       if (key === "group") {
-        if (!result.group[val]) {
+        if (!(val in result.group)) {
           result.group[val] = [];
         }
         result.group[val].push(element);

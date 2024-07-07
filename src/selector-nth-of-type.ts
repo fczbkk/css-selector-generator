@@ -18,7 +18,7 @@ export function getElementNthOfTypeSelector(
     const elementIndex = siblings.indexOf(element);
     if (elementIndex > -1) {
       return [
-        `${tag}:nth-of-type(${elementIndex + 1})` as CssSelectorGenerated,
+        `${tag}:nth-of-type(${String(elementIndex + 1)})` as CssSelectorGenerated,
       ];
     }
   }

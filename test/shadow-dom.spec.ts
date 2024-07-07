@@ -4,8 +4,8 @@ import { getIdSelector } from "../src/selector-id.js";
 
 describe("Shadow DOM", () => {
   let root: Element;
-  let shadowRoot;
-  let shadowElement;
+  let shadowRoot: ShadowRoot;
+  let shadowElement: Element;
 
   beforeEach(() => {
     root = document.body.appendChild(document.createElement("div"));

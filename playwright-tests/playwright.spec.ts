@@ -20,7 +20,7 @@ test("complex test", async ({ libraryPage }) => {
 
   const foundErrors = await libraryPage.page.evaluate(() => {
     const allElements = document.querySelectorAll("*");
-    const errors = [];
+    const errors: { selector: string; element: Element }[] = [];
     Array.from(allElements).forEach((element) => {
       const selector = CssSelectorGenerator.getCssSelector(element);
       const matches = document.querySelectorAll(selector);

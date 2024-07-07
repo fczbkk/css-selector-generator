@@ -8,6 +8,8 @@ import chalk from "chalk";
 
 import { chromium } from "playwright";
 import type { Page } from "playwright";
+import type getCssSelector from "../src";
+import type * as ScenarioUtilities from "./scenario-utilities";
 import type { ScenarioExpectations } from "./scenario-utilities";
 import { glob } from "glob";
 import { consoleMessageToTerminal } from "../playwright-tests/utilities";
@@ -21,6 +23,14 @@ interface ScenarioTestResultItem {
 interface ScenarioTestResult {
   success: ScenarioTestResultItem[];
   error: ScenarioTestResultItem[];
+}
+
+declare global {
+  interface CssSelectorGenerator {
+    getCssSelector: typeof getCssSelector;
+  }
+  const CssSelectorGenerator: CssSelectorGenerator;
+  const scenarioUtilities: typeof ScenarioUtilities;
 }
 
 const __dirname = new URL(".", import.meta.url).pathname;
@@ -72,12 +82,9 @@ async function testScenario(
     </html>
   `);
 
-  // TODO declare globals to be used inside the `page.evaluate()`, see playwright-tests/playwright.spec.ts
-
   return page.evaluate(() => {
     const scenarioExpectations: ScenarioExpectations =
-      // @ts-expect-error -- TS does not know that we added the library to the page's global scope
-      window.scenarioUtilities.parseAllComments(document.body);
+      scenarioUtilities.parseAllComments(document.body);
 
     const result: ScenarioTestResult = {
       success: [],
@@ -85,8 +92,7 @@ async function testScenario(
     };
     scenarioExpectations.forEach((targetElements, expectedSelector) => {
       const elements = Array.from(targetElements);
-      // @ts-expect-error -- TS does not know that we added the library to the page's global scope
-      const generatedSelector = window.CssSelectorGenerator.getCssSelector(
+      const generatedSelector = CssSelectorGenerator.getCssSelector(
         elements.length === 1 ? elements[0] : elements,
       );
       result[expectedSelector === generatedSelector ? "success" : "error"].push(

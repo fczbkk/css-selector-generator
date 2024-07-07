@@ -41,7 +41,7 @@ export async function buildAndInsertScript(
  * Transfers Playwright's console message object to terminal.
  */
 export async function consoleMessageToTerminal(consoleMessage: ConsoleMessage) {
-  const consoleMessageMethods = {
+  const consoleMessageMethods: Record<string, string> = {
     warning: "warn",
     startGroup: "group",
     startGroupCollapsed: "groupCollapsed",
@@ -49,11 +49,13 @@ export async function consoleMessageToTerminal(consoleMessage: ConsoleMessage) {
   };
 
   const type = consoleMessage.type();
-  const method = consoleMessageMethods[type] || type;
+  const method = consoleMessageMethods[type] ?? type;
   const msgArgs = consoleMessage.args();
   const logValues = await Promise.all(
+    // We are just passing arguments to console.log, we don't care about their types.
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     msgArgs.map(async (arg) => await arg.jsonValue()),
   );
-  // eslint-disable-next-line no-console
+  // eslint-disable-next-line no-console,@typescript-eslint/no-unsafe-call
   console[method](...logValues);
 }

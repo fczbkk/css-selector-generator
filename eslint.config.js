@@ -20,7 +20,7 @@ export default [
       },
     },
   },
-  ...tseslint.configs.strict,
+  ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
   {
     files: ["**/*.js"],

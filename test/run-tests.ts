@@ -102,7 +102,9 @@ async function setupMochaRunner({
     failedTests.push(test.err);
   });
 
-  runner.on("end", () => onRunnerEnd(failedTests));
+  runner.on("end", () => {
+    onRunnerEnd(failedTests);
+  });
 
   // TODO figure out why the diff option is not working. We are not receiving "expected" and "actual" properties from the browser.
   new Mocha.reporters.List(runner, {
@@ -110,7 +112,9 @@ async function setupMochaRunner({
   });
 
   // Expose a function to send events from the browser to Node.js
-  await page.exposeFunction("mochaEvent", (event, ...args) => {
+  await page.exposeFunction("mochaEvent", (event: string, ...args) => {
+    // We are just passing the event and the arguments from the Mocha runner in the browser to the Mocha runner outside of browser.
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     runner.emit(event, ...args);
   });
 }
@@ -130,18 +134,19 @@ async function setupMochaAndRunTests({
 }
 
 async function runSingleTest(testFile: string, browser: Browser) {
+  console.log(`running tests from: ${chalk.bold(testFile)}`);
+
+  const page = await browser.newPage();
+  page.on("console", consoleMessageToTerminal);
+
   return new Promise<Error[]>((resolve) => {
-    console.log(`running tests from: ${chalk.bold(testFile)}`);
+    const onRunnerEnd = (errors: Error[]) => {
+      void page.close().then(() => {
+        resolve(errors);
+      });
+    };
 
-    browser.newPage().then((page) => {
-      page.on("console", consoleMessageToTerminal);
-
-      const onRunnerEnd = (errors: Error[]) => {
-        page.close().then(() => resolve(errors));
-      };
-
-      setupMochaAndRunTests({ page, testFile, onRunnerEnd });
-    });
+    void setupMochaAndRunTests({ page, testFile, onRunnerEnd });
   });
 }
 
@@ -163,7 +168,7 @@ async function runTests() {
 
   const endTimestamp = Date.now();
   console.log(
-    `${chalk.bold("END")} Run all tests (${endTimestamp - startTimestamp}ms)`,
+    `${chalk.bold("END")} Run all tests (${String(endTimestamp - startTimestamp)}ms)`,
   );
 
   return allFailedTests;
