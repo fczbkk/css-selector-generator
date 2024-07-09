@@ -43,7 +43,7 @@ export function getElementParents(
 ): Element[] {
   root = root ?? getRootNode(element);
   const result = [];
-  let parent = element;
+  let parent: Element | null = element;
   while (isElement(parent) && parent !== root) {
     result.push(parent);
     parent = parent.parentElement;
@@ -64,5 +64,6 @@ export function getParents(elements: Element[], root?: ParentNode): Element[] {
  * Returns root node for given element. This needs to be used because of document-less environments, e.g. jsdom.
  */
 export function getRootNode(element: Element): ParentNode {
+  // @ts-expect-error: The `:root` selector always returns a parent node. The `null` return value is not applicable here.
   return element.ownerDocument.querySelector(":root");
 }

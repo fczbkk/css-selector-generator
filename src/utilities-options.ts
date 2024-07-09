@@ -4,6 +4,7 @@ import {
   CssSelectorMatch,
   CssSelectorTypes,
 } from "./types.js";
+import { getRootNode } from "./utilities-dom";
 import { isEnumValue } from "./utilities-typescript.js";
 import { showWarning } from "./utilities-messages.js";
 
@@ -108,7 +109,7 @@ export function sanitizeRoot(input: unknown, element: Element): ParentNode {
     return rootNode;
   }
 
-  return element.ownerDocument.querySelector(":root");
+  return getRootNode(element);
 }
 
 /**

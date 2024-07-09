@@ -43,9 +43,9 @@ export function getCommonParent(needle: Element[]): Element | null {
 /**
  * Yields all common parents of the needle, starting with the one closest to the needle.
  */
-export function* parentsGenerator(needle: Element[], root: ParentNode) {
+export function* parentsGenerator(needle: Element[], root?: ParentNode) {
   let parent = getCommonParent(needle);
-  while (parent && root.contains(parent)) {
+  while (parent && root?.contains(parent)) {
     yield parent;
     parent = parent.parentElement;
   }
