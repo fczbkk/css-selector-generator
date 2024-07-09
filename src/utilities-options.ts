@@ -4,7 +4,7 @@ import {
   CssSelectorMatch,
   CssSelectorTypes,
 } from "./types.js";
-import { getRootNode } from "./utilities-dom";
+import { getRootNode } from "./utilities-dom.js";
 import { isEnumValue } from "./utilities-typescript.js";
 import { showWarning } from "./utilities-messages.js";
 
