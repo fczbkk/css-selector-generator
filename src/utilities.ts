@@ -12,23 +12,31 @@ import { getCartesianProduct } from "./utilities-cartesian.js";
 /**
  * Returns closest parent element that is common for all needle elements. Returns `null` if no such element exists.
  */
-export function getCommonParent(needle: Element[]) {
-  if (needle.length > 0) {
-    let parent = needle[0].parentElement;
+export function getCommonParent(needle: Element[]): Element | null {
+  // optimization for empty needle
+  if (needle.length === 0) {
+    return null;
+  }
 
-    // optimization for single element
-    if (needle.length === 1) {
+  // optimization for single element
+  if (needle.length === 1) {
+    return needle[0].parentElement;
+  }
+
+  // optimization for when any element has no parent, it means there is no common parent
+  if (needle.some((element) => element.parentElement === null)) {
+    return null;
+  }
+
+  let parent = needle[0].parentElement;
+  while (parent) {
+    // find common parent for multiple elements
+    if (needle.every((element) => parent?.contains(element))) {
       return parent;
     }
-
-    // find common parent for multiple elements
-    while (parent) {
-      if (needle.every((element) => parent.contains(element))) {
-        return parent;
-      }
-      parent = parent.parentElement;
-    }
+    parent = parent.parentElement;
   }
+
   return null;
 }
 
