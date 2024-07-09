@@ -59,7 +59,7 @@
     "playwright": "^1.45.1",
     "prettier": "^3.3.2",
     "raw-loader": "^4.0.2",
-    "rimraf": "^5.0.8",
+    "rimraf": "^6.0.0",
     "ts-loader": "^9.5.1",
     "tsx": "^4.16.2",
     "typescript": "^5.5.3",
