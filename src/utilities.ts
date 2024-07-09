@@ -1,8 +1,8 @@
 import { testSelector } from "./utilities-dom";
-import {
+import type {
   CssSelectorGeneratorOptions,
   CssSelectorsByType,
-  CssSelectorType,
+  CssSelectorTypes,
 } from "./types.js";
 import { constructSelector } from "./utilities-selectors.js";
 import { getPowerSet, powerSetGenerator } from "./utilities-powerset.js";
@@ -89,7 +89,7 @@ export function getSelectorDataPowerSet(selectorData: CssSelectorsByType) {
 
 export function* needleCandidateGenerator(
   needle: Element[],
-  selectorTypes: CssSelectorType[],
+  selectorTypes: CssSelectorTypes,
   options: CssSelectorGeneratorOptions,
   memo = createMemo(),
 ) {

@@ -46,16 +46,6 @@ export const CSS_SELECTOR_TYPE = {
 } as const;
 
 export type CssSelectorType = ObjectValues<typeof CSS_SELECTOR_TYPE>;
-
-// export enum CssSelectorType {
-//   id = "id",
-//   class = "class",
-//   tag = "tag",
-//   attribute = "attribute",
-//   nthchild = "nthchild",
-//   nthoftype = "nthoftype",
-// }
-
 export type CssSelectorTypes = CssSelectorType[];
 
 export type CssSelectorsByType = Partial<Record<CssSelectorType, CssSelectors>>;
@@ -66,7 +56,7 @@ export type CssSelectorData = {
 
 export type CssSelectorGeneratorOptionsInput = Partial<{
   // List of selector types to use. They will be prioritised by their order.
-  selectors: CssSelectorType[];
+  selectors: CssSelectorTypes;
   // List of selectors that should be prioritised.
   whitelist: CssSelectorMatch[];
   // List of selectors that should be ignored.

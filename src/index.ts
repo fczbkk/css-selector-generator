@@ -5,20 +5,21 @@ import {
   sanitizeSelectorNeedle,
 } from "./utilities-selectors.js";
 import { CssSelector, CssSelectorGeneratorOptionsInput } from "./types.js";
-import { testSelector } from "./utilities-dom.js";
+import { getRootNode, testSelector } from "./utilities-dom.js";
 import { SELECTOR_SEPARATOR } from "./constants.js";
 
 /**
  * Generates unique CSS selector for an element.
  */
 export function getCssSelector(
-  needle: unknown,
+  needle: Element | Element[],
   custom_options: CssSelectorGeneratorOptionsInput = {},
 ): CssSelector {
-  const elements = sanitizeSelectorNeedle(needle);
+  const elements = sanitizeSelectorNeedle(needle as unknown);
   const options = sanitizeOptions(elements[0], custom_options);
+  const root = options.root ?? getRootNode(elements[0]);
   let partialSelector = "";
-  let currentRoot = options.root;
+  let currentRoot = root;
 
   /**
    * Utility function to make subsequent calls shorter.
@@ -35,7 +36,7 @@ export function getCssSelector(
   let closestIdentifiableParent = updateIdentifiableParent();
   while (closestIdentifiableParent) {
     const { foundElements, selector } = closestIdentifiableParent;
-    if (testSelector(elements, selector, options.root)) {
+    if (testSelector(elements, selector, root)) {
       return selector;
     }
     currentRoot = foundElements[0];
