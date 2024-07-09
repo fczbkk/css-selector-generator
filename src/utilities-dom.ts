@@ -64,6 +64,6 @@ export function getParents(elements: Element[], root?: ParentNode): Element[] {
  * Returns root node for given element. This needs to be used because of document-less environments, e.g. jsdom.
  */
 export function getRootNode(element: Element): ParentNode {
-  // @ts-expect-error: The `:root` selector always returns a parent node. The `null` return value is not applicable here.
+  // The `:root` selector always returns a parent node. The `null` return value is not applicable here.
   return element.ownerDocument.querySelector(":root");
 }
