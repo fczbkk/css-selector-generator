@@ -2,7 +2,7 @@ import { test, expect } from "./fixtures.js";
 import { readFile } from "node:fs/promises";
 import { URL } from "node:url";
 import * as path from "node:path";
-import { getCssSelector } from "../src/index.js";
+import type { getCssSelector } from "../src/index.js";
 
 const __dirname = new URL(".", import.meta.url).pathname;
 
