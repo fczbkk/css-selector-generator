@@ -65,6 +65,9 @@ export function legacySanitizeSelectorItem(input = ""): string {
       if (SPECIAL_CHARACTERS_RE.test(character)) {
         return `\\${character}`;
       }
+
+      // needed for backwards compatibility
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       return escape(character).replace(/%/g, "\\");
     })
     .join("");
