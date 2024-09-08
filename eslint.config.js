@@ -4,7 +4,13 @@ import prettierConfig from "eslint-config-prettier";
 
 export default [
   {
-    ignores: ["build/", "types/", "temp/", "esm/"],
+    ignores: [
+      "build/",
+      "types/",
+      "temp/",
+      "esm/",
+      "web-test-runner.config.mjs",
+    ],
   },
   eslint.configs.recommended,
   prettierConfig,
