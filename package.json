@@ -42,7 +42,7 @@
   "devDependencies": {
     "@eslint/js": "^9.9.0",
     "@playwright/test": "^1.46.0",
-    "@types/chai": "^4.3.17",
+    "@types/chai": "^5.0.0",
     "@types/mocha": "^10.0.7",
     "@types/node": "^22.2.0",
     "chai": "^5.1.1",
