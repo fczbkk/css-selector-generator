@@ -35,15 +35,20 @@ export function attributeNodeToSelector({
 }
 
 /**
- * Checks whether attribute should be used as a selector.
+ * Checks whether an attribute should be used as a selector.
  */
 export function isValidAttributeNode(
-  { nodeName }: Node,
+  { nodeName, nodeValue }: Node,
   element: Element,
 ): boolean {
   // form input value should not be used as a selector
   const tagName = element.tagName.toLowerCase();
   if (["input", "option"].includes(tagName) && nodeName === "value") {
+    return false;
+  }
+
+  // ignore Base64-encoded strings as 'src' attribute values (e.g. in tags like img, audio, video, iframe, object, embed).
+  if (nodeName === "src" && nodeValue?.startsWith("data:")) {
     return false;
   }
 
@@ -56,7 +61,7 @@ export function isValidAttributeNode(
 function sanitizeAttributeData({ nodeName, nodeValue }: Node): AttributeData {
   return {
     name: sanitizeSelectorItem(nodeName),
-    value: sanitizeSelectorItem(nodeValue),
+    value: sanitizeSelectorItem(nodeValue ?? undefined),
   };
 }
 
