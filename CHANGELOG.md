@@ -1,3 +1,13 @@
+## [3.6.9](https://github.com/fczbkk/css-selector-generator/compare/v3.6.8...v3.6.9) (2024-10-24)
+
+
+### Bug Fixes
+
+* ignore base64 encoded src attributes ([68859e9](https://github.com/fczbkk/css-selector-generator/commit/68859e97042e25824dd9ecae9e146d1e06ac00f8))
+* typo in warning message ([24fef4a](https://github.com/fczbkk/css-selector-generator/commit/24fef4af771c1e7eeb060378dccab42002925b5c))
+
+
+
 ## [3.6.8](https://github.com/fczbkk/css-selector-generator/compare/v3.6.7...v3.6.8) (2024-06-02)
 
 
