@@ -50,9 +50,9 @@ export type CssSelectorTypes = CssSelectorType[];
 
 export type CssSelectorsByType = Partial<Record<CssSelectorType, CssSelectors>>;
 
-export type CssSelectorData = {
-  [key in CssSelectorType]?: string[] | string[][];
-};
+export type CssSelectorData = Partial<
+  Record<CssSelectorType, string[] | string[][]>
+>;
 
 export type CssSelectorGeneratorOptionsInput = Partial<{
   // List of selector types to use. They will be prioritised by their order.
