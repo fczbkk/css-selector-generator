@@ -19,3 +19,19 @@ export function getCartesianProduct<T>(
   });
   return result;
 }
+
+export function* cartesianProductGenerator<T>(
+  arrays: T[][],
+): IterableIterator<T[]> {
+  if (arrays.length === 0) {
+    yield [];
+    return;
+  }
+
+  const [first, ...rest] = arrays;
+  for (const value of first) {
+    for (const combination of cartesianProductGenerator(rest)) {
+      yield [value, ...combination];
+    }
+  }
+}

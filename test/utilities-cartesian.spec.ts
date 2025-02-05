@@ -1,5 +1,8 @@
 import { assert } from "chai";
-import { getCartesianProduct } from "../src/utilities-cartesian.js";
+import {
+  cartesianProductGenerator,
+  getCartesianProduct,
+} from "../src/utilities-cartesian.js";
 
 describe("utilities - cartesian", () => {
   it("should generate empty result from empty input", () => {
@@ -25,6 +28,37 @@ describe("utilities - cartesian", () => {
       { a: "a3", b: "b1", c: "c2" },
     ];
     const result = getCartesianProduct(input);
+    assert.sameDeepOrderedMembers(result, expectation);
+  });
+});
+
+describe("utilities - cartesian generator", () => {
+  it("should generate empty result from empty input", () => {
+    const generator = cartesianProductGenerator([]);
+    const result = [...generator];
+    assert.sameDeepOrderedMembers(result, [[]]);
+  });
+
+  it("should generate from simple input", () => {
+    const input = [["a1", "a2", "a3"]];
+    const expectation = [["a1"], ["a2"], ["a3"]];
+    const generator = cartesianProductGenerator(input);
+    const result = [...generator];
+    assert.sameDeepOrderedMembers(result, expectation);
+  });
+
+  it("should generate from complex input", () => {
+    const input = [["a1", "a2", "a3"], ["b1"], ["c1", "c2"]];
+    const expectation = [
+      ["a1", "b1", "c1"],
+      ["a1", "b1", "c2"],
+      ["a2", "b1", "c1"],
+      ["a2", "b1", "c2"],
+      ["a3", "b1", "c1"],
+      ["a3", "b1", "c2"],
+    ];
+    const generator = cartesianProductGenerator(input);
+    const result = [...generator];
     assert.sameDeepOrderedMembers(result, expectation);
   });
 });
