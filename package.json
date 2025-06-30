@@ -44,7 +44,7 @@
     "@playwright/test": "^1.50.1",
     "@types/chai": "^5.0.1",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^22.13.1",
+    "@types/node": "^24.0.7",
     "chai": "^5.1.2",
     "chalk": "^5.4.1",
     "chokidar-cli": "^3.0.0",
