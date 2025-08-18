@@ -277,7 +277,7 @@ If set to `true`, the generator will try to look for combinations of selectors b
 	<!-- targetElement -->
 	<div class="aaa"></div>
 	<div class="bbb"></div>
-	<p class="aaa"></div>
+	<p class="aaa"></p>
 </body>
 ```
 
