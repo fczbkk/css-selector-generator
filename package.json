@@ -45,7 +45,7 @@
     "@types/chai": "^5.0.1",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.13.1",
-    "chai": "^5.1.2",
+    "chai": "^6.0.1",
     "chalk": "^5.4.1",
     "chokidar-cli": "^3.0.0",
     "conventional-changelog-cli": "^5.0.0",
