@@ -24,10 +24,12 @@ function getElementData(
   element: Element,
   memo: MemoElementData = new Map(),
 ): MemoSelectorData {
-  if (!memo.get(element)) {
-    memo.set(element, new Map());
+  let data = memo.get(element);
+  if (!data) {
+    data = new Map();
+    memo.set(element, data);
   }
-  return memo.get(element);
+  return data;
 }
 
 /**
@@ -37,12 +39,12 @@ function getSelectorData(
   element: Element,
   selectorType: CssSelectorType,
   memo: MemoElementData = new Map(),
-) {
+): CssSelectors {
   const elementData = getElementData(element, memo);
   if (!elementData.get(selectorType)) {
     elementData.set(selectorType, getSelectors(element, selectorType));
   }
-  return elementData.get(selectorType);
+  return elementData.get(selectorType) ?? [];
 }
 
 /**

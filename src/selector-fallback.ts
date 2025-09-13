@@ -17,7 +17,7 @@ export function getElementFallbackSelector(element: Element): CssSelector {
       [CSS_SELECTOR_TYPE.nthchild],
       OPERATOR.CHILD,
     );
-    elementData.selectors.nthchild.forEach((selectorData) => {
+    (elementData.selectors.nthchild ?? []).forEach((selectorData) => {
       selectorData.include = true;
     });
     return elementData;

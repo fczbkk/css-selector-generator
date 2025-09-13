@@ -8,6 +8,7 @@
     "allowJs": true,
     "sourceMap": true,
     "moduleResolution": "node",
-    "lib": ["ES6", "DOM", "DOM.Iterable"]
+    "lib": ["ES6", "DOM", "DOM.Iterable"],
+    "strict": true
   }
 }

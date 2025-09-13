@@ -65,5 +65,5 @@ export function getParents(elements: Element[], root?: ParentNode): Element[] {
  */
 export function getRootNode(element: Element): ParentNode {
   // The `:root` selector always returns a parent node. The `null` return value is not applicable here.
-  return element.ownerDocument.querySelector(":root");
+  return element.ownerDocument.querySelector(":root") as ParentNode;
 }
