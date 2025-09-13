@@ -24,6 +24,7 @@ export const DEFAULT_OPTIONS = {
   root: null,
   maxCombinations: Number.POSITIVE_INFINITY,
   maxCandidates: Number.POSITIVE_INFINITY,
+  useScope: false,
 } as CssSelectorGeneratorOptions;
 
 /**
@@ -142,5 +143,6 @@ export function sanitizeOptions(
     includeTag: !!options.includeTag,
     maxCombinations: sanitizeMaxNumber(options.maxCombinations),
     maxCandidates: sanitizeMaxNumber(options.maxCandidates),
+    useScope: !!options.useScope,
   };
 }

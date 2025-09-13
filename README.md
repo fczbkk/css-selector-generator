@@ -122,6 +122,7 @@ In some cases, this selector may not be unique (e.g. `#wrapper > * > div > *`). 
 - [`includeTag`](#include-tag)
 - [`maxCombinations`](#max-combinations)
 - [`maxCandidates`](#max-candidates)
+- [`useScope`](#use-scope)
 
 ### Selector types
 
@@ -324,6 +325,75 @@ You should use it in cases, when there are not too many class names and attribut
 
 ```javascript
 getCssSelector(targetElement, { maxCandidates: 100 });
+```
+
+### Use scope
+
+**Experimental feature** - *This will probably be turned on by default and the option will be removed, after I thoroughly evaluate that it produces valid selectors in all use cases.*
+
+If set to `true` and the [`root` option](#root-element) is provided, the fallback selectors will be created relative to the `root` element using the `:scope` pseudo-class.
+
+For example, if you have the following HTML structure:
+
+```html
+<html>
+  <body>
+    <div>
+      <div><!-- haystackElement -->
+        <div>
+          <div><!-- needleElement --></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+```
+
+If you generate the selector **without** the `useScope` option:
+
+```javascript
+getCssSelector(needleElement, {
+  root: haystackElement,
+  useScope: false,
+});
+```
+
+...it will produce this fallback selector:
+
+```
+:root > :nth-child(1) > :nth-child(1) > :nth-child(1) > :nth-child(1) > :nth-child(1)
+```
+
+... where the selectors correspond with these elements:
+
+```
+:root             -> <html>
+> :nth-child(1)   ->   <body>
+> :nth-child(1)   ->     <div>
+> :nth-child(1)   ->       <div> <!-- haystackElement -->
+> :nth-child(1)   ->         <div>
+> :nth-child(1)   ->           <div> <!-- needleElement -->
+```
+
+But if you generate the selector **with** the `useScope` option:
+
+```javascript
+getCssSelector(needleElement, {
+  root: haystackElement,
+  useScope: true,
+});
+```
+
+...it will produce this fallback selector:
+
+```:scope > :nth-child(1) > :nth-child(1)```
+
+... where the selectors correspond with these elements:
+
+```
+:scope            -> <div> <!-- haystackElement -->
+> :nth-child(1)   ->   <div>
+> :nth-child(1)   ->     <div> <!-- needleElement -->
 ```
 
 ## Bug reports, feature requests and contact

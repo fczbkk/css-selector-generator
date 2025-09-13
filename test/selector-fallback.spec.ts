@@ -66,4 +66,19 @@ describe("selector - fallback", function () {
       assert.ok(testMultiSelector(element, result, root));
     });
   });
+
+  it("should use :scope when the root option is set", () => {
+    root.innerHTML = `
+      <div>root
+        <div>
+          <div>needle</div>
+        </div>
+      </div>
+    `;
+    const rootElement = root.firstElementChild;
+    const needleElement = rootElement.firstElementChild.firstElementChild;
+    const result = getFallbackSelector([needleElement], rootElement);
+    assert.ok(testSelector([needleElement], result, rootElement));
+    assert.equal(result, ":scope > :nth-child(1) > :nth-child(1)");
+  });
 });

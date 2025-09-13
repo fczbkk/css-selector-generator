@@ -9,8 +9,11 @@ import {
 /**
  * Creates fallback selector for single element.
  */
-export function getElementFallbackSelector(element: Element): CssSelector {
-  const parentElements = getElementParents(element).reverse();
+export function getElementFallbackSelector(
+  element: Element,
+  root?: ParentNode,
+): CssSelector {
+  const parentElements = getElementParents(element, root).reverse();
   const elementsData = parentElements.map((element) => {
     const elementData = createElementData(
       element,
@@ -23,12 +26,20 @@ export function getElementFallbackSelector(element: Element): CssSelector {
     return elementData;
   });
 
-  return [":root", ...elementsData.map(constructElementSelector)].join("");
+  return [
+    root ? ":scope" : ":root",
+    ...elementsData.map(constructElementSelector),
+  ].join("");
 }
 
 /**
  * Creates chain of :nth-child selectors from root to the elements.
  */
-export function getFallbackSelector(elements: Element[]): CssSelector {
-  return elements.map(getElementFallbackSelector).join(SELECTOR_SEPARATOR);
+export function getFallbackSelector(
+  elements: Element[],
+  root?: ParentNode,
+): CssSelector {
+  return elements
+    .map((element) => getElementFallbackSelector(element, root))
+    .join(SELECTOR_SEPARATOR);
 }

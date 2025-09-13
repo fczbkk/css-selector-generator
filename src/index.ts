@@ -52,7 +52,7 @@ export function getCssSelector(
       .join(SELECTOR_SEPARATOR);
   }
 
-  return getFallbackSelector(elements);
+  return getFallbackSelector(elements, options.useScope ? root : undefined);
 }
 
 export default getCssSelector;

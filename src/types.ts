@@ -73,6 +73,8 @@ export type CssSelectorGeneratorOptionsInput = Partial<{
   maxCombinations: number;
   // Maximum number of selector candidates to be tested for each element. This is handy for performance reasons, e.g. when elements can produce large number of combinations of various types of selectors.
   maxCandidates: number;
+  // Experimental. If set to `true` and the "root" option is set, the fallback selectors will use ":scope" pseudo-class to make the selectors shorter and simpler.
+  useScope: boolean;
 }>;
 
 export type CssSelectorGeneratorOptions = Required<
