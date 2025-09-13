@@ -1,3 +1,12 @@
+# [3.7.0](https://github.com/fczbkk/css-selector-generator/compare/v3.6.9...v3.7.0) (2025-09-13)
+
+
+### Features
+
+* add `useScope` option ([27f32df](https://github.com/fczbkk/css-selector-generator/commit/27f32df3b1ec71b42205890b305266feafce65d7)), closes [#1061](https://github.com/fczbkk/css-selector-generator/issues/1061)
+
+
+
 ## [3.6.9](https://github.com/fczbkk/css-selector-generator/compare/v3.6.8...v3.6.9) (2024-10-24)
 
 
