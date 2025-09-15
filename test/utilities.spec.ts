@@ -7,13 +7,10 @@ import {
 import { assert } from "chai";
 import {
   getCommonParent,
-  needleCandidateGenerator,
   parentsGenerator,
   testParentCandidate,
   viableParentsGenerator,
 } from "../src/utilities";
-import { CSS_SELECTOR_TYPE } from "../src/types.js";
-import { sanitizeOptions } from "../src/utilities-options.js";
 
 describe("Utilities", () => {
   let root: Element;
@@ -231,41 +228,6 @@ describe("Utilities", () => {
         data.root,
       );
       assert.isFalse(result);
-    });
-  });
-
-  describe("needleCandidateGenerator", () => {
-    it("should generate simple needle candidates", () => {
-      const data = parseTestHtml(`
-        <div class="aaa bbb"><!-- group: needle --></div>
-      `);
-      const options = sanitizeOptions(data.group.needle[0], {
-        root: data.root,
-        selectors: ["class"],
-      });
-      const generator = needleCandidateGenerator(
-        data.group.needle,
-        [CSS_SELECTOR_TYPE.class],
-        options,
-      );
-      const result = [...generator];
-      assert.deepEqual(result, [".aaa", ".bbb", ".aaa.bbb"]);
-    });
-    it("should respect selector types order", () => {
-      const data = parseTestHtml(`
-        <div class="aaa" id="bbb"><!-- group: needle --></div>
-      `);
-      const options = sanitizeOptions(data.group.needle[0], {
-        root: data.root,
-        selectors: ["class", "id"],
-      });
-      const generator = needleCandidateGenerator(
-        data.group.needle,
-        [CSS_SELECTOR_TYPE.class, CSS_SELECTOR_TYPE.id],
-        options,
-      );
-      const result = [...generator];
-      assert.deepEqual(result, [".aaa", "#bbb", "#bbb.aaa"]);
     });
   });
 });
