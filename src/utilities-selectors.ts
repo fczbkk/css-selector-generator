@@ -33,7 +33,7 @@ import {
 } from "./types.js";
 import { isElement } from "./utilities-iselement.js";
 import { getPowerSet } from "./utilities-powerset.js";
-import { getCartesianProduct } from "./utilities-cartesian.js";
+import { cartesianProductGenerator } from "./utilities-cartesian.js";
 
 export const ESCAPED_COLON = ":".charCodeAt(0).toString(16).toUpperCase();
 
@@ -150,17 +150,27 @@ export function orderSelectors(
 }
 
 /**
- * Returns list of unique selectors applicable to given element.
+ * Yields list of unique selectors applicable to given element.
  */
-export function getAllSelectors(
+export function* allSelectorsGenerator(
   elements: Element[],
-  root: ParentNode,
   options: CssSelectorGeneratorOptions,
-): CssSelector[] {
+): IterableIterator<CssSelector> {
+  const yieldedSelectors = new Set<string>();
   const selectors_list = getSelectorsList(elements, options);
-  const type_combinations = getTypeCombinations(selectors_list, options);
-  const all_selectors = flattenArray(type_combinations);
-  return [...new Set(all_selectors)];
+  for (const items of selectorTypeCombinationsGenerator(
+    selectors_list,
+    options,
+  )) {
+    for (const selector of items) {
+      if (!yieldedSelectors.has(selector)) {
+        yieldedSelectors.add(selector);
+      } else {
+        continue;
+      }
+      yield selector;
+    }
+  }
 }
 
 /**
@@ -241,34 +251,39 @@ export function combineSelectorTypes(
 /**
  * Generates list of combined CSS selectors.
  */
-export function getTypeCombinations(
+export function* selectorTypeCombinationsGenerator(
   selectors_list: CssSelectorData,
   options: CssSelectorGeneratorOptions,
-): CssSelector[][] {
-  return combineSelectorTypes(options)
-    .map((item) => {
-      return constructSelectors(item, selectors_list);
-    })
-    .filter((item) => item.length > 0);
+): IterableIterator<CssSelector[]> {
+  for (const item of combineSelectorTypes(options)) {
+    const selectors = [...constructedSelectorsGenerator(item, selectors_list)];
+    if (selectors.length > 0) {
+      yield selectors;
+    }
+  }
 }
 
 /**
  * Generates all variations of possible selectors from provided data.
  */
-export function constructSelectors(
+export function* constructedSelectorsGenerator(
   selector_types: CssSelectorTypes,
   selectors_by_type: CssSelectorData,
-): CssSelector[] {
+): IterableIterator<CssSelector> {
   const data: CssSelectorData = {};
-  selector_types.forEach((selector_type) => {
+
+  for (const selector_type of selector_types) {
     const selector_variants = selectors_by_type[selector_type];
     if (selector_variants && selector_variants.length > 0) {
       data[selector_type] = selector_variants;
     }
-  });
+  }
 
-  const combinations = getCartesianProduct<string | string[]>(data);
-  return combinations.map(constructSelector);
+  for (const combination of cartesianProductGenerator<string | string[]>(
+    data,
+  )) {
+    yield constructSelector(combination);
+  }
 }
 
 /**
@@ -341,7 +356,9 @@ export function getSelectorWithinRoot(
   rootSelector: CssSelector = "",
   options: CssSelectorGeneratorOptions,
 ): null | CssSelector {
-  const elementSelectors = getAllSelectors(elements, root, options);
+  // TODO use generator
+  const elementSelectors = [...allSelectorsGenerator(elements, options)];
+  // TODO convert to generator
   const selectorCandidates = generateCandidates(elementSelectors, rootSelector);
   for (const candidateSelector of selectorCandidates) {
     if (testSelector(elements, candidateSelector, root)) {

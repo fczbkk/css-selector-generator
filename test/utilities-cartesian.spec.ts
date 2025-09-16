@@ -1,16 +1,16 @@
 import { assert } from "chai";
-import { getCartesianProduct } from "../src/utilities-cartesian.js";
+import { cartesianProductGenerator } from "../src/utilities-cartesian.js";
 
 describe("utilities - cartesian", () => {
   it("should generate empty result from empty input", () => {
-    const result = getCartesianProduct();
+    const result = [...cartesianProductGenerator()];
     assert.sameDeepOrderedMembers(result, []);
   });
 
   it("should generate from simple input", () => {
     const input = { a: ["a1", "a2", "a3"] };
     const expectation = [{ a: "a1" }, { a: "a2" }, { a: "a3" }];
-    const result = getCartesianProduct(input);
+    const result = [...cartesianProductGenerator(input)];
     assert.sameDeepOrderedMembers(result, expectation);
   });
 
@@ -24,7 +24,7 @@ describe("utilities - cartesian", () => {
       { a: "a2", b: "b1", c: "c2" },
       { a: "a3", b: "b1", c: "c2" },
     ];
-    const result = getCartesianProduct(input);
+    const result = [...cartesianProductGenerator(input)];
     assert.sameDeepOrderedMembers(result, expectation);
   });
 });
