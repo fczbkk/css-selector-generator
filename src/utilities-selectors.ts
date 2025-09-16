@@ -17,7 +17,7 @@ import {
   getNthOfTypeSelector,
 } from "./selector-nth-of-type.js";
 import { getElementTagSelectors, getTagSelector } from "./selector-tag.js";
-import { createPatternMatcher, flattenArray } from "./utilities-data.js";
+import { createPatternMatcher } from "./utilities-data.js";
 import { getParents, testSelector } from "./utilities-dom.js";
 import {
   CSS_SELECTOR_TYPE,
@@ -338,39 +338,43 @@ function generateCandidateCombinations(
  * Generates a list of selector candidates that can potentially match target
  * element.
  */
-function generateCandidates(
-  selectors: CssSelector[],
+function* candidatesGenerator(
+  selectors: IterableIterator<CssSelector>,
   rootSelector: CssSelector,
-): CssSelector[] {
-  return rootSelector === ""
-    ? selectors
-    : generateCandidateCombinations(selectors, rootSelector);
+): IterableIterator<CssSelector> {
+  if (rootSelector === "") {
+    yield* selectors;
+  } else {
+    for (const selector of selectors) {
+      yield* generateCandidateCombinations([selector], rootSelector);
+    }
+  }
 }
 
 /**
- * Tries to find a unique CSS selector for element within given parent.
+ * Tries to find unique CSS selectors for element within given parent.
  */
-export function getSelectorWithinRoot(
+export function* selectorWithinRootGenerator(
   elements: Element[],
   root: ParentNode,
   rootSelector: CssSelector = "",
   options: CssSelectorGeneratorOptions,
-): null | CssSelector {
-  // TODO use generator
-  const elementSelectors = [...allSelectorsGenerator(elements, options)];
-  // TODO convert to generator
-  const selectorCandidates = generateCandidates(elementSelectors, rootSelector);
-  for (const candidateSelector of selectorCandidates) {
+): IterableIterator<CssSelector, undefined> {
+  const elementSelectorsIterator = allSelectorsGenerator(elements, options);
+  for (const candidateSelector of candidatesGenerator(
+    elementSelectorsIterator,
+    rootSelector,
+  )) {
     if (testSelector(elements, candidateSelector, root)) {
-      return candidateSelector;
+      yield candidateSelector;
     }
   }
-  return null;
+  // TODO remove the `undefined` return value when the main function is rewritten to use the generator directly
+  return;
 }
 
 /**
- * Climbs through parents of the element and tries to find the one that is
- * identifiable by unique CSS selector.
+ * Climbs through parents of the element and tries to find the one that is identifiable by unique CSS selector.
  */
 export function getClosestIdentifiableParent(
   elements: Element[],
@@ -388,16 +392,51 @@ export function getClosestIdentifiableParent(
   ];
 
   for (const currentElements of candidatesList) {
-    const result = getSelectorWithinRoot(
+    const selectorWithinRoot = selectorWithinRootGenerator(
       currentElements,
       root,
       rootSelector,
       options,
-    );
-    if (result) {
+    ).next().value;
+    if (selectorWithinRoot) {
       return {
         foundElements: currentElements,
-        selector: result,
+        selector: selectorWithinRoot,
+      };
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Climbs through parents of the element and finds the ones that are identifiable by unique CSS selector.
+ */
+export function* closestIdentifiableParentGenerator(
+  elements: Element[],
+  root: ParentNode,
+  rootSelector: CssSelector = "",
+  options: CssSelectorGeneratorOptions,
+): IterableIterator<IdentifiableParent, null> {
+  if (elements.length === 0) {
+    return null;
+  }
+
+  const candidatesList = [
+    elements.length > 1 ? elements : [],
+    ...getParents(elements, root).map((element) => [element]),
+  ];
+
+  for (const currentElements of candidatesList) {
+    for (const selectorWithinRoot of selectorWithinRootGenerator(
+      currentElements,
+      root,
+      rootSelector,
+      options,
+    )) {
+      yield {
+        foundElements: currentElements,
+        selector: selectorWithinRoot,
       };
     }
   }
