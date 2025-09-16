@@ -75,6 +75,8 @@ export type CssSelectorGeneratorOptionsInput = Partial<{
   maxCandidates: number;
   // Experimental. If set to `true` and the "root" option is set, the fallback selectors will use ":scope" pseudo-class to make the selectors shorter and simpler.
   useScope: boolean;
+  // Limits the number of results (selectors) to be generated.
+  maxResults: number;
 }>;
 
 export type CssSelectorGeneratorOptions = Required<
@@ -83,9 +85,9 @@ export type CssSelectorGeneratorOptions = Required<
   }
 >;
 
-export type IdentifiableParent = null | {
+export interface IdentifiableParent {
   foundElements: Element[];
   selector: CssSelector;
-};
+}
 
 export type PatternMatcher = (input: string) => boolean;

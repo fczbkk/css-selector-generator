@@ -1,6 +1,6 @@
 # CSS Selector Generator
 
-JavaScript object that creates a unique CSS selector for a given DOM element or multiple DOM elements.
+JavaScript library for creating CSS selectors for a given DOM element or multiple DOM elements.
 
 It also generates shorter selectors and is faster and/or more robust than many other libraries - see this [comparison](https://github.com/fczbkk/css-selector-generator-benchmark) and select the best alternative for your use case.
 
@@ -16,7 +16,7 @@ yarn add css-selector-generator
 Then include it in your source code:
 
 ```javascript
-import { getCssSelector } from "css-selector-generator";
+import { getCssSelector, cssSelectorGenerator } from "css-selector-generator";
 ```
 
 ## How to use
@@ -30,9 +30,28 @@ Simplest way to use it is to provide an element reference, without any options.
 </body>
 ```
 
+You can use either `getCssSelector` function that returns the first found selector:
+
 ```javascript
 getCssSelector(targetElement);
 // ".myElement"
+```
+
+Or you can use `cssSelectorGenerator` function that returns a generator yielding all possible selectors, starting from the simplest ones, ending with the fallback selector:
+
+```javascript
+[...cssSelectorGenerator(targetElement)];
+// [".myElement", "div.myElement", "body .myElement"]
+```
+
+You can set options using second parameter for both functions. The options are described in the [Options](#options) section.
+
+```javascript
+getCssSelector(targetElement, { includeTag: true });
+// "div.myElement"
+
+[...cssSelectorGenerator(targetElement, { maxResults: 2 })];
+// [".myElement", "div.myElement"]
 ```
 
 Typical example is to create a selector for any element that the user clicks on:
@@ -51,7 +70,7 @@ document.body.addEventListener("click", function (event) {
 
 ### Usage without NPM
 
-If you don't want to use this library with NPM, you can download it directly from the "build" folder and insert it to your HTML document directly. In this case, the library is wrapped in namespace `CssSelectorGenerator`. So the usage would look something like this:
+If you don't want to use this library with NPM, you can download it from the "build" folder and insert it to your HTML document directly. In this case, the library is wrapped in namespace `CssSelectorGenerator`. So the usage would look something like this:
 
 ```html
 <!-- link the library -->
@@ -122,6 +141,7 @@ In some cases, this selector may not be unique (e.g. `#wrapper > * > div > *`). 
 - [`includeTag`](#include-tag)
 - [`maxCombinations`](#max-combinations)
 - [`maxCandidates`](#max-candidates)
+- [`maxResults`](#max-results) *(only applicable in `cssSelectorGenerator`)*
 - [`useScope`](#use-scope)
 
 ### Selector types
@@ -325,6 +345,36 @@ You should use it in cases, when there are not too many class names and attribut
 
 ```javascript
 getCssSelector(targetElement, { maxCandidates: 100 });
+```
+
+### Max results
+
+*Only applicable in the `cssSelectorGenerator()`. Not in the `getCssSelector()` function.*
+
+Limits the maximum number of yielded selectors.
+
+By default, all possible selectors are yielded, starting from the simplest ones, ending with the fallback selector. In some cases, this may produce a very large number of selectors. To prevent performance issues, you should set a limit to the number of results.
+
+You can also use it to get multiple selector options, so you can choose the one you like the most.
+
+Let's say you have the following HTML code:
+
+```html
+<div class="aaa bbb ccc"><!-- needleElement --></div>
+```
+
+This will produce 2^n selectors, where n is the number of classes in the element (in case the class names produce unique selectors). The number of possible combinations grows exponentially:
+
+```javascript
+const allSelectors = [...cssSelectorGenerator(needleElement, {selectors: ['class']})];
+// [".aaa", ".bbb", ".ccc", ".aaa.bbb", ".aaa.ccc", ".bbb.ccc", ".aaa.bbb.ccc"]
+```
+
+That's why it's a good idea to limit the maximum number of results. Besides, their quality tends to decrease with the increasing complexity.
+
+```javascript
+const fewSelectors = [...cssSelectorGenerator(needleElement, {selectors: ["class"], maxResults: 5})];
+// [".aaa", ".bbb", ".ccc", ".aaa.bbb", ".aaa.ccc"]
 ```
 
 ### Use scope

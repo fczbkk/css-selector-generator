@@ -372,43 +372,6 @@ export function* selectorWithinRootGenerator(
   // TODO remove the `undefined` return value when the main function is rewritten to use the generator directly
   return;
 }
-
-/**
- * Climbs through parents of the element and tries to find the one that is identifiable by unique CSS selector.
- */
-export function getClosestIdentifiableParent(
-  elements: Element[],
-  root: ParentNode,
-  rootSelector: CssSelector = "",
-  options: CssSelectorGeneratorOptions,
-): IdentifiableParent {
-  if (elements.length === 0) {
-    return null;
-  }
-
-  const candidatesList = [
-    elements.length > 1 ? elements : [],
-    ...getParents(elements, root).map((element) => [element]),
-  ];
-
-  for (const currentElements of candidatesList) {
-    const selectorWithinRoot = selectorWithinRootGenerator(
-      currentElements,
-      root,
-      rootSelector,
-      options,
-    ).next().value;
-    if (selectorWithinRoot) {
-      return {
-        foundElements: currentElements,
-        selector: selectorWithinRoot,
-      };
-    }
-  }
-
-  return null;
-}
-
 /**
  * Climbs through parents of the element and finds the ones that are identifiable by unique CSS selector.
  */
@@ -417,7 +380,7 @@ export function* closestIdentifiableParentGenerator(
   root: ParentNode,
   rootSelector: CssSelector = "",
   options: CssSelectorGeneratorOptions,
-): IterableIterator<IdentifiableParent, null> {
+): IterableIterator<IdentifiableParent> {
   if (elements.length === 0) {
     return null;
   }
@@ -440,8 +403,43 @@ export function* closestIdentifiableParentGenerator(
       };
     }
   }
+}
 
-  return null;
+interface SelectorGeneratorProps {
+  elements: Element[];
+  root: ParentNode;
+  rootSelector: CssSelector;
+  options: CssSelectorGeneratorOptions;
+}
+
+/**
+ * Recursively travels through parents, finds the ones that are identifiable and then tries to find a unique selector within that context.
+ */
+export function* selectorGenerator({
+  elements,
+  root,
+  rootSelector = "",
+  options,
+}: SelectorGeneratorProps): IterableIterator<CssSelector> {
+  for (const item of closestIdentifiableParentGenerator(
+    elements,
+    root,
+    rootSelector,
+    options,
+  )) {
+    const { foundElements, selector } = item;
+
+    if (testSelector(elements, selector, root)) {
+      yield selector;
+    } else {
+      yield* selectorGenerator({
+        elements,
+        options,
+        root: foundElements[0],
+        rootSelector: selector,
+      });
+    }
+  }
 }
 
 /**

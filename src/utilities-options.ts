@@ -144,5 +144,6 @@ export function sanitizeOptions(
     maxCombinations: sanitizeMaxNumber(options.maxCombinations),
     maxCandidates: sanitizeMaxNumber(options.maxCandidates),
     useScope: !!options.useScope,
+    maxResults: sanitizeMaxNumber(options.maxResults),
   };
 }

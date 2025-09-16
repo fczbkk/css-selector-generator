@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { getCssSelector } from "../src";
+import { getCssSelector, cssSelectorGenerator } from "../src";
 
 describe("CssSelectorGenerator", function () {
   let root: Element;
@@ -53,6 +53,29 @@ describe("CssSelectorGenerator", function () {
       const end = Date.now();
 
       assert.isBelow(end - start, 100);
+    });
+  });
+
+  describe("generator", () => {
+    it("should yield multiple selectors", () => {
+      root.innerHTML = "<div class='aaa bbb ccc'></div>";
+      const selectorTarget = root.firstElementChild;
+      const generator = cssSelectorGenerator(selectorTarget, {
+        maxResults: 10,
+      });
+      const result = [...generator];
+      assert.deepEqual(result, [
+        ".aaa",
+        ".bbb",
+        ".ccc",
+        ".aaa.bbb",
+        ".aaa.ccc",
+        ".bbb.ccc",
+        ".aaa.bbb.ccc",
+        "div.aaa",
+        "div.bbb",
+        "div.ccc",
+      ]);
     });
   });
 });
