@@ -1,4 +1,3 @@
-import { isElement } from "./utilities-iselement.js";
 import { CssSelectorGenerated } from "./types.js";
 import { getIntersection } from "./utilities-data.js";
 
@@ -8,15 +7,12 @@ import { getIntersection } from "./utilities-data.js";
 export function getElementNthChildSelector(
   element: Element,
 ): CssSelectorGenerated[] {
-  const parent = element.parentNode;
-
-  if (parent) {
-    const siblings = Array.from(parent.childNodes).filter(isElement);
-    const elementIndex = siblings.indexOf(element);
-    if (elementIndex > -1) {
-      return [
-        `:nth-child(${String(elementIndex + 1)})` as CssSelectorGenerated,
-      ];
+  const siblings = element.parentElement?.children;
+  if (siblings) {
+    for (let i = 0; i < siblings.length; i++) {
+      if (siblings[i] === element) {
+        return [`:nth-child(${String(i + 1)})` as CssSelectorGenerated];
+      }
     }
   }
 
