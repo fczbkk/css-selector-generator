@@ -16,7 +16,9 @@ export function getCssSelector(
   custom_options: Omit<CssSelectorGeneratorOptionsInput, "maxResults"> = {},
 ): CssSelector {
   const options = { ...custom_options, maxResults: 1 };
-  return [...cssSelectorGenerator(needle, options)][0];
+  const generator = cssSelectorGenerator(needle, options);
+  const firstResult = generator.next();
+  return firstResult.value;
 }
 
 /**

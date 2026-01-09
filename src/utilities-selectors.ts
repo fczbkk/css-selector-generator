@@ -32,7 +32,7 @@ import {
   PatternMatcher,
 } from "./types.js";
 import { isElement } from "./utilities-iselement.js";
-import { getPowerSet } from "./utilities-powerset.js";
+import { getPowerSet, powerSetGenerator } from "./utilities-powerset.js";
 import { cartesianProductGenerator } from "./utilities-cartesian.js";
 
 export const ESCAPED_COLON = ":".charCodeAt(0).toString(16).toUpperCase();
@@ -158,16 +158,12 @@ export function* allSelectorsGenerator(
 ): IterableIterator<CssSelector> {
   const yieldedSelectors = new Set<string>();
   const selectors_list = getSelectorsList(elements, options);
-  for (const items of selectorTypeCombinationsGenerator(
+  for (const selector of selectorTypeCombinationsGenerator(
     selectors_list,
     options,
   )) {
-    for (const selector of items) {
-      if (!yieldedSelectors.has(selector)) {
-        yieldedSelectors.add(selector);
-      } else {
-        continue;
-      }
+    if (!yieldedSelectors.has(selector)) {
+      yieldedSelectors.add(selector);
       yield selector;
     }
   }
@@ -195,8 +191,12 @@ export function getSelectorsList(
     );
     const found_selectors = orderSelectors(filtered_selectors, matchWhitelist);
 
+    // Use Array.from with a length limit to avoid materializing huge power sets
+    // This provides lazy evaluation while respecting maxCombinations
     data[selector_type] = combineWithinSelector
-      ? getPowerSet(found_selectors, { maxResults: maxCombinations })
+      ? Array.from(
+          powerSetGenerator(found_selectors, { maxResults: maxCombinations }),
+        )
       : found_selectors.map((item) => [item]);
 
     return data;
@@ -254,12 +254,9 @@ export function combineSelectorTypes(
 export function* selectorTypeCombinationsGenerator(
   selectors_list: CssSelectorData,
   options: CssSelectorGeneratorOptions,
-): IterableIterator<CssSelector[]> {
+): IterableIterator<CssSelector> {
   for (const item of combineSelectorTypes(options)) {
-    const selectors = [...constructedSelectorsGenerator(item, selectors_list)];
-    if (selectors.length > 0) {
-      yield selectors;
-    }
+    yield* constructedSelectorsGenerator(item, selectors_list);
   }
 }
 
@@ -421,23 +418,33 @@ export function* selectorGenerator({
   rootSelector = "",
   options,
 }: SelectorGeneratorProps): IterableIterator<CssSelector> {
-  for (const item of closestIdentifiableParentGenerator(
-    elements,
-    root,
-    rootSelector,
-    options,
-  )) {
-    const { foundElements, selector } = item;
+  let currentRoot = root;
+  let partialSelector = rootSelector;
 
-    if (testSelector(elements, selector, root)) {
-      yield selector;
-    } else {
-      yield* selectorGenerator({
-        elements,
-        options,
-        root: foundElements[0],
-        rootSelector: selector,
-      });
+  while (true) {
+    let foundAny = false;
+
+    for (const item of closestIdentifiableParentGenerator(
+      elements,
+      currentRoot,
+      partialSelector,
+      options,
+    )) {
+      const { foundElements, selector } = item;
+      foundAny = true;
+
+      if (testSelector(elements, selector, root)) {
+        yield selector;
+      } else {
+        // First non-matching selector - use its parent for next iteration
+        currentRoot = foundElements[0];
+        partialSelector = selector;
+        break; // Try from this parent in next iteration
+      }
+    }
+
+    if (!foundAny) {
+      break; // No more selectors generated
     }
   }
 }

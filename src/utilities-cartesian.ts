@@ -7,20 +7,27 @@ export function* cartesianProductGenerator<T>(
   const entries = Object.entries(input);
   if (entries.length === 0) return;
 
-  function* helper(
-    index: number,
-    partial: Record<string, T>,
-  ): Generator<Record<string, T>> {
+  // Use iterative stack-based approach to yield results one at a time
+  // This avoids recursion overhead while maintaining lazy evaluation
+  const stack: Array<{ index: number; partial: Record<string, T> }> = [
+    { index: entries.length - 1, partial: {} },
+  ];
+
+  while (stack.length > 0) {
+    const { index, partial } = stack.pop()!;
+
     if (index < 0) {
       yield partial;
-      return;
+      continue;
     }
+
     const [key, values] = entries[index];
-    for (const value of values) {
-      yield* helper(index - 1, { ...partial, [key]: value });
+    // Push in reverse order so we process in correct order
+    for (let i = values.length - 1; i >= 0; i--) {
+      stack.push({
+        index: index - 1,
+        partial: { ...partial, [key]: values[i] },
+      });
     }
   }
-
-  // Start recursion from the last key, so leftmost key changes slowest
-  yield* helper(entries.length - 1, {});
 }
