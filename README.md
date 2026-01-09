@@ -10,6 +10,7 @@ Add the library to your project via NPM or Yarn.
 
 ```shell
 npm install css-selector-generator
+# or
 yarn add css-selector-generator
 ```
 
@@ -76,14 +77,34 @@ If you don't want to use this library with NPM, you can download it from the "bu
 <!-- link the library -->
 <script src="build/index.js"></script>
 <script>
-	CssSelectorGenerator.getCssSelector(targetElement)
-</script
+  CssSelectorGenerator.getCssSelector(targetElement);
+</script>
 ```
 
 ### Usage with virtual DOM (e.g. JSDOM)
 
 If you want to use this library with Node, usually for testing, don't require it directly into the Node process. It will not work, because there's no `window` object and there are no elements to select. Instead, you have to add the library to the virtual `window` object. Here are instructions how to do it in JSDOM, other libraries will work in a similar way:
 https://github.com/jsdom/jsdom/wiki/Don't-stuff-jsdom-globals-onto-the-Node-global
+
+### TypeScript
+
+This library is written in TypeScript and includes type definitions. You can import the types directly:
+
+```typescript
+import { getCssSelector, cssSelectorGenerator } from "css-selector-generator";
+import type {
+  CssSelectorGeneratorOptionsInput,
+  CssSelectorType,
+} from "css-selector-generator/types/types.js";
+
+const options: CssSelectorGeneratorOptionsInput = {
+  selectors: ["class", "id", "tag"],
+  blacklist: [".ignore-*"],
+  root: document.body,
+};
+
+const selector = getCssSelector(targetElement, options);
+```
 
 ### Multi-element selector
 
@@ -136,12 +157,13 @@ In some cases, this selector may not be unique (e.g. `#wrapper > * > div > *`). 
 - [`selectors`](#selector-types)
 - [`root`](#root-element)
 - [`blacklist`](#blacklist)
+- [`whitelist`](#whitelist)
 - [`combineWithinSelector`](#combine-within-selector)
 - [`combineBetweenSelectors`](#combine-between-selectors)
 - [`includeTag`](#include-tag)
 - [`maxCombinations`](#max-combinations)
 - [`maxCandidates`](#max-candidates)
-- [`maxResults`](#max-results) *(only applicable in `cssSelectorGenerator`)*
+- [`maxResults`](#max-results) _(only applicable in `cssSelectorGenerator`)_
 - [`useScope`](#use-scope)
 
 ### Selector types
@@ -225,7 +247,7 @@ getCssSelector(targetElement, { blacklist: [".first*"] });
 getCssSelector(targetElement, { blacklist: [/first/] });
 // ".secondClass"
 getCssSelector(targetElement, {
-  blacklist: [(input) => input.startsWith(".second")],
+  blacklist: [(input) => input.startsWith(".first")],
 });
 // ".secondClass"
 ```
@@ -295,10 +317,10 @@ If set to `true`, the generator will try to look for combinations of selectors b
 
 ```html
 <body>
-	<!-- targetElement -->
-	<div class="aaa"></div>
-	<div class="bbb"></div>
-	<p class="aaa"></p>
+  <!-- targetElement -->
+  <div class="aaa"></div>
+  <div class="bbb"></div>
+  <p class="aaa"></p>
 </body>
 ```
 
@@ -349,7 +371,7 @@ getCssSelector(targetElement, { maxCandidates: 100 });
 
 ### Max results
 
-*Only applicable in the `cssSelectorGenerator()`. Not in the `getCssSelector()` function.*
+_Only applicable in the `cssSelectorGenerator()`. Not in the `getCssSelector()` function._
 
 Limits the maximum number of yielded selectors.
 
@@ -366,20 +388,27 @@ Let's say you have the following HTML code:
 This will produce 2^n selectors, where n is the number of classes in the element (in case the class names produce unique selectors). The number of possible combinations grows exponentially:
 
 ```javascript
-const allSelectors = [...cssSelectorGenerator(needleElement, {selectors: ['class']})];
+const allSelectors = [
+  ...cssSelectorGenerator(needleElement, { selectors: ["class"] }),
+];
 // [".aaa", ".bbb", ".ccc", ".aaa.bbb", ".aaa.ccc", ".bbb.ccc", ".aaa.bbb.ccc"]
 ```
 
 That's why it's a good idea to limit the maximum number of results. Besides, their quality tends to decrease with the increasing complexity.
 
 ```javascript
-const fewSelectors = [...cssSelectorGenerator(needleElement, {selectors: ["class"], maxResults: 5})];
+const fewSelectors = [
+  ...cssSelectorGenerator(needleElement, {
+    selectors: ["class"],
+    maxResults: 5,
+  }),
+];
 // [".aaa", ".bbb", ".ccc", ".aaa.bbb", ".aaa.ccc"]
 ```
 
 ### Use scope
 
-**Experimental feature** - *This will probably be turned on by default and the option will be removed, after I thoroughly evaluate that it produces valid selectors in all use cases.*
+**Experimental feature** - _This will probably be turned on by default and the option will be removed, after I thoroughly evaluate that it produces valid selectors in all use cases._
 
 If set to `true` and the [`root` option](#root-element) is provided, the fallback selectors will be created relative to the `root` element using the `:scope` pseudo-class.
 
@@ -389,7 +418,8 @@ For example, if you have the following HTML structure:
 <html>
   <body>
     <div>
-      <div><!-- haystackElement -->
+      <div>
+        <!-- haystackElement -->
         <div>
           <div><!-- needleElement --></div>
         </div>
@@ -436,7 +466,7 @@ getCssSelector(needleElement, {
 
 ...it will produce this fallback selector:
 
-```:scope > :nth-child(1) > :nth-child(1)```
+`:scope > :nth-child(1) > :nth-child(1)`
 
 ... where the selectors correspond with these elements:
 
