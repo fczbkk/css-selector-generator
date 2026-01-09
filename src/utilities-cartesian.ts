@@ -9,12 +9,14 @@ export function* cartesianProductGenerator<T>(
 
   // Use iterative stack-based approach to yield results one at a time
   // This avoids recursion overhead while maintaining lazy evaluation
-  const stack: Array<{ index: number; partial: Record<string, T> }> = [
+  const stack: { index: number; partial: Record<string, T> }[] = [
     { index: entries.length - 1, partial: {} },
   ];
 
   while (stack.length > 0) {
-    const { index, partial } = stack.pop()!;
+    const item = stack.pop();
+    if (!item) break;
+    const { index, partial } = item;
 
     if (index < 0) {
       yield partial;

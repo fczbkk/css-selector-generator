@@ -18,7 +18,7 @@ export function getCssSelector(
   const options = { ...custom_options, maxResults: 1 };
   const generator = cssSelectorGenerator(needle, options);
   const firstResult = generator.next();
-  return firstResult.value;
+  return firstResult.value as CssSelector;
 }
 
 /**

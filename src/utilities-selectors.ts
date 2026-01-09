@@ -420,8 +420,9 @@ export function* selectorGenerator({
 }: SelectorGeneratorProps): IterableIterator<CssSelector> {
   let currentRoot = root;
   let partialSelector = rootSelector;
+  let shouldContinue = true;
 
-  while (true) {
+  while (shouldContinue) {
     let foundAny = false;
 
     for (const item of closestIdentifiableParentGenerator(
@@ -444,7 +445,7 @@ export function* selectorGenerator({
     }
 
     if (!foundAny) {
-      break; // No more selectors generated
+      shouldContinue = false;
     }
   }
 }
