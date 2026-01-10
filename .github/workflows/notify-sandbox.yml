@@ -1,0 +1,17 @@
+name: Notify Sandbox
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger sandbox update
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.SANDBOX_PAT }}
+          repository: fczbkk/css-selector-generator-sandbox
+          event-type: library-updated
