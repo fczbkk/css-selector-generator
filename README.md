@@ -4,6 +4,10 @@ JavaScript library for creating CSS selectors for a given DOM element or multipl
 
 It also generates shorter selectors and is faster and/or more robust than many other libraries - see this [comparison](https://github.com/fczbkk/css-selector-generator-benchmark) and select the best alternative for your use case.
 
+## Try it
+
+You can try the library in the [sandbox](https://fczbkk.github.io/css-selector-generator-sandbox/) - write HTML code and see what CSS selectors the library produces.
+
 ## Install
 
 Add the library to your project via NPM or Yarn.
