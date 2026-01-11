@@ -86,6 +86,24 @@ If you don't want to use this library with NPM, you can download it from the "bu
 If you want to use this library with Node, usually for testing, don't require it directly into the Node process. It will not work, because there's no `window` object and there are no elements to select. Instead, you have to add the library to the virtual `window` object. Here are instructions how to do it in JSDOM, other libraries will work in a similar way:
 https://github.com/jsdom/jsdom/wiki/Don't-stuff-jsdom-globals-onto-the-Node-global
 
+### Shadow DOM
+
+This library supports generating selectors for elements within shadow DOM. When you provide an element that is part of a shadow DOM tree, the library will automatically infer the shadow root and generate a selector relative to it.
+
+```javascript
+const shadowRoot = element.attachShadow({ mode: "open" });
+const shadowElement = shadowRoot.appendChild(document.createElement("div"));
+shadowElement.className = "shadowElement";
+
+// Automatically detects shadow root
+getCssSelector(shadowElement);
+// ".shadowElement"
+
+// Or explicitly specify the shadow root
+getCssSelector(shadowElement, { root: shadowRoot });
+// ".shadowElement"
+```
+
 ### TypeScript
 
 This library is written in TypeScript and includes type definitions. You can import the types directly:
