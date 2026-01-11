@@ -2,7 +2,32 @@
 
 JavaScript library for creating CSS selectors for a given DOM element or multiple DOM elements.
 
-It also generates shorter selectors and is faster and/or more robust than many other libraries - see this [comparison](https://github.com/fczbkk/css-selector-generator-benchmark) and select the best alternative for your use case.
+See the [benchmark](https://fczbkk.github.io/css-selector-generator-benchmark/) to compare the speed and features of CSS Selector Generator with similar libraries.
+
+## Table of Contents
+
+- [Install](#install)
+- [How to use](#how-to-use)
+  - [Usage without NPM](#usage-without-npm)
+  - [Usage with virtual DOM (e.g. JSDOM)](#usage-with-virtual-dom-eg-jsdom)
+  - [Shadow DOM](#shadow-dom)
+  - [TypeScript](#typescript)
+  - [Multi-element selector](#multi-element-selector)
+  - [Fallback](#fallback)
+- [Options](#options)
+  - [Selector types](#selector-types)
+  - [Root element](#root-element)
+  - [Blacklist](#blacklist)
+  - [Whitelist](#whitelist)
+  - [Combine within selector](#combine-within-selector)
+  - [Combine between selectors](#combine-between-selectors)
+  - [Include tag](#include-tag)
+  - [Max combinations](#max-combinations)
+  - [Max candidates](#max-candidates)
+  - [Max results](#max-results)
+  - [Use scope](#use-scope)
+- [Bug reports, feature requests and contact](#bug-reports-feature-requests-and-contact)
+- [License](#license)
 
 ## Install
 
