@@ -28,6 +28,13 @@ export const DEFAULT_OPTIONS = {
 } as CssSelectorGeneratorOptions;
 
 /**
+ * Makes sure the input is converted to a boolean value.
+ */
+export function sanitizeBoolean(input: unknown): boolean {
+  return !!input;
+}
+
+/**
  * Makes sure returned value is a list containing only valid selector types.
  * @param input
  */
@@ -138,12 +145,12 @@ export function sanitizeOptions(
     whitelist: sanitizeCssSelectorMatchList(options.whitelist),
     blacklist: sanitizeCssSelectorMatchList(options.blacklist),
     root: sanitizeRoot(options.root, element),
-    combineWithinSelector: !!options.combineWithinSelector,
-    combineBetweenSelectors: !!options.combineBetweenSelectors,
-    includeTag: !!options.includeTag,
+    combineWithinSelector: sanitizeBoolean(options.combineWithinSelector),
+    combineBetweenSelectors: sanitizeBoolean(options.combineBetweenSelectors),
+    includeTag: sanitizeBoolean(options.includeTag),
     maxCombinations: sanitizeMaxNumber(options.maxCombinations),
     maxCandidates: sanitizeMaxNumber(options.maxCandidates),
-    useScope: !!options.useScope,
+    useScope: sanitizeBoolean(options.useScope),
     maxResults: sanitizeMaxNumber(options.maxResults),
   };
 }

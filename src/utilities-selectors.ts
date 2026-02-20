@@ -405,7 +405,7 @@ export function* closestIdentifiableParentGenerator(
 interface SelectorGeneratorProps {
   elements: Element[];
   root: ParentNode;
-  rootSelector: CssSelector;
+  rootSelector?: CssSelector;
   options: CssSelectorGeneratorOptions;
 }
 
