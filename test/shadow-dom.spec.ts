@@ -1,6 +1,7 @@
 import { assert } from "chai";
 import { getCssSelector } from "../src";
 import { getIdSelector } from "../src/selector-id.js";
+import { testSelector } from "../src/utilities-dom";
 
 describe("Shadow DOM", () => {
   let root: Element;
@@ -32,5 +33,18 @@ describe("Shadow DOM", () => {
     shadowElement.id = "shadowElement";
     const result = getIdSelector([shadowElement])[0];
     assert.equal(result, "#shadowElement");
+  });
+
+  it("should not generate invalid selectors for shadow root children without identifiers", () => {
+    // force creation of a fallback selector
+    shadowRoot.replaceChildren();
+    const testElement = shadowRoot.appendChild(document.createElement("div"));
+    shadowRoot.appendChild(document.createElement("div"));
+
+    const result = getCssSelector(testElement, { root: shadowRoot });
+
+    assert.notMatch(result, />\s*>/); // consecutive child combinators
+    assert.notMatch(result, />\s*$/); // trailing child combinator
+    assert.ok(testSelector([testElement], result, shadowRoot));
   });
 });

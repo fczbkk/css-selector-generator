@@ -7,7 +7,8 @@ import { getIntersection } from "./utilities-data.js";
 export function getElementNthChildSelector(
   element: Element,
 ): CssSelectorGenerated[] {
-  const siblings = element.parentElement?.children;
+  const parent = element.parentNode;
+  const siblings = parent && "children" in parent ? parent.children : null;
   if (siblings) {
     for (let i = 0; i < siblings.length; i++) {
       if (siblings[i] === element) {

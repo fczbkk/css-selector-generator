@@ -9,7 +9,8 @@ export function getElementNthOfTypeSelector(
   element: Element,
 ): CssSelectorGenerated[] {
   const tag = getTagSelector([element])[0];
-  const parentElement = element.parentElement;
+  const parent = element.parentNode;
+  const parentElement = parent && "children" in parent ? parent : null;
 
   if (parentElement) {
     const siblings = Array.from(parentElement.children).filter(
