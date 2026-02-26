@@ -14,11 +14,14 @@ export function getElementFallbackSelector(
   root?: ParentNode,
 ): CssSelector {
   const parentElements = getElementParents(element, root).reverse();
-  const elementsData = parentElements.map((element) => {
+  const isShadowRoot = root instanceof ShadowRoot;
+
+  const elementsData = parentElements.map((element, index) => {
     const elementData = createElementData(
       element,
       [CSS_SELECTOR_TYPE.nthchild],
-      OPERATOR.CHILD,
+      // do not use child combinator for the first element in ShadowRoot
+      isShadowRoot && index === 0 ? OPERATOR.NONE : OPERATOR.CHILD,
     );
     (elementData.selectors.nthchild ?? []).forEach((selectorData) => {
       selectorData.include = true;
@@ -26,10 +29,10 @@ export function getElementFallbackSelector(
     return elementData;
   });
 
-  return [
-    root ? ":scope" : ":root",
-    ...elementsData.map(constructElementSelector),
-  ].join("");
+  // Don't use :scope prefix for ShadowRoot since it doesn't work correctly
+  const prefix = isShadowRoot ? "" : root ? ":scope" : ":root";
+
+  return [prefix, ...elementsData.map(constructElementSelector)].join("");
 }
 
 /**

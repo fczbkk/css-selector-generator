@@ -43,10 +43,12 @@ export function getElementParents(
 ): Element[] {
   root = root ?? getRootNode(element);
   const result = [];
-  let parent: Element | null = element;
-  while (isElement(parent) && parent !== root) {
-    result.push(parent);
-    parent = parent.parentElement;
+  let parent: Node | null = element;
+  while (parent && parent !== root) {
+    if (isElement(parent)) {
+      result.push(parent);
+    }
+    parent = parent.parentNode;
   }
   return result;
 }

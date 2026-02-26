@@ -58,7 +58,11 @@ export function* cssSelectorGenerator(
     }
   }
 
-  yield getFallbackSelector(elements, options.useScope ? root : undefined);
+  const rootWasProvided = custom_options.root !== undefined;
+  yield getFallbackSelector(
+    elements,
+    options.useScope || rootWasProvided ? root : undefined,
+  );
 }
 
 export default getCssSelector;
