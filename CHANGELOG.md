@@ -1,3 +1,13 @@
+## [3.8.1](https://github.com/fczbkk/css-selector-generator/compare/v3.8.0...v3.8.1) (2026-02-26)
+
+
+### Bug Fixes
+
+* generate valid selectors for children of shadow DOM ([eb4b243](https://github.com/fczbkk/css-selector-generator/commit/eb4b2437661b20328c87f519c630f64885c5af4f))
+* prevent invalid child combinators in shadow DOM ([56f8175](https://github.com/fczbkk/css-selector-generator/commit/56f8175d8c55bf4cbeb2aea3c6f3611d1b2eff16)), closes [#1100](https://github.com/fczbkk/css-selector-generator/issues/1100)
+
+
+
 # [3.8.0](https://github.com/fczbkk/css-selector-generator/compare/v3.7.0...v3.8.0) (2026-01-09)
 
 ### Bug Fixes
