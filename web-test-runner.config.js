@@ -12,4 +12,13 @@ export default {
       timeout: "2000",
     },
   },
+  testsStartTimeout: 20000,
+  testsFinishTimeout: 20000,
+  testRunnerHtml: (testFramework) =>
+    `<html>
+      <head>
+        <script type="module" src="${testFramework}"></script>
+        <script type="module" src="/test/setup.ts"></script>
+      </head>
+    </html>`,
 };
