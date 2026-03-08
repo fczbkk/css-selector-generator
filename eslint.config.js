@@ -26,4 +26,9 @@ export default [
     files: ["**/*.js"],
     ...tseslint.configs.disableTypeChecked,
   },
+  {
+    rules: {
+      "@typescript-eslint/no-inferrable-types": "off",
+    },
+  },
 ];

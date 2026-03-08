@@ -34,7 +34,7 @@ export function getCommonParent(needle: Element[]): Element | null {
 /**
  * Yields all common parents of the needle, starting with the one closest to the needle.
  */
-export function* parentsGenerator(needle: Element[], root?: ParentNode) {
+export function* parentsGenerator(needle: Element[], root?: ParentNode): Generator<Element, void, unknown> {
   let parent = getCommonParent(needle);
   while (parent && root?.contains(parent)) {
     yield parent;
@@ -49,7 +49,7 @@ export function* viableParentsGenerator(
   needle: Element[],
   needleSelector: string,
   root?: ParentNode,
-) {
+): Generator<Element, void, unknown> {
   for (const parentCandidate of parentsGenerator(needle, root)) {
     if (testSelector(needle, needleSelector, parentCandidate)) {
       yield parentCandidate;

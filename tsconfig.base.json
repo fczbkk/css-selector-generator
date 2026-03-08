@@ -5,11 +5,11 @@
     "noImplicitAny": true,
     "module": "es6",
     "target": "es6",
-    "allowJs": true,
     "sourceMap": true,
     "moduleResolution": "node",
     "lib": ["ES6", "DOM", "DOM.Iterable"],
     "strict": true,
-    "erasableSyntaxOnly": true
+    "erasableSyntaxOnly": true,
+    "isolatedDeclarations": true
   }
 }

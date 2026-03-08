@@ -35,11 +35,11 @@ import { isElement } from "./utilities-iselement.js";
 import { getPowerSet, powerSetGenerator } from "./utilities-powerset.js";
 import { cartesianProductGenerator } from "./utilities-cartesian.js";
 
-export const ESCAPED_COLON = ":".charCodeAt(0).toString(16).toUpperCase();
+export const ESCAPED_COLON: string = ":".charCodeAt(0).toString(16).toUpperCase();
 
 // Square brackets need to be escaped, but eslint has a problem with that.
 /* eslint-disable-next-line no-useless-escape */
-export const SPECIAL_CHARACTERS_RE = /[ !"#$%&'()\[\]{|}<>*+,./;=?@^`~\\]/;
+export const SPECIAL_CHARACTERS_RE: RegExp = /[ !"#$%&'()\[\]{|}<>*+,./;=?@^`~\\]/;
 
 /**
  * Escapes special characters used by CSS selector items.
@@ -354,7 +354,7 @@ function* candidatesGenerator(
 export function* selectorWithinRootGenerator(
   elements: Element[],
   root: ParentNode,
-  rootSelector: CssSelector = "",
+  rootSelector: CssSelector | undefined = "",
   options: CssSelectorGeneratorOptions,
 ): IterableIterator<CssSelector, undefined> {
   const elementSelectorsIterator = allSelectorsGenerator(elements, options);
@@ -375,7 +375,7 @@ export function* selectorWithinRootGenerator(
 export function* closestIdentifiableParentGenerator(
   elements: Element[],
   root: ParentNode,
-  rootSelector: CssSelector = "",
+  rootSelector: CssSelector | undefined = "",
   options: CssSelectorGeneratorOptions,
 ): IterableIterator<IdentifiableParent> {
   if (elements.length === 0) {

@@ -1,6 +1,6 @@
 import { sanitizeSelectorItem } from "./utilities-selectors.js";
 import { createPatternMatcher, getIntersection } from "./utilities-data.js";
-import { CssSelectorGenerated } from "./types.js";
+import { CssSelectorGenerated, PatternMatcher } from "./types.js";
 
 interface AttributeData {
   name: string;
@@ -8,7 +8,7 @@ interface AttributeData {
 }
 
 // List of attributes to be ignored. These are handled by different selector types.
-export const attributeBlacklistMatch = createPatternMatcher([
+export const attributeBlacklistMatch: PatternMatcher = createPatternMatcher([
   "class",
   "id",
   // Angular attributes
