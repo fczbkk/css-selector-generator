@@ -1,3 +1,12 @@
+# [3.9.0](https://github.com/fczbkk/css-selector-generator/compare/v3.8.1...v3.9.0) (2026-03-28)
+
+
+### Features
+
+* add ignoreGeneratedClassNames option ([a7670c9](https://github.com/fczbkk/css-selector-generator/commit/a7670c998b2e91170930c7ae0e4a42a2acc375ec))
+
+
+
 ## [3.8.1](https://github.com/fczbkk/css-selector-generator/compare/v3.8.0...v3.8.1) (2026-02-26)
 
 
