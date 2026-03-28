@@ -83,7 +83,7 @@ export function getElementClassSelectors(
   // Apply generated class name filtering if enabled
   if (options?.ignoreGeneratedClassNames) {
     // Check whitelist to preserve whitelisted generated classes
-    const matchWhitelist = createPatternMatcher(options.whitelist || []);
+    const matchWhitelist = createPatternMatcher(options.whitelist);
 
     filteredClassNames = classNames.filter((className) => {
       const selector = `.${sanitizeSelectorItem(className)}`;

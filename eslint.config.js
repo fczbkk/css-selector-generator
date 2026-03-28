@@ -29,6 +29,13 @@ export default [
   {
     rules: {
       "@typescript-eslint/no-inferrable-types": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
     },
   },
 ];
