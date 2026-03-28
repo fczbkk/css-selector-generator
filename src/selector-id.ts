@@ -1,13 +1,14 @@
 import { sanitizeSelectorItem } from "./utilities-selectors.js";
 import { INVALID_ID_RE } from "./constants.js";
 import { testSelector } from "./utilities-dom.js";
-import { CssSelectorGenerated } from "./types.js";
+import { CssSelectorGenerated, CssSelectorGeneratorOptions } from "./types.js";
 
 /**
  * Get ID selector for an element.
  * */
 export function getElementIdSelectors(
   element: Element,
+  _options?: CssSelectorGeneratorOptions,
 ): CssSelectorGenerated[] {
   const id = element.getAttribute("id") ?? "";
   const selector = `#${sanitizeSelectorItem(id)}` as CssSelectorGenerated;
@@ -20,8 +21,11 @@ export function getElementIdSelectors(
 /**
  * Get ID selector for an element.
  */
-export function getIdSelector(elements: Element[]): CssSelectorGenerated[] {
+export function getIdSelector(
+  elements: Element[],
+  options?: CssSelectorGeneratorOptions,
+): CssSelectorGenerated[] {
   return elements.length === 0 || elements.length > 1
     ? []
-    : getElementIdSelectors(elements[0]);
+    : getElementIdSelectors(elements[0], options);
 }

@@ -1,6 +1,6 @@
 import { sanitizeSelectorItem } from "./utilities-selectors.js";
 import { createPatternMatcher, getIntersection } from "./utilities-data.js";
-import { CssSelectorGenerated, PatternMatcher } from "./types.js";
+import { CssSelectorGenerated, CssSelectorGeneratorOptions, PatternMatcher } from "./types.js";
 
 interface AttributeData {
   name: string;
@@ -70,6 +70,7 @@ function sanitizeAttributeData({ nodeName, nodeValue }: Node): AttributeData {
  */
 export function getElementAttributeSelectors(
   element: Element,
+  _options?: CssSelectorGeneratorOptions,
 ): CssSelectorGenerated[] {
   const validAttributes = Array.from(element.attributes)
     .filter((attributeNode) => isValidAttributeNode(attributeNode, element))
@@ -85,7 +86,8 @@ export function getElementAttributeSelectors(
  */
 export function getAttributeSelectors(
   elements: Element[],
+  options?: CssSelectorGeneratorOptions,
 ): CssSelectorGenerated[] {
-  const elementSelectors = elements.map(getElementAttributeSelectors);
+  const elementSelectors = elements.map((el) => getElementAttributeSelectors(el, options));
   return getIntersection(elementSelectors);
 }

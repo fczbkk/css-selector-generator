@@ -77,6 +77,8 @@ export type CssSelectorGeneratorOptionsInput = Partial<{
   useScope: boolean;
   // Limits the number of results (selectors) to be generated.
   maxResults: number;
+  // If set to `true`, class names that appear to be generated (e.g., from CSS-in-JS libraries) will be ignored. Uses a heuristic to detect word-like class names vs. generated hashes. If this produces unexpected results, consider using the `blacklist` option with a custom function for more control.
+  ignoreGeneratedClassNames: boolean;
 }>;
 
 export type CssSelectorGeneratorOptions = Required<

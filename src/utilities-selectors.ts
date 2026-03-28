@@ -75,7 +75,7 @@ export function legacySanitizeSelectorItem(input = ""): string {
 
 export const SELECTOR_TYPE_GETTERS: Record<
   CssSelectorType,
-  (elements: Element[]) => CssSelector[]
+  (elements: Element[], options?: CssSelectorGeneratorOptions) => CssSelector[]
 > = {
   tag: getTagSelector,
   id: getIdSelector,
@@ -87,7 +87,7 @@ export const SELECTOR_TYPE_GETTERS: Record<
 
 export const ELEMENT_SELECTOR_TYPE_GETTERS: Record<
   CssSelectorType,
-  (element: Element) => CssSelectorGenerated[]
+  (element: Element, options?: CssSelectorGeneratorOptions) => CssSelectorGenerated[]
 > = {
   tag: getElementTagSelectors,
   id: getElementIdSelectors,
@@ -103,8 +103,9 @@ export const ELEMENT_SELECTOR_TYPE_GETTERS: Record<
 export function getElementSelectorsByType(
   element: Element,
   selectorType: CssSelectorType,
+  options?: CssSelectorGeneratorOptions,
 ): CssSelectorGenerated[] {
-  return ELEMENT_SELECTOR_TYPE_GETTERS[selectorType](element);
+  return ELEMENT_SELECTOR_TYPE_GETTERS[selectorType](element, options);
 }
 
 /**
@@ -113,9 +114,10 @@ export function getElementSelectorsByType(
 export function getSelectorsByType(
   elements: Element[],
   selector_type: CssSelectorType,
+  options?: CssSelectorGeneratorOptions,
 ): CssSelector[] {
   const getter = SELECTOR_TYPE_GETTERS[selector_type];
-  return getter(elements);
+  return getter(elements, options);
 }
 
 /**
@@ -183,7 +185,7 @@ export function getSelectorsList(
   const matchWhitelist = createPatternMatcher(whitelist);
 
   const reducer = (data: CssSelectorData, selector_type: CssSelectorType) => {
-    const selectors_by_type = getSelectorsByType(elements, selector_type);
+    const selectors_by_type = getSelectorsByType(elements, selector_type, options);
     const filtered_selectors = filterSelectors(
       selectors_by_type,
       matchBlacklist,

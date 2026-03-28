@@ -1,5 +1,5 @@
 import { getTagSelector } from "./selector-tag.js";
-import { CssSelectorGenerated } from "./types.js";
+import { CssSelectorGenerated, CssSelectorGeneratorOptions } from "./types.js";
 import { getIntersection } from "./utilities-data.js";
 
 /**
@@ -7,6 +7,7 @@ import { getIntersection } from "./utilities-data.js";
  */
 export function getElementNthOfTypeSelector(
   element: Element,
+  _options?: CssSelectorGeneratorOptions,
 ): CssSelectorGenerated[] {
   const tag = getTagSelector([element])[0];
   const parent = element.parentNode;
@@ -32,6 +33,7 @@ export function getElementNthOfTypeSelector(
  */
 export function getNthOfTypeSelector(
   elements: Element[],
+  options?: CssSelectorGeneratorOptions,
 ): CssSelectorGenerated[] {
-  return getIntersection(elements.map(getElementNthOfTypeSelector));
+  return getIntersection(elements.map((el) => getElementNthOfTypeSelector(el, options)));
 }

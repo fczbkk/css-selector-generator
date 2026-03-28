@@ -25,6 +25,7 @@ export const DEFAULT_OPTIONS = {
   maxCombinations: Number.POSITIVE_INFINITY,
   maxCandidates: Number.POSITIVE_INFINITY,
   useScope: false,
+  ignoreGeneratedClassNames: false,
 } as CssSelectorGeneratorOptions;
 
 /**
@@ -152,5 +153,6 @@ export function sanitizeOptions(
     maxCandidates: sanitizeMaxNumber(options.maxCandidates),
     useScope: sanitizeBoolean(options.useScope),
     maxResults: sanitizeMaxNumber(options.maxResults),
+    ignoreGeneratedClassNames: sanitizeBoolean(options.ignoreGeneratedClassNames),
   };
 }

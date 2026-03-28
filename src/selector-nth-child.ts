@@ -1,4 +1,4 @@
-import { CssSelectorGenerated } from "./types.js";
+import { CssSelectorGenerated, CssSelectorGeneratorOptions } from "./types.js";
 import { getIntersection } from "./utilities-data.js";
 
 /**
@@ -6,6 +6,7 @@ import { getIntersection } from "./utilities-data.js";
  */
 export function getElementNthChildSelector(
   element: Element,
+  _options?: CssSelectorGeneratorOptions,
 ): CssSelectorGenerated[] {
   const parent = element.parentNode;
   const siblings = parent && "children" in parent ? parent.children : null;
@@ -25,6 +26,7 @@ export function getElementNthChildSelector(
  */
 export function getNthChildSelector(
   elements: Element[],
+  options?: CssSelectorGeneratorOptions,
 ): CssSelectorGenerated[] {
-  return getIntersection(elements.map(getElementNthChildSelector));
+  return getIntersection(elements.map((el) => getElementNthChildSelector(el, options)));
 }

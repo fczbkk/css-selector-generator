@@ -1,5 +1,5 @@
 import { sanitizeSelectorItem } from "./utilities-selectors.js";
-import { CssSelector, CssSelectorGenerated } from "./types.js";
+import { CssSelector, CssSelectorGenerated, CssSelectorGeneratorOptions } from "./types.js";
 import { flattenArray } from "./utilities-data.js";
 
 /**
@@ -7,6 +7,7 @@ import { flattenArray } from "./utilities-data.js";
  */
 export function getElementTagSelectors(
   element: Element,
+  _options?: CssSelectorGeneratorOptions,
 ): CssSelectorGenerated[] {
   return [
     sanitizeSelectorItem(element.tagName.toLowerCase()) as CssSelectorGenerated,
@@ -16,9 +17,12 @@ export function getElementTagSelectors(
 /**
  * Get tag selector for list of elements.
  */
-export function getTagSelector(elements: Element[]): CssSelector[] {
+export function getTagSelector(
+  elements: Element[],
+  options?: CssSelectorGeneratorOptions,
+): CssSelector[] {
   const selectors = [
-    ...new Set(flattenArray(elements.map(getElementTagSelectors))),
+    ...new Set(flattenArray(elements.map((el) => getElementTagSelectors(el, options)))),
   ];
   return selectors.length === 0 || selectors.length > 1 ? [] : [selectors[0]];
 }
