@@ -1,3 +1,12 @@
+## [3.9.1](https://github.com/fczbkk/css-selector-generator/compare/v3.9.0...v3.9.1) (2026-03-29)
+
+
+### Bug Fixes
+
+* correct fallback selector for element in iframe ([047c991](https://github.com/fczbkk/css-selector-generator/commit/047c991f6a0bfb60329c1d26579b05aa1411eb93))
+
+
+
 # [3.9.0](https://github.com/fczbkk/css-selector-generator/compare/v3.8.1...v3.9.0) (2026-03-28)
 
 
