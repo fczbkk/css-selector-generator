@@ -75,9 +75,15 @@ export function sanitizeCssSelectorMatchList(
 
 /**
  * Checks whether provided value is valid Node.
+ * Uses nodeType check instead of instanceof to work across iframe boundaries.
  */
 export function isNode(input: unknown): input is Node {
-  return input instanceof Node;
+  return (
+    input != null &&
+    typeof input === "object" &&
+    "nodeType" in input &&
+    typeof (input as { nodeType: unknown }).nodeType === "number"
+  );
 }
 
 /**
