@@ -49,7 +49,6 @@ export function* cssSelectorGenerator(
   // if failed to find single selector matching all elements, try to find
   // selector for each standalone element and join them together
   if (elements.length > 1) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { maxResults: _ignored, ...elementOptions } = custom_options;
     yield elements
       .map((element) => getCssSelector(element, elementOptions))
