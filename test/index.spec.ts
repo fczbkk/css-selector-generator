@@ -27,6 +27,15 @@ describe("CssSelectorGenerator", function () {
     });
   });
 
+  describe("multi-element selectors", function () {
+    it("should not include :scope when root and useScope are not provided", () => {
+      root.innerHTML = `<div><span></span></div><div><span></span></div>`;
+      const elements = Array.from(root.querySelectorAll("span"));
+      const result = getCssSelector(elements);
+      assert.notInclude(result, ":scope");
+    });
+  });
+
   describe("special scenarios", function () {
     it("should not crash on parent-less element", function () {
       const element = document.createElement("div");
@@ -94,7 +103,8 @@ describe("CssSelectorGenerator", function () {
     });
 
     it("should work with mixed generated and regular classes", () => {
-      root.innerHTML = '<div class="sc-xyz button-primary makeStyles-123"></div>';
+      root.innerHTML =
+        '<div class="sc-xyz button-primary makeStyles-123"></div>';
       const result = getCssSelector(root.firstElementChild, {
         ignoreGeneratedClassNames: true,
       });
