@@ -1,30 +1,27 @@
-## [3.9.1](https://github.com/fczbkk/css-selector-generator/compare/v3.9.0...v3.9.1) (2026-03-29)
-
+## [3.9.2](https://github.com/fczbkk/css-selector-generator/compare/v3.9.1...v3.9.2) (2026-04-21)
 
 ### Bug Fixes
 
-* correct fallback selector for element in iframe ([047c991](https://github.com/fczbkk/css-selector-generator/commit/047c991f6a0bfb60329c1d26579b05aa1411eb93))
+- prevent unintended :scope in selectors ([2bdedb0](https://github.com/fczbkk/css-selector-generator/commit/2bdedb0161af53f8a8aedfe27dc36ea2cfe54986)), closes [#1101](https://github.com/fczbkk/css-selector-generator/issues/1101)
 
+## [3.9.1](https://github.com/fczbkk/css-selector-generator/compare/v3.9.0...v3.9.1) (2026-03-29)
 
+### Bug Fixes
+
+- correct fallback selector for element in iframe ([047c991](https://github.com/fczbkk/css-selector-generator/commit/047c991f6a0bfb60329c1d26579b05aa1411eb93))
 
 # [3.9.0](https://github.com/fczbkk/css-selector-generator/compare/v3.8.1...v3.9.0) (2026-03-28)
 
-
 ### Features
 
-* add ignoreGeneratedClassNames option ([a7670c9](https://github.com/fczbkk/css-selector-generator/commit/a7670c998b2e91170930c7ae0e4a42a2acc375ec))
-
-
+- add ignoreGeneratedClassNames option ([a7670c9](https://github.com/fczbkk/css-selector-generator/commit/a7670c998b2e91170930c7ae0e4a42a2acc375ec))
 
 ## [3.8.1](https://github.com/fczbkk/css-selector-generator/compare/v3.8.0...v3.8.1) (2026-02-26)
 
-
 ### Bug Fixes
 
-* generate valid selectors for children of shadow DOM ([eb4b243](https://github.com/fczbkk/css-selector-generator/commit/eb4b2437661b20328c87f519c630f64885c5af4f))
-* prevent invalid child combinators in shadow DOM ([56f8175](https://github.com/fczbkk/css-selector-generator/commit/56f8175d8c55bf4cbeb2aea3c6f3611d1b2eff16)), closes [#1100](https://github.com/fczbkk/css-selector-generator/issues/1100)
-
-
+- generate valid selectors for children of shadow DOM ([eb4b243](https://github.com/fczbkk/css-selector-generator/commit/eb4b2437661b20328c87f519c630f64885c5af4f))
+- prevent invalid child combinators in shadow DOM ([56f8175](https://github.com/fczbkk/css-selector-generator/commit/56f8175d8c55bf4cbeb2aea3c6f3611d1b2eff16)), closes [#1100](https://github.com/fczbkk/css-selector-generator/issues/1100)
 
 # [3.8.0](https://github.com/fczbkk/css-selector-generator/compare/v3.7.0...v3.8.0) (2026-01-09)
 
