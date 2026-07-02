@@ -82,7 +82,7 @@ export function isNode(input: unknown): input is Node {
     input != null &&
     typeof input === "object" &&
     "nodeType" in input &&
-    typeof (input as { nodeType: unknown }).nodeType === "number"
+    typeof input.nodeType === "number"
   );
 }
 
@@ -159,6 +159,8 @@ export function sanitizeOptions(
     maxCandidates: sanitizeMaxNumber(options.maxCandidates),
     useScope: sanitizeBoolean(options.useScope),
     maxResults: sanitizeMaxNumber(options.maxResults),
-    ignoreGeneratedClassNames: sanitizeBoolean(options.ignoreGeneratedClassNames),
+    ignoreGeneratedClassNames: sanitizeBoolean(
+      options.ignoreGeneratedClassNames,
+    ),
   };
 }

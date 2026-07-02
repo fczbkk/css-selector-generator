@@ -28,7 +28,7 @@ export function* cssSelectorGenerator(
   needle: Element | Element[],
   custom_options: CssSelectorGeneratorOptionsInput = {},
 ): IterableIterator<CssSelector> {
-  const elements = sanitizeSelectorNeedle(needle as unknown);
+  const elements = sanitizeSelectorNeedle(needle);
   const options = sanitizeOptions(elements[0], custom_options);
   const root = options.root ?? getRootNode(elements[0]);
   let foundResults = 0;
