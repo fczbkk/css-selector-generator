@@ -40,7 +40,7 @@
     "watch:scenarios": "chokidar 'src/**/*.ts' 'scenario/**/*.html' -c 'npm run test:scenarios'"
   },
   "devDependencies": {
-    "@eslint/js": "^9.19.0",
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.50.1",
     "@types/chai": "^5.0.1",
     "@types/mocha": "^10.0.10",
@@ -48,16 +48,16 @@
     "@web/dev-server-esbuild": "^1.0.4",
     "@web/test-runner": "^0.20.2",
     "@web/test-runner-playwright": "^0.11.1",
-    "chai": "^5.1.2",
+    "chai": "^6.2.2",
     "chalk": "^5.4.1",
     "chokidar-cli": "^3.0.0",
     "conventional-changelog-cli": "^5.0.0",
     "esbuild": "^0.25.0",
-    "eslint": "^9.19.0",
+    "eslint": "^10.6.0",
     "eslint-config-prettier": "^10.0.1",
-    "glob": "^11.0.1",
+    "glob": "^13.0.6",
     "husky": "^9.1.7",
-    "lint-staged": "^15.4.3",
+    "lint-staged": "^15.5.2",
     "mocha": "^11.1.0",
     "playwright": "^1.50.1",
     "prettier": "^3.4.2",
@@ -68,7 +68,7 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.56.0",
     "webpack": "^5.97.1",
-    "webpack-cli": "^6.0.1"
+    "webpack-cli": "^7.1.0"
   },
   "repository": {
     "type": "git",
