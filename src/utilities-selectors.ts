@@ -35,11 +35,15 @@ import { isElement } from "./utilities-iselement.js";
 import { getPowerSet, powerSetGenerator } from "./utilities-powerset.js";
 import { cartesianProductGenerator } from "./utilities-cartesian.js";
 
-export const ESCAPED_COLON: string = ":".charCodeAt(0).toString(16).toUpperCase();
+export const ESCAPED_COLON: string = ":"
+  .charCodeAt(0)
+  .toString(16)
+  .toUpperCase();
 
 // Square brackets need to be escaped, but eslint has a problem with that.
 /* eslint-disable-next-line no-useless-escape */
-export const SPECIAL_CHARACTERS_RE: RegExp = /[ !"#$%&'()\[\]{|}<>*+,./;=?@^`~\\]/;
+export const SPECIAL_CHARACTERS_RE: RegExp =
+  /[ !"#$%&'()\[\]{|}<>*+,./;=?@^`~\\]/;
 
 /**
  * Escapes special characters used by CSS selector items.
@@ -87,7 +91,10 @@ export const SELECTOR_TYPE_GETTERS: Record<
 
 export const ELEMENT_SELECTOR_TYPE_GETTERS: Record<
   CssSelectorType,
-  (element: Element, options?: CssSelectorGeneratorOptions) => CssSelectorGenerated[]
+  (
+    element: Element,
+    options?: CssSelectorGeneratorOptions,
+  ) => CssSelectorGenerated[]
 > = {
   tag: getElementTagSelectors,
   id: getElementIdSelectors,
@@ -151,15 +158,43 @@ export function orderSelectors(
   });
 }
 
+export type SelectorsListCache = (
+  elements: Element[],
+  options: CssSelectorGeneratorOptions,
+) => CssSelectorData;
+
+/**
+ * Creates a cache for `getSelectorsList` results, scoped to a single selector-generation run.
+ */
+export function createSelectorsListCache(): SelectorsListCache {
+  const cache = new Map<Element, CssSelectorData>();
+  let multiElementResult: CssSelectorData | undefined;
+
+  return (elements, options) => {
+    if (elements.length !== 1) {
+      // multi-element needle is always the same array reference within one generator run
+      return (multiElementResult ??= getSelectorsList(elements, options));
+    }
+    const [element] = elements;
+    let result = cache.get(element);
+    if (!result) {
+      result = getSelectorsList(elements, options);
+      cache.set(element, result);
+    }
+    return result;
+  };
+}
+
 /**
  * Yields list of unique selectors applicable to given element.
  */
 export function* allSelectorsGenerator(
   elements: Element[],
   options: CssSelectorGeneratorOptions,
+  selectorsListCache: SelectorsListCache = createSelectorsListCache(),
 ): IterableIterator<CssSelector> {
   const yieldedSelectors = new Set<string>();
-  const selectors_list = getSelectorsList(elements, options);
+  const selectors_list = selectorsListCache(elements, options);
   for (const selector of selectorTypeCombinationsGenerator(
     selectors_list,
     options,
@@ -185,7 +220,11 @@ export function getSelectorsList(
   const matchWhitelist = createPatternMatcher(whitelist);
 
   const reducer = (data: CssSelectorData, selector_type: CssSelectorType) => {
-    const selectors_by_type = getSelectorsByType(elements, selector_type, options);
+    const selectors_by_type = getSelectorsByType(
+      elements,
+      selector_type,
+      options,
+    );
     const filtered_selectors = filterSelectors(
       selectors_by_type,
       matchBlacklist,
@@ -358,8 +397,13 @@ export function* selectorWithinRootGenerator(
   root: ParentNode,
   rootSelector: CssSelector | undefined = "",
   options: CssSelectorGeneratorOptions,
+  selectorsListCache: SelectorsListCache = createSelectorsListCache(),
 ): IterableIterator<CssSelector, undefined> {
-  const elementSelectorsIterator = allSelectorsGenerator(elements, options);
+  const elementSelectorsIterator = allSelectorsGenerator(
+    elements,
+    options,
+    selectorsListCache,
+  );
   for (const candidateSelector of candidatesGenerator(
     elementSelectorsIterator,
     rootSelector,
@@ -379,6 +423,7 @@ export function* closestIdentifiableParentGenerator(
   root: ParentNode,
   rootSelector: CssSelector | undefined = "",
   options: CssSelectorGeneratorOptions,
+  selectorsListCache: SelectorsListCache = createSelectorsListCache(),
 ): IterableIterator<IdentifiableParent> {
   if (elements.length === 0) {
     return null;
@@ -395,6 +440,7 @@ export function* closestIdentifiableParentGenerator(
       root,
       rootSelector,
       options,
+      selectorsListCache,
     )) {
       yield {
         foundElements: currentElements,
@@ -423,6 +469,7 @@ export function* selectorGenerator({
   let currentRoot = root;
   let partialSelector = rootSelector;
   let shouldContinue = true;
+  const selectorsListCache = createSelectorsListCache();
 
   while (shouldContinue) {
     let foundAny = false;
@@ -432,6 +479,7 @@ export function* selectorGenerator({
       currentRoot,
       partialSelector,
       options,
+      selectorsListCache,
     )) {
       const { foundElements, selector } = item;
       foundAny = true;
