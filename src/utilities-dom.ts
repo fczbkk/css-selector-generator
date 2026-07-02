@@ -11,13 +11,12 @@ export function testSelector(
   selector: CssSelector,
   root?: Node,
 ): boolean {
-  const result = Array.from(
-    sanitizeRoot(root, elements[0]).querySelectorAll(selector),
-  );
-  return (
-    result.length === elements.length &&
-    elements.every((element) => result.includes(element))
-  );
+  const result = sanitizeRoot(root, elements[0]).querySelectorAll(selector);
+  if (result.length !== elements.length) {
+    return false;
+  }
+  const resultSet = new Set(result);
+  return elements.every((element) => resultSet.has(element));
 }
 
 /**
