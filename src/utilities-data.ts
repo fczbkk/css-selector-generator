@@ -11,7 +11,8 @@ export function getIntersection<T>(items: T[][] = []): T[] {
     return firstItem;
   }
   return otherItems.reduce((accumulator, currentValue) => {
-    return accumulator.filter((item) => currentValue.includes(item));
+    const currentSet = new Set(currentValue);
+    return accumulator.filter((item) => currentSet.has(item));
   }, firstItem);
 }
 
