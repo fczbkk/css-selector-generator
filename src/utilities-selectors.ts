@@ -40,10 +40,8 @@ export const ESCAPED_COLON: string = ":"
   .toString(16)
   .toUpperCase();
 
-// Square brackets need to be escaped, but eslint has a problem with that.
-/* eslint-disable-next-line no-useless-escape */
 export const SPECIAL_CHARACTERS_RE: RegExp =
-  /[ !"#$%&'()\[\]{|}<>*+,./;=?@^`~\\]/;
+  /[ !"#$%&'()[\]{|}<>*+,./;=?@^`~\\]/;
 
 /**
  * Escapes special characters used by CSS selector items.
