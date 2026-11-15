@@ -1,3 +1,10 @@
+## [3.9.5](https://github.com/fczbkk/css-selector-generator/compare/v3.9.4...v3.9.5) (2026-11-15)
+
+
+### Bug Fixes
+
+* build fallback selector from :root when root is a document ([444abbf](https://github.com/fczbkk/css-selector-generator/commit/444abbf6f17f3b7726824fd37cb3fbab9ce222ad))
+* keep the scenarios package out of the published manifest ([fe89b3e](https://github.com/fczbkk/css-selector-generator/commit/fe89b3e1d097e59b3de4b54ab1a5fc10869bd7b9))
 ## [3.9.4](https://github.com/fczbkk/css-selector-generator/compare/v3.9.3...v3.9.4) (2026-08-07)
 
 

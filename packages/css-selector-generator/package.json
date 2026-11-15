@@ -1,7 +1,7 @@
 {
   "name": "css-selector-generator",
   "title": "CSS Selector Generator",
-  "version": "3.9.4",
+  "version": "3.9.5",
   "description": "Generates unique CSS selectors for DOM elements. Supports multiple elements, Shadow DOM and configurable selector types.",
   "author": "Riki Fridrich <riki@fczbkk.com> (https://fczbkk.com)",
   "license": "MIT",
