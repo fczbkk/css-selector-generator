@@ -101,6 +101,13 @@ describe("selector - fallback", function () {
     );
   });
 
+  it("should match the element when the root is a document", () => {
+    root.innerHTML = "<p></p><p></p>";
+    const needleElement = root.lastElementChild;
+    const result = getFallbackSelector([needleElement], document);
+    assert.deepEqual([...document.querySelectorAll(result)], [needleElement]);
+  });
+
   it("should work with a shadow root in another document", () => {
     const iframe = document.body.appendChild(document.createElement("iframe"));
     const iframeDoc = iframe.contentDocument;

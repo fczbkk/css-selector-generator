@@ -13,6 +13,10 @@ export function getElementFallbackSelector(
   element: Element,
   root?: ParentNode,
 ): CssSelector {
+  // In a document, `:scope` matches `<html>`, so start from `:root` instead.
+  if (root?.nodeType === Node.DOCUMENT_NODE) {
+    root = undefined;
+  }
   const parentElements = getElementParents(element, root).reverse();
   const rootIsShadowRoot = isShadowRoot(root);
 

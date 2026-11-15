@@ -43,6 +43,16 @@ describe("CssSelectorGenerator", function () {
       assert.doesNotThrow(fn);
     });
 
+    it("should produce working fallback selector when root is a document", () => {
+      root.innerHTML = "<p></p><p></p>";
+      const needle = root.lastElementChild;
+      const result = getCssSelector(needle, {
+        selectors: ["tag"],
+        root: document,
+      });
+      assert.deepEqual([...document.querySelectorAll(result)], [needle]);
+    });
+
     it("should not throw on descendant selector within root", () => {
       root.innerHTML = "<div><span></span><span></span></div>";
       const selectorTarget = root.querySelector("div span");
